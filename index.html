@@ -493,18 +493,136 @@
       border-bottom: none;
     }
 
-    /* ===== Print / PDF area (hidden) ===== */
+    .identity-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .date-field {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    .date-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .cal-popover {
+      display: none;
+      margin-top: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px;
+    }
+
+    .cal-popover.show { display: block; }
+
+    .cal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .cal-title {
+      font-weight: 700;
+      flex: 1;
+      text-align: center;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-dow, .cal-day {
+      text-align: center;
+      border-radius: 8px;
+      min-height: 36px;
+    }
+
+    .cal-dow {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cal-day {
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .cal-day:hover { background: var(--primary-light); }
+    .cal-day.today { outline: 1px solid var(--primary); }
+    .cal-day.selected {
+      background: var(--primary);
+      color: #fff;
+    }
+    .cal-day.empty { visibility: hidden; pointer-events: none; }
+
+    .cal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .time-optional {
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .total-box.is-muted {
+      background: var(--card);
+      color: var(--text);
+      border: 1px dashed var(--border);
+    }
+
+    .total-box.is-muted .label,
+    .total-box.is-muted .value {
+      color: var(--text-secondary);
+    }
+
     #print-area {
-      position: absolute;
-      left: -9999px;
+      position: fixed;
+      left: 0;
       top: 0;
-      width: 210mm;
-      background: white;
-      color: #000;
-      font-family: 'Vazirmatn', Tahoma, sans-serif;
-      direction: rtl;
-      padding: 20mm;
+      width: 794px;
+      background: #fff;
+      color: #111;
+      z-index: -1;
+      opacity: 0;
+      pointer-events: none;
+      padding: 24px;
       box-sizing: border-box;
+    }
+
+    #print-area.capturing {
+      z-index: 4000;
+      opacity: 1;
     }
 
     /* ===== Bottom Nav (mobile) ===== */
@@ -542,6 +660,15 @@
         align-items: center;
       }
     }
+
+    @media (min-width: 900px) {
+      .container { max-width: 920px; padding: 24px; }
+      .identity-grid { grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+      body { padding-bottom: 32px; }
+      .bottom-bar { display: none !important; }
+      .header h1 { font-size: 1.3rem; }
+      .btn-group .btn { min-width: 140px; }
+    }
   </style>
 </head>
 <body>
@@ -564,22 +691,38 @@
     <!-- ==================== REPORT SECTION ==================== -->
     <section id="section-report" class="section active">
       <!-- Name & Date -->
-      <div class="card">
+      <div class="card identity-grid">
         <div class="form-group">
           <label for="person-name">نام شما</label>
           <input type="text" id="person-name" placeholder="مثلاً: علی رضایی" autocomplete="name" />
         </div>
-        <div class="form-group">
-          <label for="report-date">تاریخ گزارش (شمسی)</label>
-          <input type="text" id="report-date" placeholder="۱۴۰۳/۰۷/۲۸" dir="ltr" style="text-align:center;" />
-          <small style="color:var(--text-secondary);font-size:0.8rem;">فرمت: سال/ماه/روز — مثلاً ۱۴۰۳/۰۷/۲۸</small>
+        <div class="form-group" style="position:relative;">
+          <label for="report-date-btn">تاریخ گزارش</label>
+          <button type="button" class="date-field" id="report-date-btn">
+            <span id="report-date-label">انتخاب تاریخ</span>
+            <span aria-hidden="true">📅</span>
+          </button>
+          <input type="hidden" id="report-date" />
+          <div class="cal-popover" id="cal-popover">
+            <div class="cal-head">
+              <button type="button" class="btn btn-secondary btn-sm" id="cal-next">ماه بعد</button>
+              <div class="cal-title" id="cal-title"></div>
+              <button type="button" class="btn btn-secondary btn-sm" id="cal-prev">ماه قبل</button>
+            </div>
+            <div class="cal-grid" id="cal-dows"></div>
+            <div class="cal-grid" id="cal-days"></div>
+            <div class="cal-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="cal-today" style="flex:1;">امروز</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="cal-close">بستن</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Total Hours -->
-      <div class="total-box" id="total-box">
-        <div class="label">مجموع ساعات امروز</div>
-        <div class="value" id="total-hours">۰ ساعت</div>
+      <div class="total-box is-muted" id="total-box">
+        <div class="label" id="total-label">مجموع ساعات (اختیاری)</div>
+        <div class="value" id="total-hours">ثبت نشده</div>
       </div>
 
       <!-- Activities -->
@@ -654,14 +797,15 @@
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="act-start">ساعت شروع</label>
+          <label for="act-start">ساعت شروع <span class="time-optional">(اختیاری)</span></label>
           <input type="time" id="act-start" />
         </div>
         <div class="form-group">
-          <label for="act-end">ساعت پایان</label>
+          <label for="act-end">ساعت پایان <span class="time-optional">(اختیاری)</span></label>
           <input type="time" id="act-end" />
         </div>
       </div>
+      <button type="button" class="btn btn-secondary btn-sm" id="clear-time-btn">پاک کردن ساعت</button>
       <div id="duration-preview" class="mb-2" style="font-size:0.9rem;color:var(--text-secondary);"></div>
       <div class="form-group">
         <label for="act-note">توضیح کوتاه (اختیاری)</label>
@@ -884,16 +1028,110 @@
       activities: [],
       finalNote: '',
       editingActivityIndex: -1,
-      workTypes: ['ایده‌پردازی', 'فیلم‌برداری', 'ادیت', 'ارسال ویدیو', 'بازبینی', 'جلسه'],
+      workTypes: ['ایده‌پردازی', 'فیلم‌برداری', 'ادیت', 'ارسال ویدیو', 'بازبینی', 'هماهنگی', 'جلسه'],
       reports: [],
       theme: 'light'
     };
+
+    function formatTimeRange(start, end) {
+      if (start && end) return toPersianDigits(start) + ' تا ' + toPersianDigits(end);
+      if (start) return 'از ' + toPersianDigits(start);
+      if (end) return 'تا ' + toPersianDigits(end);
+      return '';
+    }
+
+    function setDateLabel(iso) {
+      var el = document.getElementById('report-date-label');
+      el.textContent = iso ? toPersianDigits(iso) : 'انتخاب تاریخ';
+    }
+
+    var J_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+    var J_DOW = ['ش','ی','د','س','چ','پ','ج'];
+    var calView = { jy: 1404, jm: 1 };
+
+    function jMonthLen(jy, jm) {
+      if (jm <= 6) return 31;
+      if (jm <= 11) return 30;
+      return jalCal(jy).leap === 0 ? 30 : 29;
+    }
+
+    function jWeekdaySat0(jy, jm, jd) {
+      var g = toGregorian(jy, jm, jd);
+      var d = new Date(g.gy, g.gm - 1, g.gd);
+      return (d.getDay() + 1) % 7;
+    }
+
+    function parseTodayParts() {
+      var p = getTodayJalali().split('/');
+      return { jy: +p[0], jm: +p[1], jd: +p[2] };
+    }
+
+    function openCalendar() {
+      var raw = toEnglishDigits(document.getElementById('report-date').value || state.date || getTodayJalali());
+      var parts = raw.split('/');
+      calView.jy = parseInt(parts[0], 10) || parseTodayParts().jy;
+      calView.jm = parseInt(parts[1], 10) || parseTodayParts().jm;
+      renderCalendar();
+      document.getElementById('cal-popover').classList.add('show');
+    }
+
+    function closeCalendar() {
+      document.getElementById('cal-popover').classList.remove('show');
+    }
+
+    function pickDate(jy, jm, jd) {
+      var s = jy + '/' + pad(jm) + '/' + pad(jd);
+      state.date = s;
+      document.getElementById('report-date').value = s;
+      setDateLabel(s);
+      saveDraft();
+      closeCalendar();
+    }
+
+    function renderCalendar() {
+      document.getElementById('cal-title').textContent = J_MONTHS[calView.jm - 1] + ' ' + toPersianDigits(calView.jy);
+      var dows = document.getElementById('cal-dows');
+      dows.innerHTML = J_DOW.map(function (d) { return '<div class="cal-dow">' + d + '</div>'; }).join('');
+      var days = document.getElementById('cal-days');
+      var first = jWeekdaySat0(calView.jy, calView.jm, 1);
+      var len = jMonthLen(calView.jy, calView.jm);
+      var today = parseTodayParts();
+      var selected = toEnglishDigits(document.getElementById('report-date').value || '');
+      var html = '';
+      for (var i = 0; i < first; i++) html += '<button type="button" class="cal-day empty" tabindex="-1"></button>';
+      for (var day = 1; day <= len; day++) {
+        var key = calView.jy + '/' + pad(calView.jm) + '/' + pad(day);
+        var cls = 'cal-day';
+        if (key === selected) cls += ' selected';
+        if (today.jy === calView.jy && today.jm === calView.jm && today.jd === day) cls += ' today';
+        html += '<button type="button" class="' + cls + '" data-day="' + day + '">' + toPersianDigits(day) + '</button>';
+      }
+      days.innerHTML = html;
+      days.querySelectorAll('[data-day]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          pickDate(calView.jy, calView.jm, parseInt(btn.getAttribute('data-day'), 10));
+        });
+      });
+    }
+
+    function shiftMonth(delta) {
+      calView.jm += delta;
+      if (calView.jm > 12) { calView.jm = 1; calView.jy += 1; }
+      if (calView.jm < 1) { calView.jm = 12; calView.jy -= 1; }
+      renderCalendar();
+    }
 
     // -------------------- Init --------------------
     function init() {
       // Load data
       state.personName = safeGet(STORAGE_KEYS.personName, '') || '';
       state.workTypes = safeGet(STORAGE_KEYS.workTypes, state.workTypes);
+      if (state.workTypes.indexOf('هماهنگی') === -1) {
+        var meetingIdx = state.workTypes.indexOf('جلسه');
+        if (meetingIdx >= 0) state.workTypes.splice(meetingIdx, 0, 'هماهنگی');
+        else state.workTypes.push('هماهنگی');
+        safeSet(STORAGE_KEYS.workTypes, state.workTypes);
+      }
       state.reports = safeGet(STORAGE_KEYS.reports, []);
       state.theme = safeGet(STORAGE_KEYS.theme, 'light');
 
@@ -914,7 +1152,8 @@
 
       // Fill UI
       document.getElementById('person-name').value = state.personName;
-      document.getElementById('report-date').value = toPersianDigits(state.date);
+      document.getElementById('report-date').value = state.date;
+      setDateLabel(state.date);
       document.getElementById('final-note').value = state.finalNote;
 
       renderActivities();
@@ -940,22 +1179,25 @@
 
       state.activities.forEach(function (act, idx) {
         var dur = calcDuration(act.start, act.end);
-        var durText = dur === -1 ? '⚠️ خطا' : minutesToHoursText(dur);
         var hasError = dur === -1;
+        var timeLine = formatTimeRange(act.start, act.end);
+        var durHtml = '';
+        if (hasError) durHtml = '<span class="activity-duration">خطا در ساعت</span>';
+        else if (dur > 0) durHtml = '<span class="activity-duration">' + minutesToHoursText(dur) + '</span>';
 
         var card = document.createElement('div');
         card.className = 'activity-card' + (hasError ? ' activity-error' : '');
         card.innerHTML = `
           <div class="activity-header">
             <span class="activity-type">${escapeHtml(act.type)}</span>
-            <span class="activity-duration">${durText}</span>
+            ${durHtml}
           </div>
-          <div class="activity-meta">📁 ${escapeHtml(act.project || '—')}</div>
-          <div class="activity-meta">🕐 ${toPersianDigits(act.start)} تا ${toPersianDigits(act.end)}</div>
-          ${act.note ? `<div class="activity-meta">💬 ${escapeHtml(act.note)}</div>` : ''}
+          <div class="activity-meta">پروژه: ${escapeHtml(act.project || '—')}</div>
+          ${timeLine ? `<div class="activity-meta">ساعت: ${timeLine}</div>` : ''}
+          ${act.note ? `<div class="activity-meta">${escapeHtml(act.note)}</div>` : ''}
           <div class="activity-actions">
-            <button class="btn btn-secondary btn-sm" data-edit="${idx}">✏️ ویرایش</button>
-            <button class="btn btn-danger btn-sm" data-delete="${idx}">🗑️ حذف</button>
+            <button class="btn btn-secondary btn-sm" data-edit="${idx}">ویرایش</button>
+            <button class="btn btn-danger btn-sm" data-delete="${idx}">حذف</button>
           </div>
         `;
         list.appendChild(card);
@@ -1080,7 +1322,8 @@
             state.activities = JSON.parse(JSON.stringify(rep.activities));
             state.finalNote = rep.finalNote || '';
             document.getElementById('person-name').value = state.personName;
-            document.getElementById('report-date').value = toPersianDigits(state.date);
+            document.getElementById('report-date').value = state.date;
+            setDateLabel(state.date);
             document.getElementById('final-note').value = state.finalNote;
             renderActivities();
             updateTotal();
@@ -1114,16 +1357,30 @@
 
     function updateTotal() {
       var total = 0;
+      var timed = 0;
       var hasError = false;
       state.activities.forEach(function (a) {
         var d = calcDuration(a.start, a.end);
         if (d === -1) hasError = true;
-        else if (d > 0) total += d;
+        else if (d > 0) { total += d; timed += 1; }
       });
+      var box = document.getElementById('total-box');
       var el = document.getElementById('total-hours');
-      el.textContent = hasError ? 'خطا در ساعات' : minutesToHoursText(total);
-      if (hasError) el.style.color = '#fca5a5';
-      else el.style.color = 'white';
+      var label = document.getElementById('total-label');
+      if (hasError) {
+        box.classList.remove('is-muted');
+        label.textContent = 'مجموع ساعات';
+        el.textContent = 'خطا در ساعت‌ها';
+      } else if (timed === 0) {
+        box.classList.add('is-muted');
+        label.textContent = 'مجموع ساعات (اختیاری)';
+        el.textContent = 'ثبت نشده';
+      } else {
+        box.classList.remove('is-muted');
+        label.textContent = 'مجموع ساعات';
+        el.textContent = minutesToHoursText(total);
+        el.style.color = '';
+      }
     }
 
     // -------------------- Activity Modal --------------------
@@ -1161,13 +1418,17 @@
       var start = document.getElementById('act-start').value;
       var end = document.getElementById('act-end').value;
       var el = document.getElementById('duration-preview');
+      if (!start && !end) {
+        el.textContent = 'ساعت اختیاری است. اگر هر دو را پر کنید، مدت محاسبه می‌شود.';
+        return;
+      }
       if (!start || !end) {
-        el.textContent = '';
+        el.textContent = 'برای محاسبه مدت، هر دو ساعت را وارد کنید.';
         return;
       }
       var d = calcDuration(start, end);
       if (d === -1) {
-        el.innerHTML = '<span class="text-danger">⚠️ ساعت پایان نمی‌تواند قبل از شروع باشد</span>';
+        el.innerHTML = '<span class="text-danger">ساعت پایان نمی‌تواند قبل از شروع باشد</span>';
       } else {
         el.textContent = 'مدت: ' + minutesToHoursText(d);
       }
@@ -1184,12 +1445,7 @@
         showToast('نوع کار را انتخاب کنید');
         return;
       }
-      if (!start || !end) {
-        showToast('ساعت شروع و پایان را وارد کنید');
-        return;
-      }
-      var d = calcDuration(start, end);
-      if (d === -1) {
+      if (start && end && calcDuration(start, end) === -1) {
         showToast('ساعت پایان نمی‌تواند قبل از شروع باشد');
         return;
       }
@@ -1301,14 +1557,18 @@
       lines.push('────────────────');
       lines.push('👤 نام: ' + (rep.name || '—'));
       lines.push('📅 تاریخ: ' + toPersianDigits(rep.date));
-      lines.push('⏱️ مجموع ساعات: ' + minutesToHoursText(rep.totalMinutes || 0));
+      if (rep.totalMinutes > 0) lines.push('مجموع ساعات: ' + minutesToHoursText(rep.totalMinutes));
       lines.push('');
-      lines.push('📝 فعالیت‌ها:');
+      lines.push('فعالیت‌ها:');
       rep.activities.forEach(function (a, i) {
         var dur = calcDuration(a.start, a.end);
         lines.push((i + 1) + '. ' + a.type);
         if (a.project) lines.push('   پروژه: ' + a.project);
-        lines.push('   ساعت: ' + toPersianDigits(a.start) + ' تا ' + toPersianDigits(a.end) + ' (' + minutesToHoursText(dur) + ')');
+        var range = formatTimeRange(a.start, a.end);
+        if (range) {
+          var extra = dur > 0 ? ' (' + minutesToHoursText(dur) + ')' : '';
+          lines.push('   ساعت: ' + range + extra);
+        }
         if (a.note) lines.push('   توضیح: ' + a.note);
         lines.push('');
       });
@@ -1378,64 +1638,82 @@
 
       var rows = state.activities.map(function (a, i) {
         var dur = calcDuration(a.start, a.end);
+        var durText = dur > 0 ? minutesToHoursText(dur) : '—';
         return `
           <tr>
-            <td style="border:1px solid #ccc;padding:8px;text-align:center;">${toPersianDigits(i + 1)}</td>
-            <td style="border:1px solid #ccc;padding:8px;">${escapeHtml(a.type)}</td>
-            <td style="border:1px solid #ccc;padding:8px;">${escapeHtml(a.project || '—')}</td>
-            <td style="border:1px solid #ccc;padding:8px;text-align:center;">${toPersianDigits(a.start)}</td>
-            <td style="border:1px solid #ccc;padding:8px;text-align:center;">${toPersianDigits(a.end)}</td>
-            <td style="border:1px solid #ccc;padding:8px;text-align:center;">${minutesToHoursText(dur)}</td>
-            <td style="border:1px solid #ccc;padding:8px;">${escapeHtml(a.note || '—')}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${toPersianDigits(i + 1)}</td>
+            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.type)}</td>
+            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.project || '—')}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${a.start ? toPersianDigits(a.start) : '—'}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${a.end ? toPersianDigits(a.end) : '—'}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${durText}</td>
+            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.note || '—')}</td>
           </tr>
         `;
       }).join('');
 
+      var totalCell = total > 0
+        ? `<td style="padding:6px;color:#111;"><strong>مجموع ساعات:</strong> ${minutesToHoursText(total)}</td>`
+        : '';
+
       printArea.innerHTML = `
-        <div style="font-family:Vazirmatn,Tahoma,sans-serif;direction:rtl;color:#000;font-size:12px;">
-          <h1 style="text-align:center;font-size:18px;margin-bottom:8px;">گزارش کار روزانه</h1>
-          <p style="text-align:center;margin-bottom:16px;color:#555;">تیم تولید محتوا</p>
+        <div style="font-family:Tahoma,Vazirmatn,sans-serif;direction:rtl;color:#111;background:#fff;font-size:13px;width:746px;">
+          <h1 style="text-align:center;font-size:20px;margin:0 0 6px;color:#111;">گزارش کار روزانه</h1>
+          <p style="text-align:center;margin:0 0 16px;color:#333;">تیم تولید محتوا</p>
           <table style="width:100%;margin-bottom:16px;border-collapse:collapse;">
             <tr>
-              <td style="padding:6px;"><strong>نام:</strong> ${escapeHtml(state.personName || '—')}</td>
-              <td style="padding:6px;"><strong>تاریخ:</strong> ${toPersianDigits(state.date)}</td>
-              <td style="padding:6px;"><strong>مجموع ساعات:</strong> ${minutesToHoursText(total)}</td>
+              <td style="padding:6px;color:#111;"><strong>نام:</strong> ${escapeHtml(state.personName || '—')}</td>
+              <td style="padding:6px;color:#111;"><strong>تاریخ:</strong> ${toPersianDigits(state.date)}</td>
+              ${totalCell}
             </tr>
           </table>
-          <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;background:#fff;">
             <thead>
-              <tr style="background:#f0f0f0;">
-                <th style="border:1px solid #ccc;padding:8px;">#</th>
-                <th style="border:1px solid #ccc;padding:8px;">نوع کار</th>
-                <th style="border:1px solid #ccc;padding:8px;">پروژه</th>
-                <th style="border:1px solid #ccc;padding:8px;">شروع</th>
-                <th style="border:1px solid #ccc;padding:8px;">پایان</th>
-                <th style="border:1px solid #ccc;padding:8px;">مدت</th>
-                <th style="border:1px solid #ccc;padding:8px;">توضیح</th>
+              <tr style="background:#eceff3;">
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">#</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">نوع کار</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">پروژه</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">شروع</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">پایان</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">مدت</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">توضیح</th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
           </table>
-          ${state.finalNote ? `<div style="margin-top:16px;"><strong>یادداشت پایانی:</strong><br>${escapeHtml(state.finalNote)}</div>` : ''}
-          <p style="margin-top:24px;text-align:center;font-size:10px;color:#888;">تولید شده با اپ گزارش کار روزانه</p>
+          ${state.finalNote ? `<div style="margin-top:16px;color:#111;"><strong>یادداشت پایانی:</strong><br>${escapeHtml(state.finalNote)}</div>` : ''}
         </div>
       `;
 
+      printArea.classList.add('capturing');
       var opt = {
-        margin: [10, 10, 10, 10],
+        margin: [8, 8, 8, 8],
         filename: 'گزارش-کار-' + state.date.replace(/\//g, '-') + '.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        html2canvas: {
+          scale: 2,
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: 900
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] }
       };
 
       showToast('در حال ساخت PDF...');
-      html2pdf().set(opt).from(printArea).save().then(function () {
-        showToast('PDF دانلود شد');
-      }).catch(function (err) {
-        console.error(err);
-        showToast('خطا در ساخت PDF');
-      });
+      window.scrollTo(0, 0);
+      setTimeout(function () {
+        html2pdf().set(opt).from(printArea).save().then(function () {
+          printArea.classList.remove('capturing');
+          showToast('PDF دانلود شد');
+        }).catch(function (err) {
+          printArea.classList.remove('capturing');
+          console.error(err);
+          showToast('خطا در ساخت PDF');
+        });
+      }, 80);
     }
 
     function exportWord() {
@@ -1457,9 +1735,9 @@
             <td style="border:1px solid #333;padding:6px;text-align:center;">${toPersianDigits(i + 1)}</td>
             <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.type)}</td>
             <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.project || '—')}</td>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${toPersianDigits(a.start)}</td>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${toPersianDigits(a.end)}</td>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${minutesToHoursText(dur)}</td>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${a.start ? toPersianDigits(a.start) : '—'}</td>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${a.end ? toPersianDigits(a.end) : '—'}</td>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${dur > 0 ? minutesToHoursText(dur) : '—'}</td>
             <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.note || '—')}</td>
           </tr>
         `;
@@ -1483,8 +1761,7 @@
           <h1>گزارش کار روزانه</h1>
           <p style="text-align:center;">تیم تولید محتوا</p>
           <p><strong>نام:</strong> ${escapeHtml(state.personName || '—')} &nbsp;&nbsp;
-             <strong>تاریخ:</strong> ${toPersianDigits(state.date)} &nbsp;&nbsp;
-             <strong>مجموع ساعات:</strong> ${minutesToHoursText(total)}</p>
+             <strong>تاریخ:</strong> ${toPersianDigits(state.date)}${total > 0 ? ' &nbsp;&nbsp; <strong>مجموع ساعات:</strong> ' + minutesToHoursText(total) : ''}</p>
           <table>
             <thead>
               <tr>
@@ -1614,9 +1891,33 @@
       document.getElementById('save-activity-btn').addEventListener('click', saveActivityFromModal);
       document.getElementById('act-start').addEventListener('change', updateDurationPreview);
       document.getElementById('act-end').addEventListener('change', updateDurationPreview);
+      document.getElementById('clear-time-btn').addEventListener('click', function () {
+        document.getElementById('act-start').value = '';
+        document.getElementById('act-end').value = '';
+        updateDurationPreview();
+      });
 
-      // Auto-save draft on input
-      ['person-name', 'report-date', 'final-note'].forEach(function (id) {
+      document.getElementById('report-date-btn').addEventListener('click', function () {
+        var pop = document.getElementById('cal-popover');
+        if (pop.classList.contains('show')) closeCalendar();
+        else openCalendar();
+      });
+      document.getElementById('cal-prev').addEventListener('click', function () { shiftMonth(-1); });
+      document.getElementById('cal-next').addEventListener('click', function () { shiftMonth(1); });
+      document.getElementById('cal-today').addEventListener('click', function () {
+        var t = parseTodayParts();
+        pickDate(t.jy, t.jm, t.jd);
+      });
+      document.getElementById('cal-close').addEventListener('click', closeCalendar);
+      document.addEventListener('click', function (e) {
+        var pop = document.getElementById('cal-popover');
+        var btn = document.getElementById('report-date-btn');
+        if (!pop.classList.contains('show')) return;
+        if (pop.contains(e.target) || btn.contains(e.target)) return;
+        closeCalendar();
+      });
+
+      ['person-name', 'final-note'].forEach(function (id) {
         document.getElementById(id).addEventListener('input', function () {
           saveDraft();
         });
