@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="description" content="گزارش کار روزانه تیم تولید محتوا" />
+  <title>گزارش کار روزانه</title>
+
+  <!-- فونت وزیرمتن -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- کتابخانه‌های خروجی -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #dbeafe;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    [data-theme="dark"] {
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --primary-light: #1e3a5f;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover, .icon-btn:active {
+      background: var(--primary-light);
+    }
+
+    /* ===== Tabs ===== */
+    .tabs {
+      display: flex;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 65px;
+      z-index: 90;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 14px 8px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ===== Container ===== */
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* ===== Cards ===== */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ===== Form Elements ===== */
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="time"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 48px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover, .btn-primary:active {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .btn-sm {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      min-height: 36px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* ===== Activity Cards ===== */
+    .activity-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .activity-card .activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .activity-type {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .activity-duration {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .activity-meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .activity-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .activity-error {
+      border-color: var(--danger) !important;
+      background: #fef2f2;
+    }
+
+    [data-theme="dark"] .activity-error {
+      background: #450a0a;
+    }
+
+    /* ===== Total Hours ===== */
+    .total-box {
+      background: linear-gradient(135deg, var(--primary), #1d4ed8);
+      color: white;
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .total-box .label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .total-box .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    /* ===== History ===== */
+    .history-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .history-item:hover {
+      border-color: var(--primary);
+    }
+
+    .history-item .date {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .history-item .meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state .icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    /* ===== Modal ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: 16px 16px 0 0;
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--bg);
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      z-index: 300;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+      max-width: 90%;
+    }
+
+    [data-theme="dark"] .toast {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* ===== Work Types Management ===== */
+    .type-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .type-item:last-child {
+      border-bottom: none;
+    }
+
+    .identity-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .date-field {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    .date-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .cal-popover {
+      display: none;
+      margin-top: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px;
+    }
+
+    .cal-popover.show { display: block; }
+
+    .cal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .cal-title {
+      font-weight: 700;
+      flex: 1;
+      text-align: center;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-dow, .cal-day {
+      text-align: center;
+      border-radius: 8px;
+      min-height: 36px;
+    }
+
+    .cal-dow {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cal-day {
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .cal-day:hover { background: var(--primary-light); }
+    .cal-day.today { outline: 1px solid var(--primary); }
+    .cal-day.selected {
+      background: var(--primary);
+      color: #fff;
+    }
+    .cal-day.empty { visibility: hidden; pointer-events: none; }
+
+    .cal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .time-optional {
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .total-box.is-muted {
+      background: var(--card);
+      color: var(--text);
+      border: 1px dashed var(--border);
+    }
+
+    .total-box.is-muted .label,
+    .total-box.is-muted .value {
+      color: var(--text-secondary);
+    }
+
+    #print-area {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 794px;
+      background: #fff;
+      color: #111;
+      z-index: -1;
+      opacity: 0;
+      pointer-events: none;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    #print-area.capturing {
+      z-index: 4000;
+      opacity: 1;
+    }
+
+    /* ===== Bottom Nav (mobile) ===== */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+
+    .bottom-bar .btn {
+      flex: 1;
+    }
+
+    /* ===== Utilities ===== */
+    .text-danger { color: var(--danger); }
+    .mt-2 { margin-top: 8px; }
+    .mb-2 { margin-bottom: 8px; }
+    .hidden { display: none !important; }
+
+    /* ===== Responsive ===== */
+    @media (min-width: 640px) {
+      .modal {
+        border-radius: var(--radius);
+        margin-bottom: 40px;
+      }
+      .modal-overlay {
+        align-items: center;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .container { max-width: 920px; padding: 24px; }
+      .identity-grid { grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+      body { padding-bottom: 32px; }
+      .bottom-bar { display: none !important; }
+      .header h1 { font-size: 1.3rem; }
+      .btn-group .btn { min-width: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1>📋 گزارش کار روزانه</h1>
+    <div class="header-actions">
+      <button class="icon-btn" id="theme-toggle" title="تغییر تم">🌙</button>
+      <button class="icon-btn" id="settings-btn" title="تنظیمات">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="report">گزارش جدید</button>
+    <button class="tab" data-tab="history">تاریخچه</button>
+  </nav>
+
+  <div class="container">
+    <!-- ==================== REPORT SECTION ==================== -->
+    <section id="section-report" class="section active">
+      <!-- Name & Date -->
+      <div class="card identity-grid">
+        <div class="form-group">
+          <label for="person-name">نام شما</label>
+          <input type="text" id="person-name" placeholder="مثلاً: علی رضایی" autocomplete="name" />
+        </div>
+        <div class="form-group" style="position:relative;">
+          <label for="report-date-btn">تاریخ گزارش</label>
+          <button type="button" class="date-field" id="report-date-btn">
+            <span id="report-date-label">انتخاب تاریخ</span>
+            <span aria-hidden="true">📅</span>
+          </button>
+          <input type="hidden" id="report-date" />
+          <div class="cal-popover" id="cal-popover">
+            <div class="cal-head">
+              <button type="button" class="btn btn-secondary btn-sm" id="cal-next">ماه بعد</button>
+              <div class="cal-title" id="cal-title"></div>
+              <button type="button" class="btn btn-secondary btn-sm" id="cal-prev">ماه قبل</button>
+            </div>
+            <div class="cal-grid" id="cal-dows"></div>
+            <div class="cal-grid" id="cal-days"></div>
+            <div class="cal-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="cal-today" style="flex:1;">امروز</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="cal-close">بستن</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Hours -->
+      <div class="total-box is-muted" id="total-box">
+        <div class="label" id="total-label">مجموع ساعات (اختیاری)</div>
+        <div class="value" id="total-hours">ثبت نشده</div>
+      </div>
+
+      <!-- Activities -->
+      <div class="card">
+        <div class="card-title">
+          <span>فعالیت‌ها</span>
+          <button class="btn btn-primary btn-sm" id="add-activity-btn">+ افزودن</button>
+        </div>
+        <div id="activities-list">
+          <!-- activity cards will be rendered here -->
+        </div>
+        <div id="no-activities" class="empty-state">
+          <div class="icon">📝</div>
+          <p>هنوز فعالیتی اضافه نشده</p>
+          <button class="btn btn-primary mt-2" id="add-first-activity">افزودن اولین فعالیت</button>
+        </div>
+      </div>
+
+      <!-- Final Note -->
+      <div class="card">
+        <div class="form-group">
+          <label for="final-note">یادداشت پایانی (اختیاری)</label>
+          <textarea id="final-note" placeholder="توضیحات کلی درباره گزارش امروز..."></textarea>
+        </div>
+      </div>
+
+      <!-- Export Buttons -->
+      <div class="card">
+        <div class="card-title">خروجی و ذخیره</div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-block" id="save-report-btn">💾 ذخیره گزارش</button>
+          <button class="btn btn-secondary" id="export-pdf-btn">📄 PDF</button>
+          <button class="btn btn-secondary" id="export-word-btn">📝 Word</button>
+          <button class="btn btn-secondary" id="copy-text-btn">📋 کپی متن</button>
+          <button class="btn btn-secondary" id="share-btn">📤 اشتراک</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== HISTORY SECTION ==================== -->
+    <section id="section-history" class="section">
+      <div id="history-list">
+        <!-- history items -->
+      </div>
+      <div id="no-history" class="empty-state">
+        <div class="icon">📂</div>
+        <p>هنوز گزارشی ذخیره نشده</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom bar for quick actions on report tab -->
+  <div class="bottom-bar" id="bottom-bar">
+    <button class="btn btn-primary" id="quick-add-btn">+ فعالیت</button>
+    <button class="btn btn-success" id="quick-save-btn">ذخیره</button>
+  </div>
+
+  <!-- ==================== ACTIVITY MODAL ==================== -->
+  <div class="modal-overlay" id="activity-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">افزودن فعالیت</h3>
+        <button class="close-btn" id="close-modal">×</button>
+      </div>
+      <div class="form-group">
+        <label for="act-type">نوع کار</label>
+        <select id="act-type"></select>
+      </div>
+      <div class="form-group">
+        <label for="act-project">نام پروژه / موضوع</label>
+        <input type="text" id="act-project" placeholder="مثلاً: ویدیو معرفی محصول" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="act-start">ساعت شروع <span class="time-optional">(اختیاری)</span></label>
+          <input type="time" id="act-start" />
+        </div>
+        <div class="form-group">
+          <label for="act-end">ساعت پایان <span class="time-optional">(اختیاری)</span></label>
+          <input type="time" id="act-end" />
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-sm" id="clear-time-btn">پاک کردن ساعت</button>
+      <div id="duration-preview" class="mb-2" style="font-size:0.9rem;color:var(--text-secondary);"></div>
+      <div class="form-group">
+        <label for="act-note">توضیح کوتاه (اختیاری)</label>
+        <textarea id="act-note" rows="2" placeholder="جزئیات بیشتر..."></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-block" id="save-activity-btn">تأیید</button>
+        <button class="btn btn-secondary btn-block" id="cancel-activity-btn">انصراف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SETTINGS MODAL ==================== -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>تنظیمات</h3>
+        <button class="close-btn" id="close-settings">×</button>
+      </div>
+
+      <div class="card-title">مدیریت انواع کار</div>
+      <div id="types-list"></div>
+      <div class="form-row" style="margin-top:12px;">
+        <input type="text" id="new-type-input" placeholder="نوع کار جدید..." />
+        <button class="btn btn-primary btn-sm" id="add-type-btn">افزودن</button>
+      </div>
+
+      <hr style="margin:20px 0;border:none;border-top:1px solid var(--border);" />
+
+      <div class="card-title">سایر</div>
+      <button class="btn btn-secondary btn-block" id="clear-all-btn">پاک کردن همه داده‌ها</button>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:12px;text-align:center;">
+        نسخه ۱.۰ — همه داده‌ها فقط روی دستگاه شما ذخیره می‌شوند
+      </p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Hidden Print Area for PDF -->
+  <div id="print-area"></div>
+
+  <script>
+    /* ============================================================
+       گزارش کار روزانه - PWA
+       تک‌فایل HTML + CSS + JS
+       ============================================================ */
+
+    // -------------------- Jalali Date Helpers (compact) --------------------
+    // Based on jalaali-js algorithm (public domain style)
+    function div(a, b) { return ~~(a / b); }
+    function mod(a, b) { return a - ~~(a / b) * b; }
+
+    function toJalaali(gy, gm, gd) {
+      var r = d2j(g2d(gy, gm, gd));
+      return { jy: r.jy, jm: r.jm, jd: r.jd };
+    }
+
+    function toGregorian(jy, jm, jd) {
+      var r = d2g(j2d(jy, jm, jd));
+      return { gy: r.gy, gm: r.gm, gd: r.gd };
+    }
+
+    function g2d(gy, gm, gd) {
+      var d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4)
+        + div(153 * mod(gm + 9, 12) + 2, 5)
+        + gd - 34840408;
+      d = d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752;
+      return d;
+    }
+
+    function d2g(jdn) {
+      var j = 4 * jdn + 139361631;
+      j = j + div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
+      var i = div(mod(j, 1461), 4) * 5 + 308;
+      var gd = div(mod(i, 153), 5) + 1;
+      var gm = mod(div(i, 153), 12) + 1;
+      var gy = div(j, 1461) - 100100 + div(8 - gm, 6);
+      return { gy: gy, gm: gm, gd: gd };
+    }
+
+    function j2d(jy, jm, jd) {
+      var r = jalCal(jy);
+      return g2d(r.gy, 3, r.march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1;
+    }
+
+    function d2j(jdn) {
+      var gy = d2g(jdn).gy;
+      var jy = gy - 621;
+      var r = jalCal(jy);
+      var jdn1f = g2d(gy, 3, r.march);
+      var k = jdn - jdn1f;
+      if (k >= 0) {
+        if (k <= 185) {
+          var jm = 1 + div(k, 31);
+          var jd = mod(k, 31) + 1;
+          return { jy: jy, jm: jm, jd: jd };
+        } else {
+          k -= 186;
+        }
+      } else {
+        jy -= 1;
+        k += 179;
+        if (r.leap === 1) k += 1;
+      }
+      var jm = 7 + div(k, 30);
+      var jd = mod(k, 30) + 1;
+      return { jy: jy, jm: jm, jd: jd };
+    }
+
+    function jalCal(jy) {
+      var breaks = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+        1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
+      var bl = breaks.length;
+      var gy = jy + 621;
+      var leapJ = -14;
+      var jp = breaks[0];
+      var jump = 0;
+      for (var i = 1; i < bl; i++) {
+        var jm = breaks[i];
+        jump = jm - jp;
+        if (jy < jm) break;
+        leapJ = leapJ + div(jump, 33) * 8 + div(mod(jump, 33), 4);
+        jp = jm;
+      }
+      var n = jy - jp;
+      leapJ = leapJ + div(n, 33) * 8 + div(mod(n, 33) + 3, 4);
+      if (mod(jump, 33) === 4 && jump - n === 4) leapJ += 1;
+      var leapG = div(gy, 4) - div((div(gy, 100) + 1) * 3, 4) - 150;
+      var march = 20 + leapJ - leapG;
+      if (jump - n < 6) n = n - jump + div(jump + 4, 33) * 33;
+      var leap = mod(mod(n + 1, 33) - 1, 4);
+      if (leap === -1) leap = 4;
+      return { leap: leap, gy: gy, march: march };
+    }
+
+    function getTodayJalali() {
+      var now = new Date();
+      var j = toJalaali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+      return j.jy + '/' + pad(j.jm) + '/' + pad(j.jd);
+    }
+
+    function pad(n) {
+      return n < 10 ? '0' + n : '' + n;
+    }
+
+    // -------------------- Persian Digits --------------------
+    function toPersianDigits(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/\d/g, function (d) {
+        return '۰۱۲۳۴۵۶۷۸۹'[d];
+      });
+    }
+
+    function toEnglishDigits(str) {
+      return String(str)
+        .replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
+        .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
+    }
+
+    // -------------------- Time Helpers --------------------
+    function timeToMinutes(t) {
+      if (!t) return null;
+      var parts = t.split(':');
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
+
+    function minutesToHoursText(mins) {
+      if (mins === null || isNaN(mins) || mins < 0) return '—';
+      var h = Math.floor(mins / 60);
+      var m = mins % 60;
+      if (h === 0) return toPersianDigits(m) + ' دقیقه';
+      if (m === 0) return toPersianDigits(h) + ' ساعت';
+      return toPersianDigits(h) + ' ساعت و ' + toPersianDigits(m) + ' دقیقه';
+    }
+
+    function calcDuration(start, end) {
+      var s = timeToMinutes(start);
+      var e = timeToMinutes(end);
+      if (s === null || e === null) return null;
+      if (e < s) return -1; // error
+      return e - s;
+    }
+
+    // -------------------- Storage --------------------
+    const STORAGE_KEYS = {
+      reports: 'daily_reports_v1',
+      workTypes: 'work_types_v1',
+      personName: 'person_name_v1',
+      draft: 'report_draft_v1',
+      theme: 'theme_v1'
+    };
+
+    function safeGet(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) {
+        console.warn('localStorage get error', e);
+        return fallback;
+      }
+    }
+
+    function safeSet(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (e) {
+        console.warn('localStorage set error', e);
+        showToast('خطا در ذخیره‌سازی (حافظه پر؟)');
+        return false;
+      }
+    }
+
+    // -------------------- App State --------------------
+    let state = {
+      personName: '',
+      date: getTodayJalali(),
+      activities: [],
+      finalNote: '',
+      editingActivityIndex: -1,
+      workTypes: ['ایده‌پردازی', 'فیلم‌برداری', 'ادیت', 'ارسال ویدیو', 'بازبینی', 'هماهنگی', 'جلسه'],
+      reports: [],
+      theme: 'light'
+    };
+
+    function formatTimeRange(start, end) {
+      if (start && end) return toPersianDigits(start) + ' تا ' + toPersianDigits(end);
+      if (start) return 'از ' + toPersianDigits(start);
+      if (end) return 'تا ' + toPersianDigits(end);
+      return '';
+    }
+
+    function setDateLabel(iso) {
+      var el = document.getElementById('report-date-label');
+      el.textContent = iso ? toPersianDigits(iso) : 'انتخاب تاریخ';
+    }
+
+    var J_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+    var J_DOW = ['ش','ی','د','س','چ','پ','ج'];
+    var calView = { jy: 1404, jm: 1 };
+
+    function jMonthLen(jy, jm) {
+      if (jm <= 6) return 31;
+      if (jm <= 11) return 30;
+      return jalCal(jy).leap === 0 ? 30 : 29;
+    }
+
+    function jWeekdaySat0(jy, jm, jd) {
+      var g = toGregorian(jy, jm, jd);
+      var d = new Date(g.gy, g.gm - 1, g.gd);
+      return (d.getDay() + 1) % 7;
+    }
+
+    function parseTodayParts() {
+      var p = getTodayJalali().split('/');
+      return { jy: +p[0], jm: +p[1], jd: +p[2] };
+    }
+
+    function openCalendar() {
+      var raw = toEnglishDigits(document.getElementById('report-date').value || state.date || getTodayJalali());
+      var parts = raw.split('/');
+      calView.jy = parseInt(parts[0], 10) || parseTodayParts().jy;
+      calView.jm = parseInt(parts[1], 10) || parseTodayParts().jm;
+      renderCalendar();
+      document.getElementById('cal-popover').classList.add('show');
+    }
+
+    function closeCalendar() {
+      document.getElementById('cal-popover').classList.remove('show');
+    }
+
+    function pickDate(jy, jm, jd) {
+      var s = jy + '/' + pad(jm) + '/' + pad(jd);
+      state.date = s;
+      document.getElementById('report-date').value = s;
+      setDateLabel(s);
+      saveDraft();
+      closeCalendar();
+    }
+
+    function renderCalendar() {
+      document.getElementById('cal-title').textContent = J_MONTHS[calView.jm - 1] + ' ' + toPersianDigits(calView.jy);
+      var dows = document.getElementById('cal-dows');
+      dows.innerHTML = J_DOW.map(function (d) { return '<div class="cal-dow">' + d + '</div>'; }).join('');
+      var days = document.getElementById('cal-days');
+      var first = jWeekdaySat0(calView.jy, calView.jm, 1);
+      var len = jMonthLen(calView.jy, calView.jm);
+      var today = parseTodayParts();
+      var selected = toEnglishDigits(document.getElementById('report-date').value || '');
+      var html = '';
+      for (var i = 0; i < first; i++) html += '<button type="button" class="cal-day empty" tabindex="-1"></button>';
+      for (var day = 1; day <= len; day++) {
+        var key = calView.jy + '/' + pad(calView.jm) + '/' + pad(day);
+        var cls = 'cal-day';
+        if (key === selected) cls += ' selected';
+        if (today.jy === calView.jy && today.jm === calView.jm && today.jd === day) cls += ' today';
+        html += '<button type="button" class="' + cls + '" data-day="' + day + '">' + toPersianDigits(day) + '</button>';
+      }
+      days.innerHTML = html;
+      days.querySelectorAll('[data-day]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          pickDate(calView.jy, calView.jm, parseInt(btn.getAttribute('data-day'), 10));
+        });
+      });
+    }
+
+    function shiftMonth(delta) {
+      calView.jm += delta;
+      if (calView.jm > 12) { calView.jm = 1; calView.jy += 1; }
+      if (calView.jm < 1) { calView.jm = 12; calView.jy -= 1; }
+      renderCalendar();
+    }
+
+    // -------------------- Init --------------------
+    function init() {
+      // Load data
+      state.personName = safeGet(STORAGE_KEYS.personName, '') || '';
+      state.workTypes = safeGet(STORAGE_KEYS.workTypes, state.workTypes);
+      if (state.workTypes.indexOf('هماهنگی') === -1) {
+        var meetingIdx = state.workTypes.indexOf('جلسه');
+        if (meetingIdx >= 0) state.workTypes.splice(meetingIdx, 0, 'هماهنگی');
+        else state.workTypes.push('هماهنگی');
+        safeSet(STORAGE_KEYS.workTypes, state.workTypes);
+      }
+      state.reports = safeGet(STORAGE_KEYS.reports, []);
+      state.theme = safeGet(STORAGE_KEYS.theme, 'light');
+
+      // Apply theme
+      document.documentElement.setAttribute('data-theme', state.theme);
+      document.getElementById('theme-toggle').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+
+      // Load draft if exists
+      var draft = safeGet(STORAGE_KEYS.draft, null);
+      if (draft) {
+        state.date = draft.date || getTodayJalali();
+        state.activities = draft.activities || [];
+        state.finalNote = draft.finalNote || '';
+        if (draft.personName) state.personName = draft.personName;
+      } else {
+        state.date = getTodayJalali();
+      }
+
+      // Fill UI
+      document.getElementById('person-name').value = state.personName;
+      document.getElementById('report-date').value = state.date;
+      setDateLabel(state.date);
+      document.getElementById('final-note').value = state.finalNote;
+
+      renderActivities();
+      renderWorkTypesSelect();
+      renderHistory();
+      updateTotal();
+      setupEventListeners();
+      registerServiceWorker();
+      createManifest();
+    }
+
+    // -------------------- Render Functions --------------------
+    function renderActivities() {
+      var list = document.getElementById('activities-list');
+      var empty = document.getElementById('no-activities');
+      list.innerHTML = '';
+
+      if (state.activities.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      state.activities.forEach(function (act, idx) {
+        var dur = calcDuration(act.start, act.end);
+        var hasError = dur === -1;
+        var timeLine = formatTimeRange(act.start, act.end);
+        var durHtml = '';
+        if (hasError) durHtml = '<span class="activity-duration">خطا در ساعت</span>';
+        else if (dur > 0) durHtml = '<span class="activity-duration">' + minutesToHoursText(dur) + '</span>';
+
+        var card = document.createElement('div');
+        card.className = 'activity-card' + (hasError ? ' activity-error' : '');
+        card.innerHTML = `
+          <div class="activity-header">
+            <span class="activity-type">${escapeHtml(act.type)}</span>
+            ${durHtml}
+          </div>
+          <div class="activity-meta">پروژه: ${escapeHtml(act.project || '—')}</div>
+          ${timeLine ? `<div class="activity-meta">ساعت: ${timeLine}</div>` : ''}
+          ${act.note ? `<div class="activity-meta">${escapeHtml(act.note)}</div>` : ''}
+          <div class="activity-actions">
+            <button class="btn btn-secondary btn-sm" data-edit="${idx}">ویرایش</button>
+            <button class="btn btn-danger btn-sm" data-delete="${idx}">حذف</button>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      // Bind edit/delete
+      list.querySelectorAll('[data-edit]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openActivityModal(parseInt(btn.getAttribute('data-edit'), 10));
+        });
+      });
+      list.querySelectorAll('[data-delete]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var i = parseInt(btn.getAttribute('data-delete'), 10);
+          if (confirm('این فعالیت حذف شود؟')) {
+            state.activities.splice(i, 1);
+            saveDraft();
+            renderActivities();
+            updateTotal();
+          }
+        });
+      });
+    }
+
+    function renderWorkTypesSelect() {
+      var select = document.getElementById('act-type');
+      select.innerHTML = '';
+      state.workTypes.forEach(function (t) {
+        var opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderTypesList() {
+      var list = document.getElementById('types-list');
+      list.innerHTML = '';
+      state.workTypes.forEach(function (t, idx) {
+        var item = document.createElement('div');
+        item.className = 'type-item';
+        item.innerHTML = `
+          <span>${escapeHtml(t)}</span>
+          <div>
+            <button class="btn btn-secondary btn-sm" data-edit-type="${idx}">✏️</button>
+            <button class="btn btn-danger btn-sm" data-del-type="${idx}">🗑️</button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+
+      list.querySelectorAll('[data-edit-type]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var i = parseInt(btn.getAttribute('data-edit-type'), 10);
+          var newName = prompt('نام جدید نوع کار:', state.workTypes[i]);
+          if (newName && newName.trim()) {
+            state.workTypes[i] = newName.trim();
+            safeSet(STORAGE_KEYS.workTypes, state.workTypes);
+            renderTypesList();
+            renderWorkTypesSelect();
+            showToast('ویرایش شد');
+          }
+        });
+      });
+
+      list.querySelectorAll('[data-del-type]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var i = parseInt(btn.getAttribute('data-del-type'), 10);
+          if (state.workTypes.length <= 1) {
+            showToast('حداقل یک نوع کار لازم است');
+            return;
+          }
+          if (confirm('حذف شود؟')) {
+            state.workTypes.splice(i, 1);
+            safeSet(STORAGE_KEYS.workTypes, state.workTypes);
+            renderTypesList();
+            renderWorkTypesSelect();
+          }
+        });
+      });
+    }
+
+    function renderHistory() {
+      var list = document.getElementById('history-list');
+      var empty = document.getElementById('no-history');
+      list.innerHTML = '';
+
+      if (state.reports.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      // Sort by date desc
+      var sorted = state.reports.slice().sort(function (a, b) {
+        return (b.date || '').localeCompare(a.date || '');
+      });
+
+      sorted.forEach(function (rep) {
+        var totalText = minutesToHoursText(rep.totalMinutes || 0);
+        var item = document.createElement('div');
+        item.className = 'history-item';
+        item.innerHTML = `
+          <div class="date">${toPersianDigits(rep.date)} — ${escapeHtml(rep.name || 'بدون نام')}</div>
+          <div class="meta">${toPersianDigits(rep.activities.length)} فعالیت · ${totalText}</div>
+          <div class="history-actions">
+            <button class="btn btn-secondary btn-sm" data-load="${rep.id}">📂 باز کردن</button>
+            <button class="btn btn-secondary btn-sm" data-copy-hist="${rep.id}">📋 کپی</button>
+            <button class="btn btn-danger btn-sm" data-del-hist="${rep.id}">🗑️</button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+
+      list.querySelectorAll('[data-load]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-load');
+          var rep = state.reports.find(function (r) { return r.id === id; });
+          if (rep) {
+            state.date = rep.date;
+            state.personName = rep.name;
+            state.activities = JSON.parse(JSON.stringify(rep.activities));
+            state.finalNote = rep.finalNote || '';
+            document.getElementById('person-name').value = state.personName;
+            document.getElementById('report-date').value = state.date;
+            setDateLabel(state.date);
+            document.getElementById('final-note').value = state.finalNote;
+            renderActivities();
+            updateTotal();
+            saveDraft();
+            switchTab('report');
+            showToast('گزارش بارگذاری شد');
+          }
+        });
+      });
+
+      list.querySelectorAll('[data-copy-hist]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-copy-hist');
+          var rep = state.reports.find(function (r) { return r.id === id; });
+          if (rep) copyReportText(rep);
+        });
+      });
+
+      list.querySelectorAll('[data-del-hist]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-del-hist');
+          if (confirm('این گزارش حذف شود؟')) {
+            state.reports = state.reports.filter(function (r) { return r.id !== id; });
+            safeSet(STORAGE_KEYS.reports, state.reports);
+            renderHistory();
+            showToast('حذف شد');
+          }
+        });
+      });
+    }
+
+    function updateTotal() {
+      var total = 0;
+      var timed = 0;
+      var hasError = false;
+      state.activities.forEach(function (a) {
+        var d = calcDuration(a.start, a.end);
+        if (d === -1) hasError = true;
+        else if (d > 0) { total += d; timed += 1; }
+      });
+      var box = document.getElementById('total-box');
+      var el = document.getElementById('total-hours');
+      var label = document.getElementById('total-label');
+      if (hasError) {
+        box.classList.remove('is-muted');
+        label.textContent = 'مجموع ساعات';
+        el.textContent = 'خطا در ساعت‌ها';
+      } else if (timed === 0) {
+        box.classList.add('is-muted');
+        label.textContent = 'مجموع ساعات (اختیاری)';
+        el.textContent = 'ثبت نشده';
+      } else {
+        box.classList.remove('is-muted');
+        label.textContent = 'مجموع ساعات';
+        el.textContent = minutesToHoursText(total);
+        el.style.color = '';
+      }
+    }
+
+    // -------------------- Activity Modal --------------------
+    function openActivityModal(index) {
+      state.editingActivityIndex = typeof index === 'number' ? index : -1;
+      var modal = document.getElementById('activity-modal');
+      var title = document.getElementById('modal-title');
+
+      if (state.editingActivityIndex >= 0) {
+        title.textContent = 'ویرایش فعالیت';
+        var act = state.activities[state.editingActivityIndex];
+        document.getElementById('act-type').value = act.type;
+        document.getElementById('act-project').value = act.project || '';
+        document.getElementById('act-start').value = act.start || '';
+        document.getElementById('act-end').value = act.end || '';
+        document.getElementById('act-note').value = act.note || '';
+      } else {
+        title.textContent = 'افزودن فعالیت';
+        document.getElementById('act-type').selectedIndex = 0;
+        document.getElementById('act-project').value = '';
+        document.getElementById('act-start').value = '';
+        document.getElementById('act-end').value = '';
+        document.getElementById('act-note').value = '';
+      }
+      updateDurationPreview();
+      modal.classList.add('show');
+    }
+
+    function closeActivityModal() {
+      document.getElementById('activity-modal').classList.remove('show');
+      state.editingActivityIndex = -1;
+    }
+
+    function updateDurationPreview() {
+      var start = document.getElementById('act-start').value;
+      var end = document.getElementById('act-end').value;
+      var el = document.getElementById('duration-preview');
+      if (!start && !end) {
+        el.textContent = 'ساعت اختیاری است. اگر هر دو را پر کنید، مدت محاسبه می‌شود.';
+        return;
+      }
+      if (!start || !end) {
+        el.textContent = 'برای محاسبه مدت، هر دو ساعت را وارد کنید.';
+        return;
+      }
+      var d = calcDuration(start, end);
+      if (d === -1) {
+        el.innerHTML = '<span class="text-danger">ساعت پایان نمی‌تواند قبل از شروع باشد</span>';
+      } else {
+        el.textContent = 'مدت: ' + minutesToHoursText(d);
+      }
+    }
+
+    function saveActivityFromModal() {
+      var type = document.getElementById('act-type').value;
+      var project = document.getElementById('act-project').value.trim();
+      var start = document.getElementById('act-start').value;
+      var end = document.getElementById('act-end').value;
+      var note = document.getElementById('act-note').value.trim();
+
+      if (!type) {
+        showToast('نوع کار را انتخاب کنید');
+        return;
+      }
+      if (start && end && calcDuration(start, end) === -1) {
+        showToast('ساعت پایان نمی‌تواند قبل از شروع باشد');
+        return;
+      }
+
+      var act = { type: type, project: project, start: start, end: end, note: note };
+
+      if (state.editingActivityIndex >= 0) {
+        state.activities[state.editingActivityIndex] = act;
+      } else {
+        state.activities.push(act);
+      }
+
+      saveDraft();
+      renderActivities();
+      updateTotal();
+      closeActivityModal();
+      showToast('فعالیت ذخیره شد');
+    }
+
+    // -------------------- Draft & Save Report --------------------
+    function saveDraft() {
+      var draft = {
+        date: toEnglishDigits(document.getElementById('report-date').value) || state.date,
+        personName: document.getElementById('person-name').value.trim(),
+        activities: state.activities,
+        finalNote: document.getElementById('final-note').value
+      };
+      state.date = draft.date;
+      state.personName = draft.personName;
+      state.finalNote = draft.finalNote;
+      safeSet(STORAGE_KEYS.draft, draft);
+      if (draft.personName) {
+        safeSet(STORAGE_KEYS.personName, draft.personName);
+      }
+    }
+
+    function saveReport() {
+      saveDraft();
+      var name = state.personName;
+      var date = state.date;
+
+      if (!name) {
+        showToast('لطفاً نام خود را وارد کنید');
+        return;
+      }
+      if (state.activities.length === 0) {
+        showToast('حداقل یک فعالیت اضافه کنید');
+        return;
+      }
+
+      // Check for time errors
+      var hasError = state.activities.some(function (a) {
+        return calcDuration(a.start, a.end) === -1;
+      });
+      if (hasError) {
+        showToast('خطا در ساعات برخی فعالیت‌ها وجود دارد');
+        return;
+      }
+
+      var total = state.activities.reduce(function (sum, a) {
+        var d = calcDuration(a.start, a.end);
+        return sum + (d > 0 ? d : 0);
+      }, 0);
+
+      var report = {
+        id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+        date: date,
+        name: name,
+        activities: JSON.parse(JSON.stringify(state.activities)),
+        finalNote: state.finalNote,
+        totalMinutes: total,
+        createdAt: new Date().toISOString()
+      };
+
+      // Replace if same date + name exists
+      var existingIdx = state.reports.findIndex(function (r) {
+        return r.date === date && r.name === name;
+      });
+      if (existingIdx >= 0) {
+        if (confirm('گزارشی با همین تاریخ و نام وجود دارد. جایگزین شود؟')) {
+          state.reports[existingIdx] = report;
+        } else {
+          return;
+        }
+      } else {
+        state.reports.push(report);
+      }
+
+      safeSet(STORAGE_KEYS.reports, state.reports);
+      renderHistory();
+      showToast('گزارش با موفقیت ذخیره شد ✓');
+    }
+
+    // -------------------- Export Functions --------------------
+    function buildReportText(rep) {
+      rep = rep || {
+        date: state.date,
+        name: state.personName,
+        activities: state.activities,
+        finalNote: state.finalNote,
+        totalMinutes: state.activities.reduce(function (s, a) {
+          var d = calcDuration(a.start, a.end);
+          return s + (d > 0 ? d : 0);
+        }, 0)
+      };
+
+      var lines = [];
+      lines.push('📋 گزارش کار روزانه');
+      lines.push('────────────────');
+      lines.push('👤 نام: ' + (rep.name || '—'));
+      lines.push('📅 تاریخ: ' + toPersianDigits(rep.date));
+      if (rep.totalMinutes > 0) lines.push('مجموع ساعات: ' + minutesToHoursText(rep.totalMinutes));
+      lines.push('');
+      lines.push('فعالیت‌ها:');
+      rep.activities.forEach(function (a, i) {
+        var dur = calcDuration(a.start, a.end);
+        lines.push((i + 1) + '. ' + a.type);
+        if (a.project) lines.push('   پروژه: ' + a.project);
+        var range = formatTimeRange(a.start, a.end);
+        if (range) {
+          var extra = dur > 0 ? ' (' + minutesToHoursText(dur) + ')' : '';
+          lines.push('   ساعت: ' + range + extra);
+        }
+        if (a.note) lines.push('   توضیح: ' + a.note);
+        lines.push('');
+      });
+      if (rep.finalNote) {
+        lines.push('📌 یادداشت پایانی:');
+        lines.push(rep.finalNote);
+      }
+      lines.push('────────────────');
+      lines.push('تولید شده با اپ گزارش کار روزانه');
+      return lines.join('\n');
+    }
+
+    function copyReportText(rep) {
+      var text = buildReportText(rep);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          showToast('متن گزارش کپی شد');
+        }).catch(function () {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('متن گزارش کپی شد');
+      } catch (e) {
+        showToast('کپی پشتیبانی نمی‌شود');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function shareReport() {
+      var text = buildReportText();
+      if (navigator.share) {
+        navigator.share({
+          title: 'گزارش کار روزانه',
+          text: text
+        }).catch(function () {});
+      } else {
+        copyReportText();
+        showToast('اشتراک‌گذاری پشتیبانی نمی‌شود — متن کپی شد');
+      }
+    }
+
+    function exportPDF() {
+      saveDraft();
+      if (state.activities.length === 0) {
+        showToast('فعالیتی برای خروجی وجود ندارد');
+        return;
+      }
+
+      var printArea = document.getElementById('print-area');
+      var total = state.activities.reduce(function (s, a) {
+        var d = calcDuration(a.start, a.end);
+        return s + (d > 0 ? d : 0);
+      }, 0);
+
+      var rows = state.activities.map(function (a, i) {
+        var dur = calcDuration(a.start, a.end);
+        var durText = dur > 0 ? minutesToHoursText(dur) : '—';
+        return `
+          <tr>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${toPersianDigits(i + 1)}</td>
+            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.type)}</td>
+            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.project || '—')}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${a.start ? toPersianDigits(a.start) : '—'}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${a.end ? toPersianDigits(a.end) : '—'}</td>
+            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${durText}</td>
+            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.note || '—')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      var totalCell = total > 0
+        ? `<td style="padding:6px;color:#111;"><strong>مجموع ساعات:</strong> ${minutesToHoursText(total)}</td>`
+        : '';
+
+      printArea.innerHTML = `
+        <div style="font-family:Tahoma,Vazirmatn,sans-serif;direction:rtl;color:#111;background:#fff;font-size:13px;width:746px;">
+          <h1 style="text-align:center;font-size:20px;margin:0 0 6px;color:#111;">گزارش کار روزانه</h1>
+          <p style="text-align:center;margin:0 0 16px;color:#333;">تیم تولید محتوا</p>
+          <table style="width:100%;margin-bottom:16px;border-collapse:collapse;">
+            <tr>
+              <td style="padding:6px;color:#111;"><strong>نام:</strong> ${escapeHtml(state.personName || '—')}</td>
+              <td style="padding:6px;color:#111;"><strong>تاریخ:</strong> ${toPersianDigits(state.date)}</td>
+              ${totalCell}
+            </tr>
+          </table>
+          <table style="width:100%;border-collapse:collapse;font-size:12px;background:#fff;">
+            <thead>
+              <tr style="background:#eceff3;">
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">#</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">نوع کار</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">پروژه</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">شروع</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">پایان</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">مدت</th>
+                <th style="border:1px solid #bbb;padding:8px;color:#111;">توضیح</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+          ${state.finalNote ? `<div style="margin-top:16px;color:#111;"><strong>یادداشت پایانی:</strong><br>${escapeHtml(state.finalNote)}</div>` : ''}
+        </div>
+      `;
+
+      printArea.classList.add('capturing');
+      var opt = {
+        margin: [8, 8, 8, 8],
+        filename: 'گزارش-کار-' + state.date.replace(/\//g, '-') + '.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: 900
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] }
+      };
+
+      showToast('در حال ساخت PDF...');
+      window.scrollTo(0, 0);
+      setTimeout(function () {
+        html2pdf().set(opt).from(printArea).save().then(function () {
+          printArea.classList.remove('capturing');
+          showToast('PDF دانلود شد');
+        }).catch(function (err) {
+          printArea.classList.remove('capturing');
+          console.error(err);
+          showToast('خطا در ساخت PDF');
+        });
+      }, 80);
+    }
+
+    function exportWord() {
+      saveDraft();
+      if (state.activities.length === 0) {
+        showToast('فعالیتی برای خروجی وجود ندارد');
+        return;
+      }
+
+      var total = state.activities.reduce(function (s, a) {
+        var d = calcDuration(a.start, a.end);
+        return s + (d > 0 ? d : 0);
+      }, 0);
+
+      var rows = state.activities.map(function (a, i) {
+        var dur = calcDuration(a.start, a.end);
+        return `
+          <tr>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${toPersianDigits(i + 1)}</td>
+            <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.type)}</td>
+            <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.project || '—')}</td>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${a.start ? toPersianDigits(a.start) : '—'}</td>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${a.end ? toPersianDigits(a.end) : '—'}</td>
+            <td style="border:1px solid #333;padding:6px;text-align:center;">${dur > 0 ? minutesToHoursText(dur) : '—'}</td>
+            <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.note || '—')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      var html = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+          <meta charset="utf-8">
+          <title>گزارش کار روزانه</title>
+          <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
+          <style>
+            body { font-family: Tahoma, Arial, sans-serif; direction: rtl; }
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid #333; padding: 6px; }
+            th { background: #eee; }
+            h1 { text-align: center; }
+          </style>
+        </head>
+        <body>
+          <h1>گزارش کار روزانه</h1>
+          <p style="text-align:center;">تیم تولید محتوا</p>
+          <p><strong>نام:</strong> ${escapeHtml(state.personName || '—')} &nbsp;&nbsp;
+             <strong>تاریخ:</strong> ${toPersianDigits(state.date)}${total > 0 ? ' &nbsp;&nbsp; <strong>مجموع ساعات:</strong> ' + minutesToHoursText(total) : ''}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>نوع کار</th><th>پروژه</th><th>شروع</th><th>پایان</th><th>مدت</th><th>توضیح</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+          ${state.finalNote ? `<p style="margin-top:16px;"><strong>یادداشت پایانی:</strong><br>${escapeHtml(state.finalNote)}</p>` : ''}
+          <p style="margin-top:20px;font-size:11px;color:#666;text-align:center;">تولید شده با اپ گزارش کار روزانه</p>
+        </body>
+        </html>
+      `;
+
+      var blob = new Blob(['\ufeff' + html], {
+        type: 'application/msword'
+      });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'گزارش-کار-' + state.date.replace(/\//g, '-') + '.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('فایل Word دانلود شد');
+    }
+
+    // -------------------- Utilities --------------------
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(function () {
+        t.classList.remove('show');
+      }, 2500);
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab').forEach(function (t) {
+        t.classList.toggle('active', t.getAttribute('data-tab') === tabName);
+      });
+      document.querySelectorAll('.section').forEach(function (s) {
+        s.classList.remove('active');
+      });
+      document.getElementById('section-' + tabName).classList.add('active');
+      document.getElementById('bottom-bar').style.display = tabName === 'report' ? 'flex' : 'none';
+    }
+
+    // -------------------- Event Listeners --------------------
+    function setupEventListeners() {
+      // Tabs
+      document.querySelectorAll('.tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          switchTab(tab.getAttribute('data-tab'));
+        });
+      });
+
+      // Theme
+      document.getElementById('theme-toggle').addEventListener('click', function () {
+        state.theme = state.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', state.theme);
+        this.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+        safeSet(STORAGE_KEYS.theme, state.theme);
+      });
+
+      // Settings
+      document.getElementById('settings-btn').addEventListener('click', function () {
+        renderTypesList();
+        document.getElementById('settings-modal').classList.add('show');
+      });
+      document.getElementById('close-settings').addEventListener('click', function () {
+        document.getElementById('settings-modal').classList.remove('show');
+      });
+
+      // Add type
+      document.getElementById('add-type-btn').addEventListener('click', function () {
+        var input = document.getElementById('new-type-input');
+        var val = input.value.trim();
+        if (!val) return;
+        if (state.workTypes.indexOf(val) >= 0) {
+          showToast('این نوع کار قبلاً وجود دارد');
+          return;
+        }
+        state.workTypes.push(val);
+        safeSet(STORAGE_KEYS.workTypes, state.workTypes);
+        input.value = '';
+        renderTypesList();
+        renderWorkTypesSelect();
+        showToast('اضافه شد');
+      });
+
+      // Clear all
+      document.getElementById('clear-all-btn').addEventListener('click', function () {
+        if (confirm('همه گزارش‌ها و تنظیمات پاک شوند؟ این عمل برگشت‌ناپذیر است.')) {
+          localStorage.removeItem(STORAGE_KEYS.reports);
+          localStorage.removeItem(STORAGE_KEYS.draft);
+          localStorage.removeItem(STORAGE_KEYS.workTypes);
+          state.reports = [];
+          state.activities = [];
+          state.workTypes = ['ایده‌پردازی', 'فیلم‌برداری', 'ادیت', 'ارسال ویدیو', 'بازبینی', 'جلسه'];
+          safeSet(STORAGE_KEYS.workTypes, state.workTypes);
+          renderActivities();
+          renderHistory();
+          renderTypesList();
+          renderWorkTypesSelect();
+          updateTotal();
+          showToast('همه داده‌ها پاک شد');
+        }
+      });
+
+      // Activity modal
+      document.getElementById('add-activity-btn').addEventListener('click', function () { openActivityModal(); });
+      document.getElementById('add-first-activity').addEventListener('click', function () { openActivityModal(); });
+      document.getElementById('quick-add-btn').addEventListener('click', function () { openActivityModal(); });
+      document.getElementById('close-modal').addEventListener('click', closeActivityModal);
+      document.getElementById('cancel-activity-btn').addEventListener('click', closeActivityModal);
+      document.getElementById('save-activity-btn').addEventListener('click', saveActivityFromModal);
+      document.getElementById('act-start').addEventListener('change', updateDurationPreview);
+      document.getElementById('act-end').addEventListener('change', updateDurationPreview);
+      document.getElementById('clear-time-btn').addEventListener('click', function () {
+        document.getElementById('act-start').value = '';
+        document.getElementById('act-end').value = '';
+        updateDurationPreview();
+      });
+
+      document.getElementById('report-date-btn').addEventListener('click', function () {
+        var pop = document.getElementById('cal-popover');
+        if (pop.classList.contains('show')) closeCalendar();
+        else openCalendar();
+      });
+      document.getElementById('cal-prev').addEventListener('click', function () { shiftMonth(-1); });
+      document.getElementById('cal-next').addEventListener('click', function () { shiftMonth(1); });
+      document.getElementById('cal-today').addEventListener('click', function () {
+        var t = parseTodayParts();
+        pickDate(t.jy, t.jm, t.jd);
+      });
+      document.getElementById('cal-close').addEventListener('click', closeCalendar);
+      document.addEventListener('click', function (e) {
+        var pop = document.getElementById('cal-popover');
+        var btn = document.getElementById('report-date-btn');
+        if (!pop.classList.contains('show')) return;
+        if (pop.contains(e.target) || btn.contains(e.target)) return;
+        closeCalendar();
+      });
+
+      ['person-name', 'final-note'].forEach(function (id) {
+        document.getElementById(id).addEventListener('input', function () {
+          saveDraft();
+        });
+      });
+
+      // Save & Export
+      document.getElementById('save-report-btn').addEventListener('click', saveReport);
+      document.getElementById('quick-save-btn').addEventListener('click', saveReport);
+      document.getElementById('export-pdf-btn').addEventListener('click', exportPDF);
+      document.getElementById('export-word-btn').addEventListener('click', exportWord);
+      document.getElementById('copy-text-btn').addEventListener('click', function () { copyReportText(); });
+      document.getElementById('share-btn').addEventListener('click', shareReport);
+
+      // Close modals on overlay click
+      document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove('show');
+          }
+        });
+      });
+    }
+
+    // -------------------- PWA: Manifest & Service Worker --------------------
+    function createManifest() {
+      var manifest = {
+        name: 'گزارش کار روزانه',
+        short_name: 'گزارش کار',
+        description: 'ثبت گزارش کار روزانه تیم تولید محتوا',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#f8fafc',
+        theme_color: '#2563eb',
+        lang: 'fa',
+        dir: 'rtl',
+        icons: [
+          {
+            src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="#2563eb" width="100" height="100" rx="20"/><text x="50" y="68" font-size="50" text-anchor="middle" fill="white">📋</text></svg>'),
+            sizes: '192x192',
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
+          },
+          {
+            src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="#2563eb" width="100" height="100" rx="20"/><text x="50" y="68" font-size="50" text-anchor="middle" fill="white">📋</text></svg>'),
+            sizes: '512x512',
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
+          }
+        ]
+      };
+
+      var blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = url;
+      document.head.appendChild(link);
+    }
+
+    function registerServiceWorker() {
+      if (!('serviceWorker' in navigator)) return;
+
+      var swCode = `
+        const CACHE = 'daily-report-v1';
+        const ASSETS = [
+          'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap',
+          'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
+        ];
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+        });
+        self.addEventListener('activate', e => {
+          e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match(e.request)))
+          );
+        });
+      `;
+
+      var blob = new Blob([swCode], { type: 'application/javascript' });
+      var url = URL.createObjectURL(blob);
+
+      navigator.serviceWorker.register(url).then(function (reg) {
+        console.log('SW registered', reg.scope);
+      }).catch(function (err) {
+        console.log('SW registration failed (normal on file://)', err);
+      });
+    }
+
+    // -------------------- Start --------------------
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
