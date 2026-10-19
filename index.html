@@ -1,2016 +1,2275 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" class="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#2563eb" />
-  <meta name="description" content="گزارش کار روزانه تیم تولید محتوا" />
-  <title>گزارش کار روزانه</title>
-
-  <!-- فونت وزیرمتن -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- کتابخانه‌های خروجی -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --primary-light: #dbeafe;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --warning: #d97706;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #0f172a;
-      --text-secondary: #64748b;
-      --border: #e2e8f0;
-      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-      --radius: 12px;
-      --radius-sm: 8px;
-    }
-
-    [data-theme="dark"] {
-      --primary: #3b82f6;
-      --primary-hover: #60a5fa;
-      --primary-light: #1e3a5f;
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --border: #334155;
-      --shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      padding-bottom: 90px;
-    }
-
-    /* ===== Header ===== */
-    .header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow);
-    }
-
-    .header h1 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border: none;
-      background: var(--bg);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.2rem;
-      color: var(--text);
-      transition: background 0.2s;
-    }
-
-    .icon-btn:hover, .icon-btn:active {
-      background: var(--primary-light);
-    }
-
-    /* ===== Tabs ===== */
-    .tabs {
-      display: flex;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 65px;
-      z-index: 90;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 14px 8px;
-      text-align: center;
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      cursor: pointer;
-      border: none;
-      background: none;
-      border-bottom: 3px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-      font-weight: 600;
-    }
-
-    /* ===== Container ===== */
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .section {
-      display: none;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    /* ===== Cards ===== */
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* ===== Form Elements ===== */
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-
-    input[type="text"],
-    input[type="time"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-light);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    /* ===== Buttons ===== */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-height: 48px;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover, .btn-primary:active {
-      background: var(--primary-hover);
-    }
-
-    .btn-secondary {
-      background: var(--bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: var(--border);
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: white;
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-
-    .btn-block {
-      width: 100%;
-    }
-
-    .btn-sm {
-      padding: 8px 12px;
-      font-size: 0.85rem;
-      min-height: 36px;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    /* ===== Activity Cards ===== */
-    .activity-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 12px;
-      position: relative;
-    }
-
-    .activity-card .activity-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-
-    .activity-type {
-      font-weight: 600;
-      color: var(--primary);
-      font-size: 0.95rem;
-    }
-
-    .activity-duration {
-      background: var(--primary-light);
-      color: var(--primary);
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    .activity-meta {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-
-    .activity-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .activity-error {
-      border-color: var(--danger) !important;
-      background: #fef2f2;
-    }
-
-    [data-theme="dark"] .activity-error {
-      background: #450a0a;
-    }
-
-    /* ===== Total Hours ===== */
-    .total-box {
-      background: linear-gradient(135deg, var(--primary), #1d4ed8);
-      color: white;
-      border-radius: var(--radius);
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .total-box .label {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .total-box .value {
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
-
-    /* ===== History ===== */
-    .history-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-
-    .history-item:hover {
-      border-color: var(--primary);
-    }
-
-    .history-item .date {
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .history-item .meta {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    .history-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* ===== Empty State ===== */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-secondary);
-    }
-
-    .empty-state .icon {
-      font-size: 3rem;
-      margin-bottom: 12px;
-    }
-
-    /* ===== Modal ===== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 200;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .modal-overlay.show {
-      display: flex;
-    }
-
-    .modal {
-      background: var(--card);
-      border-radius: 16px 16px 0 0;
-      width: 100%;
-      max-width: 640px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px;
-      animation: slideUp 0.25s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .modal-header h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .close-btn {
-      width: 36px;
-      height: 36px;
-      border: none;
-      background: var(--bg);
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: var(--text);
-    }
-
-    /* ===== Toast ===== */
-    .toast {
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0f172a;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      z-index: 300;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      white-space: nowrap;
-      max-width: 90%;
-    }
-
-    [data-theme="dark"] .toast {
-      background: #e2e8f0;
-      color: #0f172a;
-    }
-
-    .toast.show {
-      opacity: 1;
-    }
-
-    /* ===== Work Types Management ===== */
-    .type-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .type-item:last-child {
-      border-bottom: none;
-    }
-
-    .identity-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .date-field {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 1rem;
-      cursor: pointer;
-      text-align: right;
-    }
-
-    .date-field:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-light);
-    }
-
-    .cal-popover {
-      display: none;
-      margin-top: 8px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 12px;
-    }
-
-    .cal-popover.show { display: block; }
-
-    .cal-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      gap: 8px;
-    }
-
-    .cal-title {
-      font-weight: 700;
-      flex: 1;
-      text-align: center;
-    }
-
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-    }
-
-    .cal-dow, .cal-day {
-      text-align: center;
-      border-radius: 8px;
-      min-height: 36px;
-    }
-
-    .cal-dow {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cal-day {
-      border: none;
-      background: transparent;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-
-    .cal-day:hover { background: var(--primary-light); }
-    .cal-day.today { outline: 1px solid var(--primary); }
-    .cal-day.selected {
-      background: var(--primary);
-      color: #fff;
-    }
-    .cal-day.empty { visibility: hidden; pointer-events: none; }
-
-    .cal-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .time-optional {
-      font-weight: 400;
-      color: var(--text-secondary);
-    }
-
-    .total-box.is-muted {
-      background: var(--card);
-      color: var(--text);
-      border: 1px dashed var(--border);
-    }
-
-    .total-box.is-muted .label,
-    .total-box.is-muted .value {
-      color: var(--text-secondary);
-    }
-
-    #print-area {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 794px;
-      background: #fff;
-      color: #111;
-      z-index: -1;
-      opacity: 0;
-      pointer-events: none;
-      padding: 24px;
-      box-sizing: border-box;
-    }
-
-    #print-area.capturing {
-      z-index: 4000;
-      opacity: 1;
-    }
-
-    /* ===== Bottom Nav (mobile) ===== */
-    .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      padding: 10px 16px;
-      display: flex;
-      gap: 8px;
-      z-index: 100;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-    }
-
-    .bottom-bar .btn {
-      flex: 1;
-    }
-
-    /* ===== Utilities ===== */
-    .text-danger { color: var(--danger); }
-    .mt-2 { margin-top: 8px; }
-    .mb-2 { margin-bottom: 8px; }
-    .hidden { display: none !important; }
-
-    /* ===== Responsive ===== */
-    @media (min-width: 640px) {
-      .modal {
-        border-radius: var(--radius);
-        margin-bottom: 40px;
-      }
-      .modal-overlay {
-        align-items: center;
-      }
-    }
-
-    @media (min-width: 900px) {
-      .container { max-width: 920px; padding: 24px; }
-      .identity-grid { grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
-      body { padding-bottom: 32px; }
-      .bottom-bar { display: none !important; }
-      .header h1 { font-size: 1.3rem; }
-      .btn-group .btn { min-width: 140px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb" id="meta-theme-color">
+    <meta name="description" content="اپلیکیشن ثبت و خروجی گزارش کار روزانه تیم تولید محتوا">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="گزارش کار">
+    <title>گزارش کار روزانه | تیم تولید محتوا</title>
+
+    <!-- فونت وزیرمتن از گوگل فونتز -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'Tahoma', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* تنظیمات پایه و اسکرول‌بار */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* انیمیشن‌های ظریف برای مودال و باتم‌شیت */
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-slide-up {
+            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+
+        /* استایل اختصاصی چاپ و PDF (بسیار مهم برای موبایل و دسکتاپ) */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+                direction: rtl !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            /* مخفی کردن تمام بخش‌های رابط کاربری در زمان چاپ */
+            #app-shell,
+            #modal-backdrop,
+            #calendar-modal,
+            #confirm-modal,
+            #toast-container,
+            #mobile-bottom-bar,
+            .no-print {
+                display: none !important;
+            }
+            /* نمایش نمای چاپی */
+            #print-area {
+                display: block !important;
+                width: 100% !important;
+                direction: rtl !important;
+                text-align: right !important;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 16px;
+                margin-bottom: 20px;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #cbd5e1 !important;
+                padding: 10px 12px !important;
+                text-align: right !important;
+                font-size: 11pt !important;
+                line-height: 1.6 !important;
+                color: #0f172a !important;
+            }
+            .print-table th {
+                background-color: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                font-weight: 700 !important;
+            }
+            .print-header-box {
+                border: 2px solid #1e293b !important;
+                border-radius: 8px !important;
+                padding: 16px !important;
+                margin-bottom: 20px !important;
+                background-color: #f8fafc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .print-note-box {
+                border: 1px solid #94a3b8 !important;
+                border-radius: 8px !important;
+                padding: 14px !important;
+                margin-top: 16px !important;
+                background-color: #fafafa !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                page-break-inside: avoid;
+            }
+            tr {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
 </head>
-<body>
-  <!-- Header -->
-  <header class="header">
-    <h1>📋 گزارش کار روزانه</h1>
-    <div class="header-actions">
-      <button class="icon-btn" id="theme-toggle" title="تغییر تم">🌙</button>
-      <button class="icon-btn" id="settings-btn" title="تنظیمات">⚙️</button>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200 pb-24 md:pb-12">
+
+    <!-- ==================== نمای اختصاصی چاپ / PDF (مخفی در حالت عادی) ==================== -->
+    <div id="print-area" class="hidden">
+        <!-- این بخش توسط جاوااسکریپت درست قبل از window.print() پر می‌شود -->
     </div>
-  </header>
 
-  <!-- Tabs -->
-  <nav class="tabs">
-    <button class="tab active" data-tab="report">گزارش جدید</button>
-    <button class="tab" data-tab="history">تاریخچه</button>
-  </nav>
+    <!-- ==================== پوسته اصلی اپلیکیشن ==================== -->
+    <div id="app-shell" class="max-w-2xl mx-auto min-h-screen flex flex-col">
 
-  <div class="container">
-    <!-- ==================== REPORT SECTION ==================== -->
-    <section id="section-report" class="section active">
-      <!-- Name & Date -->
-      <div class="card identity-grid">
-        <div class="form-group">
-          <label for="person-name">نام شما</label>
-          <input type="text" id="person-name" placeholder="مثلاً: علی رضایی" autocomplete="name" />
-        </div>
-        <div class="form-group" style="position:relative;">
-          <label for="report-date-btn">تاریخ گزارش</label>
-          <button type="button" class="date-field" id="report-date-btn">
-            <span id="report-date-label">انتخاب تاریخ</span>
-            <span aria-hidden="true">📅</span>
-          </button>
-          <input type="hidden" id="report-date" />
-          <div class="cal-popover" id="cal-popover">
-            <div class="cal-head">
-              <button type="button" class="btn btn-secondary btn-sm" id="cal-next">ماه بعد</button>
-              <div class="cal-title" id="cal-title"></div>
-              <button type="button" class="btn btn-secondary btn-sm" id="cal-prev">ماه قبل</button>
+        <!-- هدر بالا -->
+        <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3.5 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary-600 text-white flex items-center justify-center shadow-md shadow-primary-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight">گزارش کار روزانه</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">تیم تولید محتوا</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- نشانگر ذخیره خودکار پیش‌نویس -->
+                    <span id="draft-status" class="text-[11px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 px-2.5 py-1 rounded-full font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span>پیش‌نویس آماده</span>
+                    </span>
+
+                    <!-- دکمه تغییر تم تاریک/روشن -->
+                    <button id="btn-theme-toggle" type="button" aria-label="تغییر تم" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        <!-- آیکون خورشید -->
+                        <svg id="icon-sun" class="w-5 h-5 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <!-- آیکون ماه -->
+                        <svg id="icon-moon" class="w-5 h-5 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="cal-grid" id="cal-dows"></div>
-            <div class="cal-grid" id="cal-days"></div>
-            <div class="cal-actions">
-              <button type="button" class="btn btn-primary btn-sm" id="cal-today" style="flex:1;">امروز</button>
-              <button type="button" class="btn btn-secondary btn-sm" id="cal-close">بستن</button>
+
+            <!-- تب‌های ناوبری -->
+            <nav class="grid grid-cols-3 gap-1.5 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl mt-3.5">
+                <button type="button" data-tab="report" class="tab-btn active-tab py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-900 text-primary-600 dark:text-primary-400 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    <span>گزارش جدید</span>
+                </button>
+                <button type="button" data-tab="history" class="tab-btn py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>تاریخچه</span>
+                    <span id="history-badge" class="bg-primary-100 dark:bg-primary-900/60 text-primary-700 dark:text-primary-300 text-[11px] px-1.5 py-0.2 rounded-full">۰</span>
+                </button>
+                <button type="button" data-tab="settings" class="tab-btn py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>تنظیمات</span>
+                </button>
+            </nav>
+        </header>
+
+        <!-- محتوای اصلی -->
+        <main class="flex-1 p-4 space-y-5">
+
+            <!-- ==================== تب ۱: فرم گزارش جدید ==================== -->
+            <section id="tab-report" class="space-y-5">
+
+                <!-- بنر اطلاع‌رسانی در صورت ویرایش گزارش قبلی -->
+                <div id="editing-banner" class="hidden bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800 rounded-2xl p-3.5 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs sm:text-sm font-medium">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <span>در حال ویرایش گزارش ذخیره‌شده هستید.</span>
+                    </div>
+                    <button type="button" id="btn-cancel-edit-report" class="text-xs bg-amber-200/70 dark:bg-amber-800 text-amber-900 dark:text-amber-100 px-3 py-1.5 rounded-lg font-semibold hover:bg-amber-300 transition shrink-0">
+                        گزارش جدید (پاکسازی فرم)
+                    </button>
+                </div>
+
+                <!-- کارت مشخصات فرد و تاریخ -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- نام فرد -->
+                        <div>
+                            <label for="input-user-name" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                                نام و نام خانوادگی <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="text" id="input-user-name" placeholder="مثلاً: سارا محمدی"
+                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition">
+                            </div>
+                            <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">برای دفعات بعد به‌صورت خودکار می‌ماند.</p>
+                        </div>
+
+                        <!-- تاریخ شمسی -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                                تاریخ گزارش (شمسی) <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="flex gap-2">
+                                <button type="button" id="btn-open-calendar"
+                                    class="flex-1 flex items-center justify-between rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white hover:border-primary-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition">
+                                    <span id="display-jalali-date" class="tracking-wide">۱۴۰۳/۰۱/۰۱</span>
+                                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                                <button type="button" id="btn-set-today"
+                                    class="px-3.5 py-2.5 rounded-xl bg-primary-50 dark:bg-primary-950/70 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 text-xs font-bold hover:bg-primary-100 dark:hover:bg-primary-900/80 transition shrink-0">
+                                    امروز
+                                </button>
+                            </div>
+                            <p id="display-jalali-weekday" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بخش لیست فعالیت‌ها -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">فعالیت‌های انجام‌شده</h2>
+                            <span id="activities-count-badge" class="bg-primary-100 dark:bg-primary-900/60 text-primary-700 dark:text-primary-300 text-xs font-bold px-2.5 py-0.5 rounded-full">۰ مورد</span>
+                        </div>
+                        <button type="button" id="btn-add-activity-top"
+                            class="inline-flex items-center gap-1.5 bg-primary-600 hover:bg-primary-700 active:scale-[0.98] text-white text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl shadow-sm shadow-primary-500/20 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>افزودن فعالیت</span>
+                        </button>
+                    </div>
+
+                    <!-- کانتینر کارت‌های فعالیت -->
+                    <div id="activities-list" class="space-y-3">
+                        <!-- کارت‌ها توسط JS رندر می‌شوند -->
+                    </div>
+
+                    <!-- وضعیت خالی بودن فعالیت‌ها -->
+                    <div id="activities-empty-state" class="text-center py-8 px-4 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 mx-auto flex items-center justify-center mb-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">هنوز فعالیتی ثبت نشده است</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">کارهایی که امروز انجام داده‌اید را یک‌به‌یک اضافه کنید.</p>
+                        <button type="button" id="btn-add-activity-empty"
+                            class="inline-flex items-center gap-2 bg-primary-50 dark:bg-primary-950/80 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800 font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-primary-100 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>ثبت اولین فعالیت</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- بخش یادداشت پایانی -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                    <label for="input-final-note" class="block text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                        یادداشت پایانی / توضیحات تکمیلی <span class="text-xs font-normal text-slate-400">(اختیاری)</span>
+                    </label>
+                    <textarea id="input-final-note" rows="3" placeholder="موانع کاری، برنامه‌های فردا، نیازمندی‌ها یا هر توضیح کلی برای مدیر تیم..."
+                        class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 p-3.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition resize-y"></textarea>
+                </div>
+
+                <!-- دکمه‌های ذخیره و خروجی گرفتن -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button type="button" id="btn-save-report-main"
+                            class="flex-1 py-3.5 px-5 rounded-xl bg-primary-600 hover:bg-primary-700 active:scale-[0.99] text-white font-bold text-sm shadow-md shadow-primary-600/25 flex items-center justify-center gap-2 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>ذخیره گزارش در تاریخچه</span>
+                        </button>
+                        <button type="button" id="btn-reset-form"
+                            class="py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            <span>پاک کردن فرم فعلی</span>
+                        </button>
+                    </div>
+
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-4">
+                        <h3 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">دریافت خروجی و ارسال برای مدیر تیم:</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                            <!-- چاپ / PDF -->
+                            <button type="button" id="btn-export-pdf"
+                                class="flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/70 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/50 font-bold text-xs transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                <span>چاپ / PDF</span>
+                            </button>
+
+                            <!-- خروجی Word -->
+                            <button type="button" id="btn-export-word"
+                                class="flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/70 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 font-bold text-xs transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>فایل Word</span>
+                            </button>
+
+                            <!-- کپی متن -->
+                            <button type="button" id="btn-export-copy"
+                                class="flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 font-bold text-xs transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                <span>کپی متن</span>
+                            </button>
+
+                            <!-- اشتراک‌گذاری -->
+                            <button type="button" id="btn-export-share"
+                                class="flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border border-purple-200 dark:border-purple-900/60 bg-purple-50/70 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-bold text-xs transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                </svg>
+                                <span>اشتراک‌گذاری</span>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2.5 leading-relaxed">
+                            💡 نکته برای PDF: با زدن «چاپ / PDF»، پنجره استاندارد مرورگر باز می‌شود؛ گزینه <strong>Save as PDF (ذخیره به‌عنوان PDF)</strong> را انتخاب کنید.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== تب ۲: تاریخچه گزارش‌ها ==================== -->
+            <section id="tab-history" class="hidden space-y-4">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 dark:text-white">تاریخچه گزارش‌های ثبت‌شده</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">گزارش‌های ذخیره‌شده روی این دستگاه</p>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="input-search-history" placeholder="جستجو در نام، تاریخ، پروژه..."
+                                class="w-full sm:w-60 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:border-primary-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div id="history-list" class="space-y-3">
+                        <!-- آیتم‌های تاریخچه توسط JS رندر می‌شوند -->
+                    </div>
+
+                    <div id="history-empty-state" class="hidden text-center py-10 px-4 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
+                        <p class="text-sm font-semibold text-slate-600 dark:text-slate-300">هیچ گزارشی در تاریخچه یافت نشد</p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">پس از تکمیل فرم گزارش، دکمه «ذخیره گزارش» را بزنید تا اینجا نمایش داده شود.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== تب ۳: تنظیمات و مدیریت انواع کار ==================== -->
+            <section id="tab-settings" class="hidden space-y-5">
+                
+                <!-- تنظیمات ظاهر -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">حالت نمایش (تم برنامه)</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">تغییر بین حالت روشن و تاریک</p>
+                    </div>
+                    <button type="button" id="btn-settings-theme"
+                        class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        تغییر تم
+                    </button>
+                </div>
+
+                <!-- مدیریت انواع کار -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">مدیریت انواع کار</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">افزودن، ویرایش یا حذف دسته‌بندی‌های فعالیت</p>
+                        </div>
+                        <button type="button" id="btn-restore-default-types"
+                            class="text-xs text-primary-600 dark:text-primary-400 hover:underline font-semibold">
+                            بازگردانی پیش‌فرض‌ها
+                        </button>
+                    </div>
+
+                    <!-- افزودن نوع جدید در تنظیمات -->
+                    <div class="flex gap-2">
+                        <input type="text" id="input-settings-new-type" placeholder="نام نوع کار جدید (مثلاً: طراحی کاور)..."
+                            class="flex-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white focus:border-primary-500 outline-none">
+                        <button type="button" id="btn-settings-add-type"
+                            class="px-4 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm font-bold shrink-0 transition">
+                            افزودن
+                        </button>
+                    </div>
+
+                    <!-- لیست انواع کار -->
+                    <div id="settings-types-list" class="divide-y divide-slate-100 dark:divide-slate-800 max-h-80 overflow-y-auto pr-1">
+                        <!-- توسط JS پر می‌شود -->
+                    </div>
+                </div>
+
+                <!-- مدیریت داده‌ها و حافظه -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div>
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">پشتیبان‌گیری و مدیریت حافظه</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">تمام اطلاعات در مرورگر دستگاه شما (localStorage) ذخیره می‌شوند.</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2.5">
+                        <button type="button" id="btn-backup-export"
+                            class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition">
+                            دانلود فایل پشتیبان (JSON)
+                        </button>
+                        <label class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition cursor-pointer">
+                            <span>بازیابی از فایل پشتیبان</span>
+                            <input type="file" id="input-backup-import" accept=".json" class="hidden">
+                        </label>
+                        <button type="button" id="btn-clear-all-data"
+                            class="px-4 py-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/70 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/60 text-xs font-bold transition mr-auto">
+                            پاک کردن کل اطلاعات برنامه
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==================== نوار پایین موبایل (دسترسی سریع) ==================== -->
+    <div id="mobile-bottom-bar" class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-4 py-2.5 shadow-lg">
+        <div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+            <button type="button" id="btn-mobile-add-activity"
+                class="py-3 px-4 rounded-xl bg-primary-50 dark:bg-primary-950/90 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>افزودن فعالیت</span>
+            </button>
+            <button type="button" id="btn-mobile-save-report"
+                class="py-3 px-4 rounded-xl bg-primary-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-primary-600/20 active:scale-95 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>ذخیره گزارش</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== مودال / باتم‌شیت افزودن و ویرایش فعالیت ==================== -->
+    <div id="modal-backdrop" class="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div id="activity-modal-card" class="bg-white dark:bg-slate-900 w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl border-t sm:border border-slate-200 dark:border-slate-800 shadow-2xl max-h-[92vh] flex flex-col animate-slide-up">
+            
+            <!-- هدر مودال -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                <h3 id="activity-modal-title" class="text-base font-bold text-slate-900 dark:text-white">افزودن فعالیت جدید</h3>
+                <button type="button" id="btn-close-activity-modal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Total Hours -->
-      <div class="total-box is-muted" id="total-box">
-        <div class="label" id="total-label">مجموع ساعات (اختیاری)</div>
-        <div class="value" id="total-hours">ثبت نشده</div>
-      </div>
+            <!-- بدنه فرم فعالیت -->
+            <div class="p-5 overflow-y-auto space-y-4">
+                
+                <!-- انتخاب نوع کار + افزودن سریع نوع کار جدید -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="select-activity-type" class="text-xs font-bold text-slate-700 dark:text-slate-300">
+                            نوع کار <span class="text-rose-500">*</span>
+                        </label>
+                        <button type="button" id="btn-toggle-inline-type" class="text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1">
+                            <span>+ نوع کار جدید</span>
+                        </button>
+                    </div>
+                    <select id="select-activity-type"
+                        class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-sm font-medium text-slate-900 dark:text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition">
+                        <!-- گزینه‌ها با JS پر می‌شوند -->
+                    </select>
 
-      <!-- Activities -->
-      <div class="card">
-        <div class="card-title">
-          <span>فعالیت‌ها</span>
-          <button class="btn btn-primary btn-sm" id="add-activity-btn">+ افزودن</button>
-        </div>
-        <div id="activities-list">
-          <!-- activity cards will be rendered here -->
-        </div>
-        <div id="no-activities" class="empty-state">
-          <div class="icon">📝</div>
-          <p>هنوز فعالیتی اضافه نشده</p>
-          <button class="btn btn-primary mt-2" id="add-first-activity">افزودن اولین فعالیت</button>
-        </div>
-      </div>
+                    <!-- باکس افزودن سریع نوع کار جدید در همان مودال -->
+                    <div id="inline-new-type-box" class="hidden mt-2.5 p-3 rounded-xl bg-primary-50/70 dark:bg-slate-800/90 border border-primary-200 dark:border-slate-700 space-y-2">
+                        <label for="input-inline-new-type" class="block text-[11px] font-bold text-primary-800 dark:text-primary-300">
+                            نام نوع کار جدید را وارد کنید تا به لیست اضافه و انتخاب شود:
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="text" id="input-inline-new-type" placeholder="مثلاً: سناریونویسی"
+                                class="flex-1 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-1.5 text-xs text-slate-900 dark:text-white outline-none focus:border-primary-500">
+                            <button type="button" id="btn-save-inline-type"
+                                class="px-3.5 py-1.5 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold shrink-0 transition">
+                                افزودن
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-      <!-- Final Note -->
-      <div class="card">
-        <div class="form-group">
-          <label for="final-note">یادداشت پایانی (اختیاری)</label>
-          <textarea id="final-note" placeholder="توضیحات کلی درباره گزارش امروز..."></textarea>
-        </div>
-      </div>
+                <!-- نام پروژه / موضوع -->
+                <div>
+                    <label for="input-activity-project" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                        نام پروژه / موضوع <span class="text-xs font-normal text-slate-400">(اختیاری)</span>
+                    </label>
+                    <input type="text" id="input-activity-project" placeholder="مثلاً: ریلز معرفی محصول جدید / کمپین یلدا"
+                        class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition">
+                </div>
 
-      <!-- Export Buttons -->
-      <div class="card">
-        <div class="card-title">خروجی و ذخیره</div>
-        <div class="btn-group">
-          <button class="btn btn-primary btn-block" id="save-report-btn">💾 ذخیره گزارش</button>
-          <button class="btn btn-secondary" id="export-pdf-btn">📄 PDF</button>
-          <button class="btn btn-secondary" id="export-word-btn">📝 Word</button>
-          <button class="btn btn-secondary" id="copy-text-btn">📋 کپی متن</button>
-          <button class="btn btn-secondary" id="share-btn">📤 اشتراک</button>
-        </div>
-      </div>
-    </section>
+                <!-- ساعت شروع و پایان (اختیاری) -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="input-activity-start" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                            از ساعت <span class="text-[11px] font-normal text-slate-400">(اختیاری)</span>
+                        </label>
+                        <input type="time" id="input-activity-start"
+                            class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:border-primary-500 outline-none transition text-center dir-ltr">
+                    </div>
+                    <div>
+                        <label for="input-activity-end" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                            تا ساعت <span class="text-[11px] font-normal text-slate-400">(اختیاری)</span>
+                        </label>
+                        <input type="time" id="input-activity-end"
+                            class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:border-primary-500 outline-none transition text-center dir-ltr">
+                    </div>
+                </div>
 
-    <!-- ==================== HISTORY SECTION ==================== -->
-    <section id="section-history" class="section">
-      <div id="history-list">
-        <!-- history items -->
-      </div>
-      <div id="no-history" class="empty-state">
-        <div class="icon">📂</div>
-        <p>هنوز گزارشی ذخیره نشده</p>
-      </div>
-    </section>
-  </div>
+                <!-- هشدار خطای ساعت -->
+                <div id="time-validation-error" class="hidden text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 rounded-xl px-3 py-2">
+                    ⚠️ ساعت پایان نمی‌تواند قبل از ساعت شروع باشد.
+                </div>
 
-  <!-- Bottom bar for quick actions on report tab -->
-  <div class="bottom-bar" id="bottom-bar">
-    <button class="btn btn-primary" id="quick-add-btn">+ فعالیت</button>
-    <button class="btn btn-success" id="quick-save-btn">ذخیره</button>
-  </div>
+                <!-- توضیح کوتاه -->
+                <div>
+                    <label for="input-activity-note" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                        توضیح کوتاه <span class="text-xs font-normal text-slate-400">(اختیاری)</span>
+                    </label>
+                    <textarea id="input-activity-note" rows="3" placeholder="جزئیات کار انجام‌شده، لینک، وضعیت تحویل..."
+                        class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-3 text-sm text-slate-900 dark:text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition resize-none"></textarea>
+                </div>
+            </div>
 
-  <!-- ==================== ACTIVITY MODAL ==================== -->
-  <div class="modal-overlay" id="activity-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="modal-title">افزودن فعالیت</h3>
-        <button class="close-btn" id="close-modal">×</button>
-      </div>
-      <div class="form-group">
-        <label for="act-type">نوع کار</label>
-        <select id="act-type"></select>
-      </div>
-      <div class="form-group">
-        <label for="act-project">نام پروژه / موضوع</label>
-        <input type="text" id="act-project" placeholder="مثلاً: ویدیو معرفی محصول" />
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="act-start">ساعت شروع <span class="time-optional">(اختیاری)</span></label>
-          <input type="time" id="act-start" />
+            <!-- فوتر مودال -->
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800 flex gap-2.5 bg-slate-50/50 dark:bg-slate-900/50 rounded-b-2xl">
+                <button type="button" id="btn-submit-activity"
+                    class="flex-1 py-3 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-bold text-sm shadow-md shadow-primary-600/20 transition">
+                    ثبت در لیست فعالیت‌ها
+                </button>
+                <button type="button" id="btn-cancel-activity"
+                    class="py-3 px-5 rounded-xl bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition">
+                    انصراف
+                </button>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="act-end">ساعت پایان <span class="time-optional">(اختیاری)</span></label>
-          <input type="time" id="act-end" />
-        </div>
-      </div>
-      <button type="button" class="btn btn-secondary btn-sm" id="clear-time-btn">پاک کردن ساعت</button>
-      <div id="duration-preview" class="mb-2" style="font-size:0.9rem;color:var(--text-secondary);"></div>
-      <div class="form-group">
-        <label for="act-note">توضیح کوتاه (اختیاری)</label>
-        <textarea id="act-note" rows="2" placeholder="جزئیات بیشتر..."></textarea>
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-primary btn-block" id="save-activity-btn">تأیید</button>
-        <button class="btn btn-secondary btn-block" id="cancel-activity-btn">انصراف</button>
-      </div>
     </div>
-  </div>
 
-  <!-- ==================== SETTINGS MODAL ==================== -->
-  <div class="modal-overlay" id="settings-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>تنظیمات</h3>
-        <button class="close-btn" id="close-settings">×</button>
-      </div>
-
-      <div class="card-title">مدیریت انواع کار</div>
-      <div id="types-list"></div>
-      <div class="form-row" style="margin-top:12px;">
-        <input type="text" id="new-type-input" placeholder="نوع کار جدید..." />
-        <button class="btn btn-primary btn-sm" id="add-type-btn">افزودن</button>
-      </div>
-
-      <hr style="margin:20px 0;border:none;border-top:1px solid var(--border);" />
-
-      <div class="card-title">سایر</div>
-      <button class="btn btn-secondary btn-block" id="clear-all-btn">پاک کردن همه داده‌ها</button>
-      <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:12px;text-align:center;">
-        نسخه ۱.۰ — همه داده‌ها فقط روی دستگاه شما ذخیره می‌شوند
-      </p>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
-
-  <!-- Hidden Print Area for PDF -->
-  <div id="print-area"></div>
-
-  <script>
-    /* ============================================================
-       گزارش کار روزانه - PWA
-       تک‌فایل HTML + CSS + JS
-       ============================================================ */
-
-    // -------------------- Jalali Date Helpers (compact) --------------------
-    // Based on jalaali-js algorithm (public domain style)
-    function div(a, b) { return ~~(a / b); }
-    function mod(a, b) { return a - ~~(a / b) * b; }
-
-    function toJalaali(gy, gm, gd) {
-      var r = d2j(g2d(gy, gm, gd));
-      return { jy: r.jy, jm: r.jm, jd: r.jd };
-    }
-
-    function toGregorian(jy, jm, jd) {
-      var r = d2g(j2d(jy, jm, jd));
-      return { gy: r.gy, gm: r.gm, gd: r.gd };
-    }
-
-    function g2d(gy, gm, gd) {
-      var d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4)
-        + div(153 * mod(gm + 9, 12) + 2, 5)
-        + gd - 34840408;
-      d = d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752;
-      return d;
-    }
-
-    function d2g(jdn) {
-      var j = 4 * jdn + 139361631;
-      j = j + div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
-      var i = div(mod(j, 1461), 4) * 5 + 308;
-      var gd = div(mod(i, 153), 5) + 1;
-      var gm = mod(div(i, 153), 12) + 1;
-      var gy = div(j, 1461) - 100100 + div(8 - gm, 6);
-      return { gy: gy, gm: gm, gd: gd };
-    }
-
-    function j2d(jy, jm, jd) {
-      var r = jalCal(jy);
-      return g2d(r.gy, 3, r.march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1;
-    }
-
-    function d2j(jdn) {
-      var gy = d2g(jdn).gy;
-      var jy = gy - 621;
-      var r = jalCal(jy);
-      var jdn1f = g2d(gy, 3, r.march);
-      var k = jdn - jdn1f;
-      if (k >= 0) {
-        if (k <= 185) {
-          var jm = 1 + div(k, 31);
-          var jd = mod(k, 31) + 1;
-          return { jy: jy, jm: jm, jd: jd };
-        } else {
-          k -= 186;
-        }
-      } else {
-        jy -= 1;
-        k += 179;
-        if (r.leap === 1) k += 1;
-      }
-      var jm = 7 + div(k, 30);
-      var jd = mod(k, 30) + 1;
-      return { jy: jy, jm: jm, jd: jd };
-    }
-
-    function jalCal(jy) {
-      var breaks = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
-        1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
-      var bl = breaks.length;
-      var gy = jy + 621;
-      var leapJ = -14;
-      var jp = breaks[0];
-      var jump = 0;
-      for (var i = 1; i < bl; i++) {
-        var jm = breaks[i];
-        jump = jm - jp;
-        if (jy < jm) break;
-        leapJ = leapJ + div(jump, 33) * 8 + div(mod(jump, 33), 4);
-        jp = jm;
-      }
-      var n = jy - jp;
-      leapJ = leapJ + div(n, 33) * 8 + div(mod(n, 33) + 3, 4);
-      if (mod(jump, 33) === 4 && jump - n === 4) leapJ += 1;
-      var leapG = div(gy, 4) - div((div(gy, 100) + 1) * 3, 4) - 150;
-      var march = 20 + leapJ - leapG;
-      if (jump - n < 6) n = n - jump + div(jump + 4, 33) * 33;
-      var leap = mod(mod(n + 1, 33) - 1, 4);
-      if (leap === -1) leap = 4;
-      return { leap: leap, gy: gy, march: march };
-    }
-
-    function getTodayJalali() {
-      var now = new Date();
-      var j = toJalaali(now.getFullYear(), now.getMonth() + 1, now.getDate());
-      return j.jy + '/' + pad(j.jm) + '/' + pad(j.jd);
-    }
-
-    function pad(n) {
-      return n < 10 ? '0' + n : '' + n;
-    }
-
-    // -------------------- Persian Digits --------------------
-    function toPersianDigits(str) {
-      if (str === null || str === undefined) return '';
-      return String(str).replace(/\d/g, function (d) {
-        return '۰۱۲۳۴۵۶۷۸۹'[d];
-      });
-    }
-
-    function toEnglishDigits(str) {
-      return String(str)
-        .replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
-        .replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
-    }
-
-    // -------------------- Time Helpers --------------------
-    function timeToMinutes(t) {
-      if (!t) return null;
-      var parts = t.split(':');
-      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
-    }
-
-    function minutesToHoursText(mins) {
-      if (mins === null || isNaN(mins) || mins < 0) return '—';
-      var h = Math.floor(mins / 60);
-      var m = mins % 60;
-      if (h === 0) return toPersianDigits(m) + ' دقیقه';
-      if (m === 0) return toPersianDigits(h) + ' ساعت';
-      return toPersianDigits(h) + ' ساعت و ' + toPersianDigits(m) + ' دقیقه';
-    }
-
-    function calcDuration(start, end) {
-      var s = timeToMinutes(start);
-      var e = timeToMinutes(end);
-      if (s === null || e === null) return null;
-      if (e < s) return -1; // error
-      return e - s;
-    }
-
-    // -------------------- Storage --------------------
-    const STORAGE_KEYS = {
-      reports: 'daily_reports_v1',
-      workTypes: 'work_types_v1',
-      personName: 'person_name_v1',
-      draft: 'report_draft_v1',
-      theme: 'theme_v1'
-    };
-
-    function safeGet(key, fallback) {
-      try {
-        var raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      } catch (e) {
-        console.warn('localStorage get error', e);
-        return fallback;
-      }
-    }
-
-    function safeSet(key, value) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-        return true;
-      } catch (e) {
-        console.warn('localStorage set error', e);
-        showToast('خطا در ذخیره‌سازی (حافظه پر؟)');
-        return false;
-      }
-    }
-
-    // -------------------- App State --------------------
-    let state = {
-      personName: '',
-      date: getTodayJalali(),
-      activities: [],
-      finalNote: '',
-      editingActivityIndex: -1,
-      workTypes: ['ایده‌پردازی', 'فیلم‌برداری', 'ادیت', 'ارسال ویدیو', 'بازبینی', 'هماهنگی', 'جلسه'],
-      reports: [],
-      theme: 'light'
-    };
-
-    function formatTimeRange(start, end) {
-      if (start && end) return toPersianDigits(start) + ' تا ' + toPersianDigits(end);
-      if (start) return 'از ' + toPersianDigits(start);
-      if (end) return 'تا ' + toPersianDigits(end);
-      return '';
-    }
-
-    function setDateLabel(iso) {
-      var el = document.getElementById('report-date-label');
-      el.textContent = iso ? toPersianDigits(iso) : 'انتخاب تاریخ';
-    }
-
-    var J_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-    var J_DOW = ['ش','ی','د','س','چ','پ','ج'];
-    var calView = { jy: 1404, jm: 1 };
-
-    function jMonthLen(jy, jm) {
-      if (jm <= 6) return 31;
-      if (jm <= 11) return 30;
-      return jalCal(jy).leap === 0 ? 30 : 29;
-    }
-
-    function jWeekdaySat0(jy, jm, jd) {
-      var g = toGregorian(jy, jm, jd);
-      var d = new Date(g.gy, g.gm - 1, g.gd);
-      return (d.getDay() + 1) % 7;
-    }
-
-    function parseTodayParts() {
-      var p = getTodayJalali().split('/');
-      return { jy: +p[0], jm: +p[1], jd: +p[2] };
-    }
-
-    function openCalendar() {
-      var raw = toEnglishDigits(document.getElementById('report-date').value || state.date || getTodayJalali());
-      var parts = raw.split('/');
-      calView.jy = parseInt(parts[0], 10) || parseTodayParts().jy;
-      calView.jm = parseInt(parts[1], 10) || parseTodayParts().jm;
-      renderCalendar();
-      document.getElementById('cal-popover').classList.add('show');
-    }
-
-    function closeCalendar() {
-      document.getElementById('cal-popover').classList.remove('show');
-    }
-
-    function pickDate(jy, jm, jd) {
-      var s = jy + '/' + pad(jm) + '/' + pad(jd);
-      state.date = s;
-      document.getElementById('report-date').value = s;
-      setDateLabel(s);
-      saveDraft();
-      closeCalendar();
-    }
-
-    function renderCalendar() {
-      document.getElementById('cal-title').textContent = J_MONTHS[calView.jm - 1] + ' ' + toPersianDigits(calView.jy);
-      var dows = document.getElementById('cal-dows');
-      dows.innerHTML = J_DOW.map(function (d) { return '<div class="cal-dow">' + d + '</div>'; }).join('');
-      var days = document.getElementById('cal-days');
-      var first = jWeekdaySat0(calView.jy, calView.jm, 1);
-      var len = jMonthLen(calView.jy, calView.jm);
-      var today = parseTodayParts();
-      var selected = toEnglishDigits(document.getElementById('report-date').value || '');
-      var html = '';
-      for (var i = 0; i < first; i++) html += '<button type="button" class="cal-day empty" tabindex="-1"></button>';
-      for (var day = 1; day <= len; day++) {
-        var key = calView.jy + '/' + pad(calView.jm) + '/' + pad(day);
-        var cls = 'cal-day';
-        if (key === selected) cls += ' selected';
-        if (today.jy === calView.jy && today.jm === calView.jm && today.jd === day) cls += ' today';
-        html += '<button type="button" class="' + cls + '" data-day="' + day + '">' + toPersianDigits(day) + '</button>';
-      }
-      days.innerHTML = html;
-      days.querySelectorAll('[data-day]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          pickDate(calView.jy, calView.jm, parseInt(btn.getAttribute('data-day'), 10));
-        });
-      });
-    }
-
-    function shiftMonth(delta) {
-      calView.jm += delta;
-      if (calView.jm > 12) { calView.jm = 1; calView.jy += 1; }
-      if (calView.jm < 1) { calView.jm = 12; calView.jy -= 1; }
-      renderCalendar();
-    }
-
-    // -------------------- Init --------------------
-    function init() {
-      // Load data
-      state.personName = safeGet(STORAGE_KEYS.personName, '') || '';
-      state.workTypes = safeGet(STORAGE_KEYS.workTypes, state.workTypes);
-      if (state.workTypes.indexOf('هماهنگی') === -1) {
-        var meetingIdx = state.workTypes.indexOf('جلسه');
-        if (meetingIdx >= 0) state.workTypes.splice(meetingIdx, 0, 'هماهنگی');
-        else state.workTypes.push('هماهنگی');
-        safeSet(STORAGE_KEYS.workTypes, state.workTypes);
-      }
-      state.reports = safeGet(STORAGE_KEYS.reports, []);
-      state.theme = safeGet(STORAGE_KEYS.theme, 'light');
-
-      // Apply theme
-      document.documentElement.setAttribute('data-theme', state.theme);
-      document.getElementById('theme-toggle').textContent = state.theme === 'dark' ? '☀️' : '🌙';
-
-      // Load draft if exists
-      var draft = safeGet(STORAGE_KEYS.draft, null);
-      if (draft) {
-        state.date = draft.date || getTodayJalali();
-        state.activities = draft.activities || [];
-        state.finalNote = draft.finalNote || '';
-        if (draft.personName) state.personName = draft.personName;
-      } else {
-        state.date = getTodayJalali();
-      }
-
-      // Fill UI
-      document.getElementById('person-name').value = state.personName;
-      document.getElementById('report-date').value = state.date;
-      setDateLabel(state.date);
-      document.getElementById('final-note').value = state.finalNote;
-
-      renderActivities();
-      renderWorkTypesSelect();
-      renderHistory();
-      updateTotal();
-      setupEventListeners();
-      registerServiceWorker();
-      createManifest();
-    }
-
-    // -------------------- Render Functions --------------------
-    function renderActivities() {
-      var list = document.getElementById('activities-list');
-      var empty = document.getElementById('no-activities');
-      list.innerHTML = '';
-
-      if (state.activities.length === 0) {
-        empty.style.display = 'block';
-        return;
-      }
-      empty.style.display = 'none';
-
-      state.activities.forEach(function (act, idx) {
-        var dur = calcDuration(act.start, act.end);
-        var hasError = dur === -1;
-        var timeLine = formatTimeRange(act.start, act.end);
-        var durHtml = '';
-        if (hasError) durHtml = '<span class="activity-duration">خطا در ساعت</span>';
-        else if (dur > 0) durHtml = '<span class="activity-duration">' + minutesToHoursText(dur) + '</span>';
-
-        var card = document.createElement('div');
-        card.className = 'activity-card' + (hasError ? ' activity-error' : '');
-        card.innerHTML = `
-          <div class="activity-header">
-            <span class="activity-type">${escapeHtml(act.type)}</span>
-            ${durHtml}
-          </div>
-          <div class="activity-meta">پروژه: ${escapeHtml(act.project || '—')}</div>
-          ${timeLine ? `<div class="activity-meta">ساعت: ${timeLine}</div>` : ''}
-          ${act.note ? `<div class="activity-meta">${escapeHtml(act.note)}</div>` : ''}
-          <div class="activity-actions">
-            <button class="btn btn-secondary btn-sm" data-edit="${idx}">ویرایش</button>
-            <button class="btn btn-danger btn-sm" data-delete="${idx}">حذف</button>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-
-      // Bind edit/delete
-      list.querySelectorAll('[data-edit]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          openActivityModal(parseInt(btn.getAttribute('data-edit'), 10));
-        });
-      });
-      list.querySelectorAll('[data-delete]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var i = parseInt(btn.getAttribute('data-delete'), 10);
-          if (confirm('این فعالیت حذف شود؟')) {
-            state.activities.splice(i, 1);
-            saveDraft();
-            renderActivities();
-            updateTotal();
-          }
-        });
-      });
-    }
-
-    function renderWorkTypesSelect() {
-      var select = document.getElementById('act-type');
-      select.innerHTML = '';
-      state.workTypes.forEach(function (t) {
-        var opt = document.createElement('option');
-        opt.value = t;
-        opt.textContent = t;
-        select.appendChild(opt);
-      });
-    }
-
-    function renderTypesList() {
-      var list = document.getElementById('types-list');
-      list.innerHTML = '';
-      state.workTypes.forEach(function (t, idx) {
-        var item = document.createElement('div');
-        item.className = 'type-item';
-        item.innerHTML = `
-          <span>${escapeHtml(t)}</span>
-          <div>
-            <button class="btn btn-secondary btn-sm" data-edit-type="${idx}">✏️</button>
-            <button class="btn btn-danger btn-sm" data-del-type="${idx}">🗑️</button>
-          </div>
-        `;
-        list.appendChild(item);
-      });
-
-      list.querySelectorAll('[data-edit-type]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var i = parseInt(btn.getAttribute('data-edit-type'), 10);
-          var newName = prompt('نام جدید نوع کار:', state.workTypes[i]);
-          if (newName && newName.trim()) {
-            state.workTypes[i] = newName.trim();
-            safeSet(STORAGE_KEYS.workTypes, state.workTypes);
-            renderTypesList();
-            renderWorkTypesSelect();
-            showToast('ویرایش شد');
-          }
-        });
-      });
-
-      list.querySelectorAll('[data-del-type]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var i = parseInt(btn.getAttribute('data-del-type'), 10);
-          if (state.workTypes.length <= 1) {
-            showToast('حداقل یک نوع کار لازم است');
-            return;
-          }
-          if (confirm('حذف شود؟')) {
-            state.workTypes.splice(i, 1);
-            safeSet(STORAGE_KEYS.workTypes, state.workTypes);
-            renderTypesList();
-            renderWorkTypesSelect();
-          }
-        });
-      });
-    }
-
-    function renderHistory() {
-      var list = document.getElementById('history-list');
-      var empty = document.getElementById('no-history');
-      list.innerHTML = '';
-
-      if (state.reports.length === 0) {
-        empty.style.display = 'block';
-        return;
-      }
-      empty.style.display = 'none';
-
-      // Sort by date desc
-      var sorted = state.reports.slice().sort(function (a, b) {
-        return (b.date || '').localeCompare(a.date || '');
-      });
-
-      sorted.forEach(function (rep) {
-        var totalText = minutesToHoursText(rep.totalMinutes || 0);
-        var item = document.createElement('div');
-        item.className = 'history-item';
-        item.innerHTML = `
-          <div class="date">${toPersianDigits(rep.date)} — ${escapeHtml(rep.name || 'بدون نام')}</div>
-          <div class="meta">${toPersianDigits(rep.activities.length)} فعالیت · ${totalText}</div>
-          <div class="history-actions">
-            <button class="btn btn-secondary btn-sm" data-load="${rep.id}">📂 باز کردن</button>
-            <button class="btn btn-secondary btn-sm" data-copy-hist="${rep.id}">📋 کپی</button>
-            <button class="btn btn-danger btn-sm" data-del-hist="${rep.id}">🗑️</button>
-          </div>
-        `;
-        list.appendChild(item);
-      });
-
-      list.querySelectorAll('[data-load]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var id = btn.getAttribute('data-load');
-          var rep = state.reports.find(function (r) { return r.id === id; });
-          if (rep) {
-            state.date = rep.date;
-            state.personName = rep.name;
-            state.activities = JSON.parse(JSON.stringify(rep.activities));
-            state.finalNote = rep.finalNote || '';
-            document.getElementById('person-name').value = state.personName;
-            document.getElementById('report-date').value = state.date;
-            setDateLabel(state.date);
-            document.getElementById('final-note').value = state.finalNote;
-            renderActivities();
-            updateTotal();
-            saveDraft();
-            switchTab('report');
-            showToast('گزارش بارگذاری شد');
-          }
-        });
-      });
-
-      list.querySelectorAll('[data-copy-hist]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var id = btn.getAttribute('data-copy-hist');
-          var rep = state.reports.find(function (r) { return r.id === id; });
-          if (rep) copyReportText(rep);
-        });
-      });
-
-      list.querySelectorAll('[data-del-hist]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var id = btn.getAttribute('data-del-hist');
-          if (confirm('این گزارش حذف شود؟')) {
-            state.reports = state.reports.filter(function (r) { return r.id !== id; });
-            safeSet(STORAGE_KEYS.reports, state.reports);
-            renderHistory();
-            showToast('حذف شد');
-          }
-        });
-      });
-    }
-
-    function updateTotal() {
-      var total = 0;
-      var timed = 0;
-      var hasError = false;
-      state.activities.forEach(function (a) {
-        var d = calcDuration(a.start, a.end);
-        if (d === -1) hasError = true;
-        else if (d > 0) { total += d; timed += 1; }
-      });
-      var box = document.getElementById('total-box');
-      var el = document.getElementById('total-hours');
-      var label = document.getElementById('total-label');
-      if (hasError) {
-        box.classList.remove('is-muted');
-        label.textContent = 'مجموع ساعات';
-        el.textContent = 'خطا در ساعت‌ها';
-      } else if (timed === 0) {
-        box.classList.add('is-muted');
-        label.textContent = 'مجموع ساعات (اختیاری)';
-        el.textContent = 'ثبت نشده';
-      } else {
-        box.classList.remove('is-muted');
-        label.textContent = 'مجموع ساعات';
-        el.textContent = minutesToHoursText(total);
-        el.style.color = '';
-      }
-    }
-
-    // -------------------- Activity Modal --------------------
-    function openActivityModal(index) {
-      state.editingActivityIndex = typeof index === 'number' ? index : -1;
-      var modal = document.getElementById('activity-modal');
-      var title = document.getElementById('modal-title');
-
-      if (state.editingActivityIndex >= 0) {
-        title.textContent = 'ویرایش فعالیت';
-        var act = state.activities[state.editingActivityIndex];
-        document.getElementById('act-type').value = act.type;
-        document.getElementById('act-project').value = act.project || '';
-        document.getElementById('act-start').value = act.start || '';
-        document.getElementById('act-end').value = act.end || '';
-        document.getElementById('act-note').value = act.note || '';
-      } else {
-        title.textContent = 'افزودن فعالیت';
-        document.getElementById('act-type').selectedIndex = 0;
-        document.getElementById('act-project').value = '';
-        document.getElementById('act-start').value = '';
-        document.getElementById('act-end').value = '';
-        document.getElementById('act-note').value = '';
-      }
-      updateDurationPreview();
-      modal.classList.add('show');
-    }
-
-    function closeActivityModal() {
-      document.getElementById('activity-modal').classList.remove('show');
-      state.editingActivityIndex = -1;
-    }
-
-    function updateDurationPreview() {
-      var start = document.getElementById('act-start').value;
-      var end = document.getElementById('act-end').value;
-      var el = document.getElementById('duration-preview');
-      if (!start && !end) {
-        el.textContent = 'ساعت اختیاری است. اگر هر دو را پر کنید، مدت محاسبه می‌شود.';
-        return;
-      }
-      if (!start || !end) {
-        el.textContent = 'برای محاسبه مدت، هر دو ساعت را وارد کنید.';
-        return;
-      }
-      var d = calcDuration(start, end);
-      if (d === -1) {
-        el.innerHTML = '<span class="text-danger">ساعت پایان نمی‌تواند قبل از شروع باشد</span>';
-      } else {
-        el.textContent = 'مدت: ' + minutesToHoursText(d);
-      }
-    }
-
-    function saveActivityFromModal() {
-      var type = document.getElementById('act-type').value;
-      var project = document.getElementById('act-project').value.trim();
-      var start = document.getElementById('act-start').value;
-      var end = document.getElementById('act-end').value;
-      var note = document.getElementById('act-note').value.trim();
-
-      if (!type) {
-        showToast('نوع کار را انتخاب کنید');
-        return;
-      }
-      if (start && end && calcDuration(start, end) === -1) {
-        showToast('ساعت پایان نمی‌تواند قبل از شروع باشد');
-        return;
-      }
-
-      var act = { type: type, project: project, start: start, end: end, note: note };
-
-      if (state.editingActivityIndex >= 0) {
-        state.activities[state.editingActivityIndex] = act;
-      } else {
-        state.activities.push(act);
-      }
-
-      saveDraft();
-      renderActivities();
-      updateTotal();
-      closeActivityModal();
-      showToast('فعالیت ذخیره شد');
-    }
-
-    // -------------------- Draft & Save Report --------------------
-    function saveDraft() {
-      var draft = {
-        date: toEnglishDigits(document.getElementById('report-date').value) || state.date,
-        personName: document.getElementById('person-name').value.trim(),
-        activities: state.activities,
-        finalNote: document.getElementById('final-note').value
-      };
-      state.date = draft.date;
-      state.personName = draft.personName;
-      state.finalNote = draft.finalNote;
-      safeSet(STORAGE_KEYS.draft, draft);
-      if (draft.personName) {
-        safeSet(STORAGE_KEYS.personName, draft.personName);
-      }
-    }
-
-    function saveReport() {
-      saveDraft();
-      var name = state.personName;
-      var date = state.date;
-
-      if (!name) {
-        showToast('لطفاً نام خود را وارد کنید');
-        return;
-      }
-      if (state.activities.length === 0) {
-        showToast('حداقل یک فعالیت اضافه کنید');
-        return;
-      }
-
-      // Check for time errors
-      var hasError = state.activities.some(function (a) {
-        return calcDuration(a.start, a.end) === -1;
-      });
-      if (hasError) {
-        showToast('خطا در ساعات برخی فعالیت‌ها وجود دارد');
-        return;
-      }
-
-      var total = state.activities.reduce(function (sum, a) {
-        var d = calcDuration(a.start, a.end);
-        return sum + (d > 0 ? d : 0);
-      }, 0);
-
-      var report = {
-        id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-        date: date,
-        name: name,
-        activities: JSON.parse(JSON.stringify(state.activities)),
-        finalNote: state.finalNote,
-        totalMinutes: total,
-        createdAt: new Date().toISOString()
-      };
-
-      // Replace if same date + name exists
-      var existingIdx = state.reports.findIndex(function (r) {
-        return r.date === date && r.name === name;
-      });
-      if (existingIdx >= 0) {
-        if (confirm('گزارشی با همین تاریخ و نام وجود دارد. جایگزین شود؟')) {
-          state.reports[existingIdx] = report;
-        } else {
-          return;
-        }
-      } else {
-        state.reports.push(report);
-      }
-
-      safeSet(STORAGE_KEYS.reports, state.reports);
-      renderHistory();
-      showToast('گزارش با موفقیت ذخیره شد ✓');
-    }
-
-    // -------------------- Export Functions --------------------
-    function buildReportText(rep) {
-      rep = rep || {
-        date: state.date,
-        name: state.personName,
-        activities: state.activities,
-        finalNote: state.finalNote,
-        totalMinutes: state.activities.reduce(function (s, a) {
-          var d = calcDuration(a.start, a.end);
-          return s + (d > 0 ? d : 0);
-        }, 0)
-      };
-
-      var lines = [];
-      lines.push('📋 گزارش کار روزانه');
-      lines.push('────────────────');
-      lines.push('👤 نام: ' + (rep.name || '—'));
-      lines.push('📅 تاریخ: ' + toPersianDigits(rep.date));
-      if (rep.totalMinutes > 0) lines.push('مجموع ساعات: ' + minutesToHoursText(rep.totalMinutes));
-      lines.push('');
-      lines.push('فعالیت‌ها:');
-      rep.activities.forEach(function (a, i) {
-        var dur = calcDuration(a.start, a.end);
-        lines.push((i + 1) + '. ' + a.type);
-        if (a.project) lines.push('   پروژه: ' + a.project);
-        var range = formatTimeRange(a.start, a.end);
-        if (range) {
-          var extra = dur > 0 ? ' (' + minutesToHoursText(dur) + ')' : '';
-          lines.push('   ساعت: ' + range + extra);
-        }
-        if (a.note) lines.push('   توضیح: ' + a.note);
-        lines.push('');
-      });
-      if (rep.finalNote) {
-        lines.push('📌 یادداشت پایانی:');
-        lines.push(rep.finalNote);
-      }
-      lines.push('────────────────');
-      lines.push('تولید شده با اپ گزارش کار روزانه');
-      return lines.join('\n');
-    }
-
-    function copyReportText(rep) {
-      var text = buildReportText(rep);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () {
-          showToast('متن گزارش کپی شد');
-        }).catch(function () {
-          fallbackCopy(text);
-        });
-      } else {
-        fallbackCopy(text);
-      }
-    }
-
-    function fallbackCopy(text) {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.left = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand('copy');
-        showToast('متن گزارش کپی شد');
-      } catch (e) {
-        showToast('کپی پشتیبانی نمی‌شود');
-      }
-      document.body.removeChild(ta);
-    }
-
-    function shareReport() {
-      var text = buildReportText();
-      if (navigator.share) {
-        navigator.share({
-          title: 'گزارش کار روزانه',
-          text: text
-        }).catch(function () {});
-      } else {
-        copyReportText();
-        showToast('اشتراک‌گذاری پشتیبانی نمی‌شود — متن کپی شد');
-      }
-    }
-
-    function exportPDF() {
-      saveDraft();
-      if (state.activities.length === 0) {
-        showToast('فعالیتی برای خروجی وجود ندارد');
-        return;
-      }
-
-      var printArea = document.getElementById('print-area');
-      var total = state.activities.reduce(function (s, a) {
-        var d = calcDuration(a.start, a.end);
-        return s + (d > 0 ? d : 0);
-      }, 0);
-
-      var rows = state.activities.map(function (a, i) {
-        var dur = calcDuration(a.start, a.end);
-        var durText = dur > 0 ? minutesToHoursText(dur) : '—';
-        return `
-          <tr>
-            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${toPersianDigits(i + 1)}</td>
-            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.type)}</td>
-            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.project || '—')}</td>
-            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${a.start ? toPersianDigits(a.start) : '—'}</td>
-            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${a.end ? toPersianDigits(a.end) : '—'}</td>
-            <td style="border:1px solid #bbb;padding:8px;text-align:center;color:#111;">${durText}</td>
-            <td style="border:1px solid #bbb;padding:8px;color:#111;">${escapeHtml(a.note || '—')}</td>
-          </tr>
-        `;
-      }).join('');
-
-      var totalCell = total > 0
-        ? `<td style="padding:6px;color:#111;"><strong>مجموع ساعات:</strong> ${minutesToHoursText(total)}</td>`
-        : '';
-
-      printArea.innerHTML = `
-        <div style="font-family:Tahoma,Vazirmatn,sans-serif;direction:rtl;color:#111;background:#fff;font-size:13px;width:746px;">
-          <h1 style="text-align:center;font-size:20px;margin:0 0 6px;color:#111;">گزارش کار روزانه</h1>
-          <p style="text-align:center;margin:0 0 16px;color:#333;">تیم تولید محتوا</p>
-          <table style="width:100%;margin-bottom:16px;border-collapse:collapse;">
-            <tr>
-              <td style="padding:6px;color:#111;"><strong>نام:</strong> ${escapeHtml(state.personName || '—')}</td>
-              <td style="padding:6px;color:#111;"><strong>تاریخ:</strong> ${toPersianDigits(state.date)}</td>
-              ${totalCell}
-            </tr>
-          </table>
-          <table style="width:100%;border-collapse:collapse;font-size:12px;background:#fff;">
-            <thead>
-              <tr style="background:#eceff3;">
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">#</th>
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">نوع کار</th>
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">پروژه</th>
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">شروع</th>
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">پایان</th>
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">مدت</th>
-                <th style="border:1px solid #bbb;padding:8px;color:#111;">توضیح</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-          ${state.finalNote ? `<div style="margin-top:16px;color:#111;"><strong>یادداشت پایانی:</strong><br>${escapeHtml(state.finalNote)}</div>` : ''}
+    <!-- ==================== مودال تقویم شمسی ==================== -->
+    <div id="calendar-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-4 animate-fade-in">
+            
+            <!-- هدر تقویم (ماه قبل / ماه و سال / ماه بعد) -->
+            <div class="flex items-center justify-between mb-4">
+                <button type="button" id="btn-cal-prev-month" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition" title="ماه قبل">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <div class="text-center">
+                    <div id="cal-header-title" class="text-sm font-extrabold text-slate-900 dark:text-white">مهر ۱۴۰۳</div>
+                </div>
+
+                <button type="button" id="btn-cal-next-month" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition" title="ماه بعد">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- سرستون روزهای هفته -->
+            <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 dark:text-slate-500 mb-2">
+                <div>ش</div>
+                <div>ی</div>
+                <div>د</div>
+                <div>س</div>
+                <div>چ</div>
+                <div>پ</div>
+                <div class="text-rose-500">ج</div>
+            </div>
+
+            <!-- شبکه روزهای ماه -->
+            <div id="cal-days-grid" class="grid grid-cols-7 gap-1 text-center">
+                <!-- روزها توسط JS ساخته می‌شوند -->
+            </div>
+
+            <!-- فوتر تقویم -->
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+                <button type="button" id="btn-cal-go-today" class="flex-1 py-2 px-3 rounded-xl bg-primary-50 dark:bg-primary-950/80 text-primary-700 dark:text-primary-300 font-bold text-xs hover:bg-primary-100 transition">
+                    انتخاب امروز
+                </button>
+                <button type="button" id="btn-cal-close" class="py-2 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs hover:bg-slate-200 transition">
+                    بستن
+                </button>
+            </div>
         </div>
-      `;
+    </div>
 
-      printArea.classList.add('capturing');
-      var opt = {
-        margin: [8, 8, 8, 8],
-        filename: 'گزارش-کار-' + state.date.replace(/\//g, '-') + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          backgroundColor: '#ffffff',
-          useCORS: true,
-          scrollX: 0,
-          scrollY: 0,
-          windowWidth: 900
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] }
-      };
+    <!-- ==================== مودال تایید (جایگزین confirm مرورگر) ==================== -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-5 animate-fade-in space-y-4">
+            <h3 id="confirm-modal-title" class="text-base font-bold text-slate-900 dark:text-white">تایید عملیات</h3>
+            <p id="confirm-modal-message" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+            <div class="flex gap-2.5 pt-2">
+                <button type="button" id="btn-confirm-yes" class="flex-1 py-2.5 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs sm:text-sm transition">
+                    بله، تایید
+                </button>
+                <button type="button" id="btn-confirm-no" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm transition">
+                    انصراف
+                </button>
+            </div>
+        </div>
+    </div>
 
-      showToast('در حال ساخت PDF...');
-      window.scrollTo(0, 0);
-      setTimeout(function () {
-        html2pdf().set(opt).from(printArea).save().then(function () {
-          printArea.classList.remove('capturing');
-          showToast('PDF دانلود شد');
-        }).catch(function (err) {
-          printArea.classList.remove('capturing');
-          console.error(err);
-          showToast('خطا در ساخت PDF');
-        });
-      }, 80);
-    }
+    <!-- ==================== مودال ویرایش نام نوع کار در تنظیمات ==================== -->
+    <div id="edit-type-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-5 animate-fade-in space-y-4">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">ویرایش عنوان نوع کار</h3>
+            <input type="text" id="input-edit-type-value" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white outline-none focus:border-primary-500">
+            <div class="flex gap-2.5">
+                <button type="button" id="btn-save-edit-type" class="flex-1 py-2.5 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs sm:text-sm transition">
+                    ذخیره تغییر
+                </button>
+                <button type="button" id="btn-cancel-edit-type" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm transition">
+                    لغو
+                </button>
+            </div>
+        </div>
+    </div>
 
-    function exportWord() {
-      saveDraft();
-      if (state.activities.length === 0) {
-        showToast('فعالیتی برای خروجی وجود ندارد');
-        return;
-      }
+    <!-- ==================== کانتینر Toast ==================== -->
+    <div id="toast-container" class="fixed top-4 inset-x-4 sm:left-auto sm:right-6 sm:w-80 z-50 pointer-events-none flex flex-col gap-2"></div>
 
-      var total = state.activities.reduce(function (s, a) {
-        var d = calcDuration(a.start, a.end);
-        return s + (d > 0 ? d : 0);
-      }, 0);
+    <!-- ==================== کدهای جاوااسکریپت ==================== -->
+    <script>
+        /**
+         * اپلیکیشن گزارش کار روزانه تیم تولید محتوا
+         * تک‌فایل، بدون وابستگی خارجی، پشتیبانی کامل از تاریخ شمسی و PWA
+         */
 
-      var rows = state.activities.map(function (a, i) {
-        var dur = calcDuration(a.start, a.end);
-        return `
-          <tr>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${toPersianDigits(i + 1)}</td>
-            <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.type)}</td>
-            <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.project || '—')}</td>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${a.start ? toPersianDigits(a.start) : '—'}</td>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${a.end ? toPersianDigits(a.end) : '—'}</td>
-            <td style="border:1px solid #333;padding:6px;text-align:center;">${dur > 0 ? minutesToHoursText(dur) : '—'}</td>
-            <td style="border:1px solid #333;padding:6px;">${escapeHtml(a.note || '—')}</td>
-          </tr>
-        `;
-      }).join('');
+        // ---------------- ۱. کلیدهای LocalStorage و مقادیر پیش‌فرض ----------------
+        const STORAGE_KEYS = {
+            THEME: 'daily_report_theme_v1',
+            USER_NAME: 'daily_report_username_v1',
+            WORK_TYPES: 'daily_report_work_types_v1',
+            DRAFT: 'daily_report_current_draft_v1',
+            HISTORY: 'daily_report_history_v1'
+        };
 
-      var html = `
-        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-        <head>
-          <meta charset="utf-8">
-          <title>گزارش کار روزانه</title>
-          <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
-          <style>
-            body { font-family: Tahoma, Arial, sans-serif; direction: rtl; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid #333; padding: 6px; }
-            th { background: #eee; }
-            h1 { text-align: center; }
-          </style>
-        </head>
-        <body>
-          <h1>گزارش کار روزانه</h1>
-          <p style="text-align:center;">تیم تولید محتوا</p>
-          <p><strong>نام:</strong> ${escapeHtml(state.personName || '—')} &nbsp;&nbsp;
-             <strong>تاریخ:</strong> ${toPersianDigits(state.date)}${total > 0 ? ' &nbsp;&nbsp; <strong>مجموع ساعات:</strong> ' + minutesToHoursText(total) : ''}</p>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>نوع کار</th><th>پروژه</th><th>شروع</th><th>پایان</th><th>مدت</th><th>توضیح</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-          ${state.finalNote ? `<p style="margin-top:16px;"><strong>یادداشت پایانی:</strong><br>${escapeHtml(state.finalNote)}</p>` : ''}
-          <p style="margin-top:20px;font-size:11px;color:#666;text-align:center;">تولید شده با اپ گزارش کار روزانه</p>
-        </body>
-        </html>
-      `;
-
-      var blob = new Blob(['\ufeff' + html], {
-        type: 'application/msword'
-      });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'گزارش-کار-' + state.date.replace(/\//g, '-') + '.doc';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showToast('فایل Word دانلود شد');
-    }
-
-    // -------------------- Utilities --------------------
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function showToast(msg) {
-      var t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(function () {
-        t.classList.remove('show');
-      }, 2500);
-    }
-
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab').forEach(function (t) {
-        t.classList.toggle('active', t.getAttribute('data-tab') === tabName);
-      });
-      document.querySelectorAll('.section').forEach(function (s) {
-        s.classList.remove('active');
-      });
-      document.getElementById('section-' + tabName).classList.add('active');
-      document.getElementById('bottom-bar').style.display = tabName === 'report' ? 'flex' : 'none';
-    }
-
-    // -------------------- Event Listeners --------------------
-    function setupEventListeners() {
-      // Tabs
-      document.querySelectorAll('.tab').forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          switchTab(tab.getAttribute('data-tab'));
-        });
-      });
-
-      // Theme
-      document.getElementById('theme-toggle').addEventListener('click', function () {
-        state.theme = state.theme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', state.theme);
-        this.textContent = state.theme === 'dark' ? '☀️' : '🌙';
-        safeSet(STORAGE_KEYS.theme, state.theme);
-      });
-
-      // Settings
-      document.getElementById('settings-btn').addEventListener('click', function () {
-        renderTypesList();
-        document.getElementById('settings-modal').classList.add('show');
-      });
-      document.getElementById('close-settings').addEventListener('click', function () {
-        document.getElementById('settings-modal').classList.remove('show');
-      });
-
-      // Add type
-      document.getElementById('add-type-btn').addEventListener('click', function () {
-        var input = document.getElementById('new-type-input');
-        var val = input.value.trim();
-        if (!val) return;
-        if (state.workTypes.indexOf(val) >= 0) {
-          showToast('این نوع کار قبلاً وجود دارد');
-          return;
-        }
-        state.workTypes.push(val);
-        safeSet(STORAGE_KEYS.workTypes, state.workTypes);
-        input.value = '';
-        renderTypesList();
-        renderWorkTypesSelect();
-        showToast('اضافه شد');
-      });
-
-      // Clear all
-      document.getElementById('clear-all-btn').addEventListener('click', function () {
-        if (confirm('همه گزارش‌ها و تنظیمات پاک شوند؟ این عمل برگشت‌ناپذیر است.')) {
-          localStorage.removeItem(STORAGE_KEYS.reports);
-          localStorage.removeItem(STORAGE_KEYS.draft);
-          localStorage.removeItem(STORAGE_KEYS.workTypes);
-          state.reports = [];
-          state.activities = [];
-          state.workTypes = ['ایده‌پردازی', 'فیلم‌برداری', 'ادیت', 'ارسال ویدیو', 'بازبینی', 'جلسه'];
-          safeSet(STORAGE_KEYS.workTypes, state.workTypes);
-          renderActivities();
-          renderHistory();
-          renderTypesList();
-          renderWorkTypesSelect();
-          updateTotal();
-          showToast('همه داده‌ها پاک شد');
-        }
-      });
-
-      // Activity modal
-      document.getElementById('add-activity-btn').addEventListener('click', function () { openActivityModal(); });
-      document.getElementById('add-first-activity').addEventListener('click', function () { openActivityModal(); });
-      document.getElementById('quick-add-btn').addEventListener('click', function () { openActivityModal(); });
-      document.getElementById('close-modal').addEventListener('click', closeActivityModal);
-      document.getElementById('cancel-activity-btn').addEventListener('click', closeActivityModal);
-      document.getElementById('save-activity-btn').addEventListener('click', saveActivityFromModal);
-      document.getElementById('act-start').addEventListener('change', updateDurationPreview);
-      document.getElementById('act-end').addEventListener('change', updateDurationPreview);
-      document.getElementById('clear-time-btn').addEventListener('click', function () {
-        document.getElementById('act-start').value = '';
-        document.getElementById('act-end').value = '';
-        updateDurationPreview();
-      });
-
-      document.getElementById('report-date-btn').addEventListener('click', function () {
-        var pop = document.getElementById('cal-popover');
-        if (pop.classList.contains('show')) closeCalendar();
-        else openCalendar();
-      });
-      document.getElementById('cal-prev').addEventListener('click', function () { shiftMonth(-1); });
-      document.getElementById('cal-next').addEventListener('click', function () { shiftMonth(1); });
-      document.getElementById('cal-today').addEventListener('click', function () {
-        var t = parseTodayParts();
-        pickDate(t.jy, t.jm, t.jd);
-      });
-      document.getElementById('cal-close').addEventListener('click', closeCalendar);
-      document.addEventListener('click', function (e) {
-        var pop = document.getElementById('cal-popover');
-        var btn = document.getElementById('report-date-btn');
-        if (!pop.classList.contains('show')) return;
-        if (pop.contains(e.target) || btn.contains(e.target)) return;
-        closeCalendar();
-      });
-
-      ['person-name', 'final-note'].forEach(function (id) {
-        document.getElementById(id).addEventListener('input', function () {
-          saveDraft();
-        });
-      });
-
-      // Save & Export
-      document.getElementById('save-report-btn').addEventListener('click', saveReport);
-      document.getElementById('quick-save-btn').addEventListener('click', saveReport);
-      document.getElementById('export-pdf-btn').addEventListener('click', exportPDF);
-      document.getElementById('export-word-btn').addEventListener('click', exportWord);
-      document.getElementById('copy-text-btn').addEventListener('click', function () { copyReportText(); });
-      document.getElementById('share-btn').addEventListener('click', shareReport);
-
-      // Close modals on overlay click
-      document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
-        overlay.addEventListener('click', function (e) {
-          if (e.target === overlay) {
-            overlay.classList.remove('show');
-          }
-        });
-      });
-    }
-
-    // -------------------- PWA: Manifest & Service Worker --------------------
-    function createManifest() {
-      var manifest = {
-        name: 'گزارش کار روزانه',
-        short_name: 'گزارش کار',
-        description: 'ثبت گزارش کار روزانه تیم تولید محتوا',
-        start_url: '.',
-        display: 'standalone',
-        background_color: '#f8fafc',
-        theme_color: '#2563eb',
-        lang: 'fa',
-        dir: 'rtl',
-        icons: [
-          {
-            src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="#2563eb" width="100" height="100" rx="20"/><text x="50" y="68" font-size="50" text-anchor="middle" fill="white">📋</text></svg>'),
-            sizes: '192x192',
-            type: 'image/svg+xml',
-            purpose: 'any maskable'
-          },
-          {
-            src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="#2563eb" width="100" height="100" rx="20"/><text x="50" y="68" font-size="50" text-anchor="middle" fill="white">📋</text></svg>'),
-            sizes: '512x512',
-            type: 'image/svg+xml',
-            purpose: 'any maskable'
-          }
-        ]
-      };
-
-      var blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement('link');
-      link.rel = 'manifest';
-      link.href = url;
-      document.head.appendChild(link);
-    }
-
-    function registerServiceWorker() {
-      if (!('serviceWorker' in navigator)) return;
-
-      var swCode = `
-        const CACHE = 'daily-report-v1';
-        const ASSETS = [
-          'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap',
-          'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
+        const DEFAULT_WORK_TYPES = [
+            'ایده‌پردازی',
+            'فیلم‌برداری',
+            'ادیت',
+            'ارسال ویدیو',
+            'بازبینی',
+            'هماهنگی',
+            'جلسه',
+            'پاسخگویی',
+            'انتشار پست',
+            'انتشار استوری'
         ];
-        self.addEventListener('install', e => {
-          e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
-        });
-        self.addEventListener('activate', e => {
-          e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-        });
-        self.addEventListener('fetch', e => {
-          e.respondWith(
-            caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match(e.request)))
-          );
-        });
-      `;
 
-      var blob = new Blob([swCode], { type: 'application/javascript' });
-      var url = URL.createObjectURL(blob);
+        const JALALI_MONTH_NAMES = [
+            'فروردین', 'اردیبهشت', 'خرداد',
+            'تیر', 'مرداد', 'شهریور',
+            'مهر', 'آبان', 'آذر',
+            'دی', 'بهمن', 'اسفند'
+        ];
 
-      navigator.serviceWorker.register(url).then(function (reg) {
-        console.log('SW registered', reg.scope);
-      }).catch(function (err) {
-        console.log('SW registration failed (normal on file://)', err);
-      });
-    }
+        // ---------------- ۲. توابع کمکی اعداد فارسی و متن ----------------
+        function toPersianDigits(val) {
+            if (val === null || val === undefined) return '';
+            const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return String(val).replace(/[0-9]/g, w => persian[+w]);
+        }
 
-    // -------------------- Start --------------------
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
+        function toEnglishDigits(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function padZero(num) {
+            return num < 10 ? '0' + num : String(num);
+        }
+
+        // ---------------- ۳. الگوریتم دقیق تبدیل تاریخ میلادی و شمسی (Jalali) ----------------
+        function div(a, b) {
+            return Math.trunc(a / b);
+        }
+
+        function gregorianToJalali(gy, gm, gd) {
+            const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            let gy2 = (gm > 2) ? (gy + 1) : gy;
+            let days = 355666 + (365 * gy) + div(gy2 + 3, 4) - div(gy2 + 99, 100) + div(gy2 + 399, 400) + gd + g_d_m[gm - 1];
+            let jy = -1595 + (33 * div(days, 12053));
+            days %= 12053;
+            jy += 4 * div(days, 1461);
+            days %= 1461;
+            if (days > 365) {
+                jy += div(days - 1, 365);
+                days = (days - 1) % 365;
+            }
+            let jm = (days < 186) ? 1 + div(days, 31) : 7 + div(days - 186, 30);
+            let jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+            return [jy, jm, jd];
+        }
+
+        function jalaliToGregorian(jy, jm, jd) {
+            jy += 1595;
+            let days = -355668 + (365 * jy) + (div(jy, 33) * 8) + div((jy % 33) + 3, 4) + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186);
+            let gy = 400 * div(days, 146097);
+            days %= 146097;
+            if (days > 36524) {
+                gy += 100 * div(--days, 36524);
+                days %= 36524;
+                if (days >= 365) days++;
+            }
+            gy += 4 * div(days, 1461);
+            days %= 1461;
+            if (days > 365) {
+                gy += div(days - 1, 365);
+                days = (days - 1) % 365;
+            }
+            let gd = days + 1;
+            const sal_a = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            let gm;
+            for (gm = 0; gm < 13 && gd > sal_a[gm]; gm++) {
+                gd -= sal_a[gm];
+            }
+            return [gy, gm, gd];
+        }
+
+        function isLeapJalaliYear(jy) {
+            // بررسی کبیسه بودن سال شمسی با مقایسه ۱ فروردین سال بعد
+            const g1 = jalaliToGregorian(jy, 12, 30);
+            const jBack = gregorianToJalali(g1[0], g1[1], g1[2]);
+            return jBack[1] === 12 && jBack[2] === 30;
+        }
+
+        function getJalaliMonthLength(jy, jm) {
+            if (jm <= 6) return 31;
+            if (jm <= 11) return 30;
+            return isLeapJalaliYear(jy) ? 30 : 29;
+        }
+
+        function getTodayJalaliString() {
+            const now = new Date();
+            const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+            return `${jy}/${padZero(jm)}/${padZero(jd)}`;
+        }
+
+        function parseJalaliString(jStr) {
+            const clean = toEnglishDigits(jStr || '');
+            const parts = clean.split('/').map(Number);
+            if (parts.length !== 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) {
+                const today = getTodayJalaliString().split('/').map(Number);
+                return { jy: today[0], jm: today[1], jd: today[2] };
+            }
+            return { jy: parts[0], jm: parts[1], jd: parts[2] };
+        }
+
+        // محاسبه روز هفته برای یک تاریخ شمسی (۰ = شنبه ... ۶ = جمعه)
+        function getJalaliDayOfWeekIndex(jy, jm, jd) {
+            const [gy, gm, gd] = jalaliToGregorian(jy, jm, jd);
+            const d = new Date(gy, gm - 1, gd);
+            // در جاوااسکریپت: 0 یکشنبه ... 6 شنبه است. تبدیل به 0 شنبه ... 6 جمعه:
+            return (d.getDay() + 1) % 7;
+        }
+
+        function getJalaliFullReadableDate(jStr) {
+            const { jy, jm, jd } = parseJalaliString(jStr);
+            const weekdays = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
+            const wIdx = getJalaliDayOfWeekIndex(jy, jm, jd);
+            const monthName = JALALI_MONTH_NAMES[jm - 1] || '';
+            return `${weekdays[wIdx]}، ${toPersianDigits(jd)} ${monthName} ${toPersianDigits(jy)}`;
+        }
+
+        // ---------------- ۴. مدیریت امن LocalStorage ----------------
+        function safeStorageGet(key, fallback = null) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (raw === null) return fallback;
+                return JSON.parse(raw);
+            } catch (err) {
+                console.error('خطا در خواندن از حافظه:', err);
+                return fallback;
+            }
+        }
+
+        function safeStorageSet(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+                return true;
+            } catch (err) {
+                console.error('خطا در ذخیره در حافظه:', err);
+                showToast('حافظه مرورگر پر شده یا دسترسی مسدود است! لطفاً برخی گزارش‌های قدیمی را حذف کنید.', 'error');
+                return false;
+            }
+        }
+
+        // ---------------- ۵. وضعیت (State) اپلیکیشن ----------------
+        const state = {
+            workTypes: [],
+            currentReport: {
+                id: null,
+                date: getTodayJalaliString(),
+                name: '',
+                activities: [],
+                finalNote: '',
+                createdAt: null
+            },
+            editingReportFromHistory: false,
+            editingActivityIndex: null, // null = افزودن جدید، عدد = ویرایش ردیف
+            calendarView: {
+                jy: 1403,
+                jm: 1
+            },
+            history: []
+        };
+
+        // ---------------- ۶. سیستم اعلان (Toast) و مودال تایید ----------------
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-emerald-600 text-white border-emerald-500',
+                error: 'bg-rose-600 text-white border-rose-500',
+                info: 'bg-slate-800 text-white border-slate-700'
+            };
+
+            toast.className = `pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-2xl shadow-lg border text-xs sm:text-sm font-bold animate-fade-in ${colors[type] || colors.info}`;
+            toast.innerHTML = `
+                <span>${escapeHtml(message)}</span>
+                <button type="button" class="opacity-80 hover:opacity-100 text-lg leading-none">&times;</button>
+            `;
+
+            toast.querySelector('button').addEventListener('click', () => toast.remove());
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.25s ease';
+                    setTimeout(() => toast.remove(), 250);
+                }
+            }, 3500);
+        }
+
+        let confirmCallback = null;
+        function showConfirmModal(title, message, onYes, yesText = 'بله، تایید') {
+            document.getElementById('confirm-modal-title').textContent = title;
+            document.getElementById('confirm-modal-message').textContent = message;
+            document.getElementById('btn-confirm-yes').textContent = yesText;
+            confirmCallback = onYes;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            confirmCallback = null;
+        }
+
+        // ---------------- ۷. مدیریت تم تاریک و روشن ----------------
+        function initTheme() {
+            const savedTheme = safeStorageGet(STORAGE_KEYS.THEME, null);
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+            applyTheme(isDark ? 'dark' : 'light');
+        }
+
+        function applyTheme(theme) {
+            const htmlEl = document.documentElement;
+            const metaTheme = document.getElementById('meta-theme-color');
+            if (theme === 'dark') {
+                htmlEl.classList.add('dark');
+                htmlEl.classList.remove('light');
+                if (metaTheme) metaTheme.setAttribute('content', '#0f172a');
+            } else {
+                htmlEl.classList.remove('dark');
+                htmlEl.classList.add('light');
+                if (metaTheme) metaTheme.setAttribute('content', '#2563eb');
+            }
+            safeStorageSet(STORAGE_KEYS.THEME, theme);
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark ? 'light' : 'dark');
+        }
+
+        // ---------------- ۸. مدیریت انواع کار (همراه با Merge امن پیش‌فرض‌ها) ----------------
+        function initWorkTypes() {
+            const stored = safeStorageGet(STORAGE_KEYS.WORK_TYPES, null);
+            if (!Array.isArray(stored) || stored.length === 0) {
+                state.workTypes = [...DEFAULT_WORK_TYPES];
+            } else {
+                // ادغام امن: اگر کاربر لیست قدیمی دارد، پیش‌فرض‌های جدیدی که وجود ندارند اضافه شوند
+                const merged = [...stored];
+                DEFAULT_WORK_TYPES.forEach(defType => {
+                    if (!merged.includes(defType)) {
+                        merged.push(defType);
+                    }
+                });
+                state.workTypes = merged;
+            }
+            safeStorageSet(STORAGE_KEYS.WORK_TYPES, state.workTypes);
+            renderWorkTypeSelect();
+            renderSettingsWorkTypes();
+        }
+
+        function renderWorkTypeSelect(selectedValue = null) {
+            const select = document.getElementById('select-activity-type');
+            const currentVal = selectedValue || select.value || state.workTypes[0] || '';
+            select.innerHTML = '';
+
+            state.workTypes.forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type;
+                opt.textContent = type;
+                if (type === currentVal) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        function addNewWorkType(rawName) {
+            const name = (rawName || '').trim();
+            if (!name) {
+                showToast('لطفاً عنوان نوع کار را وارد کنید.', 'error');
+                return false;
+            }
+            if (state.workTypes.includes(name)) {
+                showToast('این نوع کار قبلاً در لیست وجود دارد.', 'info');
+                return name;
+            }
+            state.workTypes.push(name);
+            safeStorageSet(STORAGE_KEYS.WORK_TYPES, state.workTypes);
+            renderWorkTypeSelect(name);
+            renderSettingsWorkTypes();
+            showToast(`«${name}» به لیست انواع کار اضافه شد.`);
+            return name;
+        }
+
+        let editingTypeOldName = null;
+        function renderSettingsWorkTypes() {
+            const container = document.getElementById('settings-types-list');
+            container.innerHTML = '';
+
+            state.workTypes.forEach((type, idx) => {
+                const row = document.createElement('div');
+                row.className = 'py-2.5 flex items-center justify-between gap-2';
+                row.innerHTML = `
+                    <span class="text-sm font-medium text-slate-800 dark:text-slate-200">${escapeHtml(type)}</span>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" data-edit-idx="${idx}" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold transition">
+                            ویرایش
+                        </button>
+                        <button type="button" data-del-idx="${idx}" class="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 text-rose-600 dark:text-rose-400 text-xs font-semibold transition">
+                            حذف
+                        </button>
+                    </div>
+                `;
+
+                row.querySelector(`[data-edit-idx="${idx}"]`).addEventListener('click', () => {
+                    editingTypeOldName = type;
+                    const input = document.getElementById('input-edit-type-value');
+                    input.value = type;
+                    document.getElementById('edit-type-modal').classList.remove('hidden');
+                    setTimeout(() => input.focus(), 50);
+                });
+
+                row.querySelector(`[data-del-idx="${idx}"]`).addEventListener('click', () => {
+                    if (state.workTypes.length <= 1) {
+                        showToast('حداقل یک نوع کار باید در برنامه باقی بماند.', 'error');
+                        return;
+                    }
+                    showConfirmModal(
+                        'حذف نوع کار',
+                        `آیا از حذف «${type}» از لیست انواع کار مطمئن هستید؟`,
+                        () => {
+                            state.workTypes = state.workTypes.filter(t => t !== type);
+                            safeStorageSet(STORAGE_KEYS.WORK_TYPES, state.workTypes);
+                            renderWorkTypeSelect();
+                            renderSettingsWorkTypes();
+                            showToast('نوع کار حذف شد.');
+                        },
+                        'بله، حذف شود'
+                    );
+                });
+
+                container.appendChild(row);
+            });
+        }
+
+        // ---------------- ۹. مدیریت تقویم شمسی ----------------
+        function updateDateDisplay() {
+            const dateStr = state.currentReport.date;
+            document.getElementById('display-jalali-date').textContent = toPersianDigits(dateStr);
+            document.getElementById('display-jalali-weekday').textContent = getJalaliFullReadableDate(dateStr);
+        }
+
+        function openCalendarModal() {
+            const { jy, jm } = parseJalaliString(state.currentReport.date);
+            state.calendarView.jy = jy;
+            state.calendarView.jm = jm;
+            renderCalendarGrid();
+            document.getElementById('calendar-modal').classList.remove('hidden');
+        }
+
+        function closeCalendarModal() {
+            document.getElementById('calendar-modal').classList.add('hidden');
+        }
+
+        function renderCalendarGrid() {
+            const { jy, jm } = state.calendarView;
+            const titleEl = document.getElementById('cal-header-title');
+            titleEl.textContent = `${JALALI_MONTH_NAMES[jm - 1]} ${toPersianDigits(jy)}`;
+
+            const grid = document.getElementById('cal-days-grid');
+            grid.innerHTML = '';
+
+            const firstDayWeekday = getJalaliDayOfWeekIndex(jy, jm, 1); // 0=شنبه ... 6=جمعه
+            const daysInMonth = getJalaliMonthLength(jy, jm);
+            const selectedDateStr = state.currentReport.date;
+            const todayStr = getTodayJalaliString();
+
+            // خانه‌های خالی اول ماه
+            for (let i = 0; i < firstDayWeekday; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'h-9';
+                grid.appendChild(emptyCell);
+            }
+
+            // روزهای ماه
+            for (let day = 1; day <= daysInMonth; day++) {
+                const fullDateStr = `${jy}/${padZero(jm)}/${padZero(day)}`;
+                const isSelected = fullDateStr === selectedDateStr;
+                const isToday = fullDateStr === todayStr;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = toPersianDigits(day);
+
+                let classes = 'h-9 w-full rounded-xl text-xs font-bold transition flex items-center justify-center ';
+                if (isSelected) {
+                    classes += 'bg-primary-600 text-white shadow-sm shadow-primary-500/30';
+                } else if (isToday) {
+                    classes += 'border-2 border-primary-500 text-primary-600 dark:text-primary-400 font-extrabold';
+                } else {
+                    classes += 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800';
+                }
+
+                btn.className = classes;
+                btn.addEventListener('click', () => {
+                    state.currentReport.date = fullDateStr;
+                    updateDateDisplay();
+                    saveDraft();
+                    closeCalendarModal();
+                });
+
+                grid.appendChild(btn);
+            }
+        }
+
+        // ---------------- ۱۰. مدیریت فعالیت‌ها (کارت‌ها و مودال) ----------------
+        // محاسبه اختیاری مدت زمان یک ردیف (فقط برای همان ردیف، بدون هیچ جمع کل)
+        function getSingleRowDurationText(start, end) {
+            if (!start || !end) return '';
+            const [sh, sm] = start.split(':').map(Number);
+            const [eh, em] = end.split(':').map(Number);
+            if (isNaN(sh) || isNaN(sm) || isNaN(eh) || isNaN(em)) return '';
+            const diffMinutes = (eh * 60 + em) - (sh * 60 + sm);
+            if (diffMinutes <= 0) return '';
+            const hours = Math.floor(diffMinutes / 60);
+            const mins = diffMinutes % 60;
+            if (hours > 0 && mins > 0) return `${toPersianDigits(hours)} ساعت و ${toPersianDigits(mins)} دقیقه`;
+            if (hours > 0) return `${toPersianDigits(hours)} ساعت`;
+            return `${toPersianDigits(mins)} دقیقه`;
+        }
+
+        function renderActivitiesList() {
+            const listEl = document.getElementById('activities-list');
+            const emptyEl = document.getElementById('activities-empty-state');
+            const badgeEl = document.getElementById('activities-count-badge');
+
+            const activities = state.currentReport.activities;
+            badgeEl.textContent = `${toPersianDigits(activities.length)} مورد`;
+
+            listEl.innerHTML = '';
+
+            if (activities.length === 0) {
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+            emptyEl.classList.add('hidden');
+
+            activities.forEach((act, idx) => {
+                const card = document.createElement('div');
+                card.className = 'p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/90 dark:border-slate-700/80 flex flex-col gap-2 transition hover:border-primary-300 dark:hover:border-primary-700';
+
+                // ساخت تگ ساعت در صورت وجود
+                let timeHtml = '';
+                if (act.start || act.end) {
+                    let timeLabel = '';
+                    if (act.start && act.end) {
+                        const dur = getSingleRowDurationText(act.start, act.end);
+                        timeLabel = `${toPersianDigits(act.start)} تا ${toPersianDigits(act.end)}${dur ? ` (${dur})` : ''}`;
+                    } else if (act.start) {
+                        timeLabel = `از ساعت ${toPersianDigits(act.start)}`;
+                    } else if (act.end) {
+                        timeLabel = `تا ساعت ${toPersianDigits(act.end)}`;
+                    }
+                    timeHtml = `
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-2.5 py-0.5 rounded-lg">
+                            <svg class="w-3.5 h-3.5 text-primary-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>${escapeHtml(timeLabel)}</span>
+                        </span>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-primary-100 dark:bg-primary-900/70 text-primary-700 dark:text-primary-300 text-xs font-extrabold flex items-center justify-center shrink-0">
+                                ${toPersianDigits(idx + 1)}
+                            </span>
+                            <span class="text-xs sm:text-sm font-extrabold text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-950/70 border border-primary-200/80 dark:border-primary-800/70 px-2.5 py-0.5 rounded-lg">
+                                ${escapeHtml(act.type)}
+                            </span>
+                            ${act.project ? `<span class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100">${escapeHtml(act.project)}</span>` : ''}
+                        </div>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <button type="button" data-edit="${idx}" aria-label="ویرایش" class="p-1.5 rounded-lg text-slate-500 hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-slate-800 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </button>
+                            <button type="button" data-delete="${idx}" aria-label="حذف" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-slate-800 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    ${timeHtml ? `<div class="mt-0.5">${timeHtml}</div>` : ''}
+                    ${act.note ? `<p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line bg-white/70 dark:bg-slate-900/50 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">${escapeHtml(act.note)}</p>` : ''}
+                `;
+
+                card.querySelector(`[data-edit="${idx}"]`).addEventListener('click', () => openActivityModal(idx));
+                card.querySelector(`[data-delete="${idx}"]`).addEventListener('click', () => {
+                    state.currentReport.activities.splice(idx, 1);
+                    renderActivitiesList();
+                    saveDraft();
+                    showToast('فعالیت حذف شد.', 'info');
+                });
+
+                listEl.appendChild(card);
+            });
+        }
+
+        function openActivityModal(editIndex = null) {
+            state.editingActivityIndex = editIndex;
+            const modalTitle = document.getElementById('activity-modal-title');
+            const submitBtn = document.getElementById('btn-submit-activity');
+            const projectInput = document.getElementById('input-activity-project');
+            const startInput = document.getElementById('input-activity-start');
+            const endInput = document.getElementById('input-activity-end');
+            const noteInput = document.getElementById('input-activity-note');
+            const errorBox = document.getElementById('time-validation-error');
+            const inlineBox = document.getElementById('inline-new-type-box');
+
+            errorBox.classList.add('hidden');
+            inlineBox.classList.add('hidden');
+            document.getElementById('input-inline-new-type').value = '';
+
+            if (editIndex !== null && state.currentReport.activities[editIndex]) {
+                const item = state.currentReport.activities[editIndex];
+                modalTitle.textContent = 'ویرایش فعالیت';
+                submitBtn.textContent = 'ذخیره تغییرات';
+                if (!state.workTypes.includes(item.type)) {
+                    state.workTypes.push(item.type);
+                }
+                renderWorkTypeSelect(item.type);
+                projectInput.value = item.project || '';
+                startInput.value = item.start || '';
+                endInput.value = item.end || '';
+                noteInput.value = item.note || '';
+            } else {
+                modalTitle.textContent = 'افزودن فعالیت جدید';
+                submitBtn.textContent = 'ثبت در لیست فعالیت‌ها';
+                renderWorkTypeSelect(state.workTypes[0]);
+                projectInput.value = '';
+                startInput.value = '';
+                endInput.value = '';
+                noteInput.value = '';
+            }
+
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+        }
+
+        function closeActivityModal() {
+            document.getElementById('modal-backdrop').classList.add('hidden');
+            state.editingActivityIndex = null;
+        }
+
+        function handleSaveActivityForm() {
+            const type = document.getElementById('select-activity-type').value;
+            const project = document.getElementById('input-activity-project').value.trim();
+            const start = document.getElementById('input-activity-start').value.trim();
+            const end = document.getElementById('input-activity-end').value.trim();
+            const note = document.getElementById('input-activity-note').value.trim();
+            const errorBox = document.getElementById('time-validation-error');
+
+            if (!type) {
+                showToast('لطفاً نوع کار را انتخاب کنید.', 'error');
+                return;
+            }
+
+            // بررسی ساعت‌ها تنها در صورتی که هر دو وارد شده باشند
+            if (start && end) {
+                if (end < start) {
+                    errorBox.classList.remove('hidden');
+                    showToast('ساعت پایان نمی‌تواند قبل از ساعت شروع باشد.', 'error');
+                    return;
+                }
+            }
+            errorBox.classList.add('hidden');
+
+            const activityObj = { type, project, start, end, note };
+
+            if (state.editingActivityIndex !== null) {
+                state.currentReport.activities[state.editingActivityIndex] = activityObj;
+                showToast('فعالیت ویرایش شد.');
+            } else {
+                state.currentReport.activities.push(activityObj);
+                showToast('فعالیت به لیست اضافه شد.');
+            }
+
+            renderActivitiesList();
+            saveDraft();
+            closeActivityModal();
+        }
+
+        // ---------------- ۱۱. مدیریت پیش‌نویس (Draft) و ذخیره گزارش ----------------
+        function loadInitialState() {
+            const savedName = safeStorageGet(STORAGE_KEYS.USER_NAME, '');
+            const savedHistory = safeStorageGet(STORAGE_KEYS.HISTORY, []);
+            const savedDraft = safeStorageGet(STORAGE_KEYS.DRAFT, null);
+
+            state.history = Array.isArray(savedHistory) ? savedHistory : [];
+
+            if (savedDraft && typeof savedDraft === 'object') {
+                state.currentReport = {
+                    id: savedDraft.id || null,
+                    date: savedDraft.date || getTodayJalaliString(),
+                    name: savedDraft.name || savedName || '',
+                    activities: Array.isArray(savedDraft.activities) ? savedDraft.activities : [],
+                    finalNote: savedDraft.finalNote || '',
+                    createdAt: savedDraft.createdAt || null
+                };
+            } else {
+                state.currentReport.name = savedName || '';
+                state.currentReport.date = getTodayJalaliString();
+            }
+
+            syncFormInputsFromState();
+            renderHistoryList();
+        }
+
+        function syncFormInputsFromState() {
+            document.getElementById('input-user-name').value = state.currentReport.name || '';
+            document.getElementById('input-final-note').value = state.currentReport.finalNote || '';
+            updateDateDisplay();
+            renderActivitiesList();
+
+            const banner = document.getElementById('editing-banner');
+            if (state.editingReportFromHistory) {
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        function saveDraft() {
+            const nameVal = document.getElementById('input-user-name').value.trim();
+            const noteVal = document.getElementById('input-final-note').value;
+
+            state.currentReport.name = nameVal;
+            state.currentReport.finalNote = noteVal;
+
+            if (nameVal) {
+                safeStorageSet(STORAGE_KEYS.USER_NAME, nameVal);
+            }
+            safeStorageSet(STORAGE_KEYS.DRAFT, state.currentReport);
+
+            const statusEl = document.getElementById('draft-status');
+            statusEl.innerHTML = `
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>ذخیره خودکار شد</span>
+            `;
+        }
+
+        function validateReportBeforeAction() {
+            const nameVal = document.getElementById('input-user-name').value.trim();
+            state.currentReport.name = nameVal;
+            state.currentReport.finalNote = document.getElementById('input-final-note').value.trim();
+
+            if (!nameVal) {
+                showToast('لطفاً نام و نام خانوادگی خود را وارد کنید.', 'error');
+                document.getElementById('input-user-name').focus();
+                return false;
+            }
+            if (state.currentReport.activities.length === 0) {
+                showToast('لطفاً حداقل یک فعالیت به گزارش اضافه کنید.', 'error');
+                return false;
+            }
+            return true;
+        }
+
+        function handleSaveReportToHistory() {
+            if (!validateReportBeforeAction()) return;
+
+            const normalizedName = state.currentReport.name.trim();
+            const reportDate = state.currentReport.date;
+
+            // بررسی وجود گزارش قبلی برای همین فرد و همین تاریخ
+            const existingIndex = state.history.findIndex(
+                r => r.name.trim() === normalizedName && r.date === reportDate
+            );
+
+            const performSave = (replaceIndex = -1) => {
+                const reportObj = {
+                    id: replaceIndex >= 0 ? state.history[replaceIndex].id : ('rep_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7)),
+                    date: reportDate,
+                    name: normalizedName,
+                    activities: JSON.parse(JSON.stringify(state.currentReport.activities)),
+                    finalNote: state.currentReport.finalNote,
+                    createdAt: new Date().toISOString()
+                };
+
+                if (replaceIndex >= 0) {
+                    state.history[replaceIndex] = reportObj;
+                } else {
+                    state.history.unshift(reportObj);
+                }
+
+                // مرتب‌سازی تاریخچه بر اساس تاریخ شمسی و زمان ثبت
+                state.history.sort((a, b) => (b.date.localeCompare(a.date)) || (b.createdAt.localeCompare(a.createdAt)));
+
+                if (safeStorageSet(STORAGE_KEYS.HISTORY, state.history)) {
+                    state.editingReportFromHistory = false;
+                    document.getElementById('editing-banner').classList.add('hidden');
+                    renderHistoryList();
+                    showToast('گزارش با موفقیت در تاریخچه ذخیره شد!');
+                }
+            };
+
+            if (existingIndex >= 0) {
+                showConfirmModal(
+                    'گزارش تکراری در این تاریخ',
+                    `برای «${normalizedName}» در تاریخ ${toPersianDigits(reportDate)} قبلاً گزارشی ثبت شده است. آیا می‌خواهید گزارش جدید جایگزین قبلی شود؟`,
+                    () => performSave(existingIndex),
+                    'بله، جایگزین شود'
+                );
+            } else {
+                performSave(-1);
+            }
+        }
+
+        function resetCurrentForm(switchToToday = true) {
+            const savedName = safeStorageGet(STORAGE_KEYS.USER_NAME, '') || state.currentReport.name;
+            state.currentReport = {
+                id: null,
+                date: switchToToday ? getTodayJalaliString() : state.currentReport.date,
+                name: savedName,
+                activities: [],
+                finalNote: '',
+                createdAt: null
+            };
+            state.editingReportFromHistory = false;
+            syncFormInputsFromState();
+            saveDraft();
+        }
+
+        // ---------------- ۱۲. مدیریت تب تاریخچه ----------------
+        function renderHistoryList() {
+            const listEl = document.getElementById('history-list');
+            const emptyEl = document.getElementById('history-empty-state');
+            const badgeEl = document.getElementById('history-badge');
+            const query = (document.getElementById('input-search-history').value || '').trim().toLowerCase();
+
+            badgeEl.textContent = toPersianDigits(state.history.length);
+            listEl.innerHTML = '';
+
+            const filtered = state.history.filter(rep => {
+                if (!query) return true;
+                const inName = (rep.name || '').toLowerCase().includes(query);
+                const inDate = (rep.date || '').includes(toEnglishDigits(query)) || toPersianDigits(rep.date || '').includes(query);
+                const inNote = (rep.finalNote || '').toLowerCase().includes(query);
+                const inActs = (rep.activities || []).some(a =>
+                    (a.type || '').toLowerCase().includes(query) ||
+                    (a.project || '').toLowerCase().includes(query) ||
+                    (a.note || '').toLowerCase().includes(query)
+                );
+                return inName || inDate || inNote || inActs;
+            });
+
+            if (filtered.length === 0) {
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+            emptyEl.classList.add('hidden');
+
+            filtered.forEach(rep => {
+                const item = document.createElement('div');
+                item.className = 'p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-3 transition hover:border-primary-300';
+
+                const summaryTags = (rep.activities || []).slice(0, 4).map(a =>
+                    `<span class="text-[11px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-lg">${escapeHtml(a.type)}${a.project ? ': ' + escapeHtml(a.project) : ''}</span>`
+                ).join('');
+
+                const moreCount = (rep.activities || []).length > 4 ? `<span class="text-[11px] text-slate-400">+${toPersianDigits(rep.activities.length - 4)} مورد دیگر</span>` : '';
+
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(rep.name)}</span>
+                                <span class="text-xs font-bold bg-primary-100 dark:bg-primary-900/60 text-primary-700 dark:text-primary-300 px-2.5 py-0.5 rounded-full">
+                                    ${toPersianDigits(rep.date)}
+                                </span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400">(${toPersianDigits((rep.activities || []).length)} فعالیت)</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">${getJalaliFullReadableDate(rep.date)}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        ${summaryTags}
+                        ${moreCount}
+                    </div>
+
+                    ${rep.finalNote ? `<p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 bg-white/60 dark:bg-slate-900/50 p-2 rounded-lg">${escapeHtml(rep.finalNote)}</p>` : ''}
+
+                    <div class="pt-2 border-t border-slate-200/70 dark:border-slate-700/60 flex flex-wrap items-center gap-2">
+                        <button type="button" data-action="load" class="px-3 py-1.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold transition">
+                            باز کردن و ویرایش
+                        </button>
+                        <button type="button" data-action="copy" class="px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold hover:bg-emerald-100 transition">
+                            کپی متن
+                        </button>
+                        <button type="button" data-action="print" class="px-3 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-xs font-bold hover:bg-rose-100 transition">
+                            چاپ / PDF
+                        </button>
+                        <button type="button" data-action="word" class="px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-xs font-bold hover:bg-blue-100 transition">
+                            Word
+                        </button>
+                        <button type="button" data-action="delete" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-rose-600 dark:text-rose-400 text-xs font-semibold hover:bg-rose-50 mr-auto transition">
+                            حذف
+                        </button>
+                    </div>
+                `;
+
+                item.querySelector('[data-action="load"]').addEventListener('click', () => {
+                    state.currentReport = JSON.parse(JSON.stringify(rep));
+                    state.editingReportFromHistory = true;
+                    syncFormInputsFromState();
+                    saveDraft();
+                    switchTab('report');
+                    showToast('گزارش برای ویرایش بارگذاری شد.');
+                });
+
+                item.querySelector('[data-action="copy"]').addEventListener('click', () => {
+                    copyReportText(rep);
+                });
+
+                item.querySelector('[data-action="print"]').addEventListener('click', () => {
+                    triggerPrintPDF(rep);
+                });
+
+                item.querySelector('[data-action="word"]').addEventListener('click', () => {
+                    exportReportToWord(rep);
+                });
+
+                item.querySelector('[data-action="delete"]').addEventListener('click', () => {
+                    showConfirmModal(
+                        'حذف گزارش از تاریخچه',
+                        `آیا از حذف گزارش «${rep.name}» در تاریخ ${toPersianDigits(rep.date)} مطمئن هستید؟`,
+                        () => {
+                            state.history = state.history.filter(item => item.id !== rep.id);
+                            safeStorageSet(STORAGE_KEYS.HISTORY, state.history);
+                            renderHistoryList();
+                            showToast('گزارش از تاریخچه حذف شد.', 'info');
+                        },
+                        'بله، حذف شود'
+                    );
+                });
+
+                listEl.appendChild(item);
+            });
+        }
+
+        // ---------------- ۱۳. خروجی‌ها (PDF چاپی، Word، کپی متن، اشتراک‌گذاری) ----------------
+
+        // الف) ساخت متن مرتب برای تلگرام / واتساپ
+        function generateFormattedText(reportObj) {
+            const lines = [];
+            lines.push(`📋 *گزارش کار روزانه | تیم تولید محتوا*`);
+            lines.push(`👤 *نام:* ${reportObj.name}`);
+            lines.push(`📅 *تاریخ:* ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})`);
+            lines.push(`────────────────────`);
+            lines.push(`✅ *فعالیت‌های انجام‌شده (${toPersianDigits(reportObj.activities.length)} مورد):*`);
+            lines.push('');
+
+            reportObj.activities.forEach((act, idx) => {
+                let titleLine = `${toPersianDigits(idx + 1)}. *${act.type}*`;
+                if (act.project) {
+                    titleLine += ` | ${act.project}`;
+                }
+                lines.push(titleLine);
+
+                if (act.start || act.end) {
+                    let timeStr = '';
+                    if (act.start && act.end) {
+                        const dur = getSingleRowDurationText(act.start, act.end);
+                        timeStr = `${toPersianDigits(act.start)} تا ${toPersianDigits(act.end)}${dur ? ` (${dur})` : ''}`;
+                    } else if (act.start) {
+                        timeStr = `از ${toPersianDigits(act.start)}`;
+                    } else if (act.end) {
+                        timeStr = `تا ${toPersianDigits(act.end)}`;
+                    }
+                    lines.push(`   ⏰ ساعت: ${timeStr}`);
+                }
+
+                if (act.note) {
+                    lines.push(`   📝 توضیح: ${act.note}`);
+                }
+                lines.push('');
+            });
+
+            if (reportObj.finalNote && reportObj.finalNote.trim()) {
+                lines.push(`────────────────────`);
+                lines.push(`📌 *یادداشت پایانی:*`);
+                lines.push(reportObj.finalNote.trim());
+            }
+
+            return lines.join('\n').trim();
+        }
+
+        // کپی متن در کلیپ‌بورد با fallback سازگار با انواع مرورگرها و WebView
+        function copyTextToClipboard(text) {
+            const fallbackCopy = (txt) => {
+                const ta = document.createElement('textarea');
+                ta.value = txt;
+                ta.style.position = 'fixed';
+                ta.style.top = '-9999px';
+                ta.style.right = '-9999px';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                let ok = false;
+                try {
+                    ok = document.execCommand('copy');
+                } catch (e) {
+                    ok = false;
+                }
+                document.body.removeChild(ta);
+                return ok;
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('متن گزارش کپی شد! آماده ارسال در تلگرام یا واتساپ.');
+                }).catch(() => {
+                    if (fallbackCopy(text)) {
+                        showToast('متن گزارش کپی شد! آماده ارسال در تلگرام یا واتساپ.');
+                    } else {
+                        showToast('کپی خودکار انجام نشد.', 'error');
+                    }
+                });
+            } else {
+                if (fallbackCopy(text)) {
+                    showToast('متن گزارش کپی شد! آماده ارسال در تلگرام یا واتساپ.');
+                } else {
+                    showToast('مرورگر اجازه کپی را نداد.', 'error');
+                }
+            }
+        }
+
+        function copyReportText(reportObj) {
+            const text = generateFormattedText(reportObj);
+            copyTextToClipboard(text);
+        }
+
+        // ب) اشتراک‌گذاری با Web Share API یا کپی در کلیپ‌بورد
+        async function shareReportText(reportObj) {
+            const text = generateFormattedText(reportObj);
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `گزارش کار روزانه - ${reportObj.name} - ${toPersianDigits(reportObj.date)}`,
+                        text: text
+                    });
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                }
+            }
+            copyTextToClipboard(text);
+        }
+
+        // ج) نمای چاپی تمیز RTL و فراخوانی window.print() برای خروجی PDF مطمئن
+        function buildPrintViewHTML(reportObj) {
+            const rowsHtml = reportObj.activities.map((act, idx) => {
+                let timeCell = '—';
+                if (act.start && act.end) {
+                    const dur = getSingleRowDurationText(act.start, act.end);
+                    timeCell = `${toPersianDigits(act.start)} تا ${toPersianDigits(act.end)}${dur ? `<br><span style="font-size:9.5pt;color:#475569;">(${dur})</span>` : ''}`;
+                } else if (act.start) {
+                    timeCell = `از ${toPersianDigits(act.start)}`;
+                } else if (act.end) {
+                    timeCell = `تا ${toPersianDigits(act.end)}`;
+                }
+
+                return `
+                    <tr>
+                        <td style="width: 45px; text-align: center !important; font-weight: bold;">${toPersianDigits(idx + 1)}</td>
+                        <td style="width: 130px; font-weight: bold;">${escapeHtml(act.type)}</td>
+                        <td style="width: 160px;">${act.project ? escapeHtml(act.project) : '—'}</td>
+                        <td style="width: 120px;">${timeCell}</td>
+                        <td>${act.note ? escapeHtml(act.note).replace(/\n/g, '<br>') : '—'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const finalNoteHtml = (reportObj.finalNote && reportObj.finalNote.trim()) ? `
+                <div class="print-note-box">
+                    <div style="font-weight: 800; font-size: 11pt; margin-bottom: 6px; color: #0f172a;">یادداشت پایانی و توضیحات تکمیلی:</div>
+                    <div style="font-size: 10.5pt; line-height: 1.7; color: #1e293b; white-space: pre-line;">${escapeHtml(reportObj.finalNote.trim())}</div>
+                </div>
+            ` : '';
+
+            return `
+                <div dir="rtl" style="direction: rtl; text-align: right; font-family: 'Vazirmatn', Tahoma, sans-serif; color: #0f172a;">
+                    <div class="print-header-box">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 12px;">
+                            <div>
+                                <h1 style="font-size: 16pt; font-weight: 800; margin: 0; color: #0f172a;">گزارش کار روزانه — تیم تولید محتوا</h1>
+                            </div>
+                            <div style="font-size: 10pt; color: #475569;">
+                                تعداد فعالیت‌ها: <strong>${toPersianDigits(reportObj.activities.length)} مورد</strong>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 32px; font-size: 11.5pt;">
+                            <div><strong>نام و نام خانوادگی:</strong> ${escapeHtml(reportObj.name)}</div>
+                            <div><strong>تاریخ گزارش:</strong> ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})</div>
+                        </div>
+                    </div>
+
+                    <table class="print-table" dir="rtl">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center !important;">ردیف</th>
+                                <th style="width: 130px;">نوع کار</th>
+                                <th style="width: 160px;">پروژه / موضوع</th>
+                                <th style="width: 120px;">ساعت</th>
+                                <th>توضیحات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+
+                    ${finalNoteHtml}
+                </div>
+            `;
+        }
+
+        function triggerPrintPDF(reportObj) {
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = buildPrintViewHTML(reportObj);
+            const originalTitle = document.title;
+            const safeDate = toEnglishDigits(reportObj.date).replace(/\//g, '-');
+            document.title = `گزارش_کار_${reportObj.name}_${safeDate}`;
+
+            setTimeout(() => {
+                window.print();
+                setTimeout(() => {
+                    document.title = originalTitle;
+                }, 500);
+            }, 100);
+        }
+
+        // د) خروجی فایل Word (.doc) با ساختار کامل راست‌به‌چپ
+        function exportReportToWord(reportObj) {
+            const rowsHtml = reportObj.activities.map((act, idx) => {
+                let timeCell = '—';
+                if (act.start && act.end) {
+                    const dur = getSingleRowDurationText(act.start, act.end);
+                    timeCell = `${toPersianDigits(act.start)} تا ${toPersianDigits(act.end)}${dur ? ` (${dur})` : ''}`;
+                } else if (act.start) {
+                    timeCell = `از ${toPersianDigits(act.start)}`;
+                } else if (act.end) {
+                    timeCell = `تا ${toPersianDigits(act.end)}`;
+                }
+
+                return `
+                    <tr>
+                        <td style="border:1px solid #94a3b8; padding:8px; text-align:center; font-weight:bold;">${toPersianDigits(idx + 1)}</td>
+                        <td style="border:1px solid #94a3b8; padding:8px; font-weight:bold;">${escapeHtml(act.type)}</td>
+                        <td style="border:1px solid #94a3b8; padding:8px;">${act.project ? escapeHtml(act.project) : '—'}</td>
+                        <td style="border:1px solid #94a3b8; padding:8px;">${timeCell}</td>
+                        <td style="border:1px solid #94a3b8; padding:8px;">${act.note ? escapeHtml(act.note).replace(/\n/g, '<br>') : '—'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const finalNoteSection = (reportObj.finalNote && reportObj.finalNote.trim()) ? `
+                <div style="margin-top:18px; border:1px solid #94a3b8; padding:12px; background-color:#f8fafc;">
+                    <p style="margin:0 0 6px 0; font-weight:bold; font-size:12pt;">یادداشت پایانی:</p>
+                    <p style="margin:0; font-size:11pt; line-height:1.6;">${escapeHtml(reportObj.finalNote.trim()).replace(/\n/g, '<br>')}</p>
+                </div>
+            ` : '';
+
+            const wordDocument = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                      xmlns:w="urn:schemas-microsoft-com:office:word"
+                      xmlns="http://www.w3.org/TR/REC-html40" lang="fa" dir="rtl">
+                <head>
+                    <meta charset="utf-8">
+                    <title>گزارش کار روزانه</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        body {
+                            font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+                            direction: rtl;
+                            text-align: right;
+                            padding: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            direction: rtl;
+                        }
+                    </style>
+                </head>
+                <body dir="rtl">
+                    <div style="border:2px solid #1e3a8a; padding:14px; background-color:#eff6ff; margin-bottom:18px;">
+                        <h2 style="margin:0 0 10px 0; color:#1e3a8a; font-size:15pt;">گزارش کار روزانه | تیم تولید محتوا</h2>
+                        <p style="margin:4px 0; font-size:11.5pt;"><strong>نام و نام خانوادگی:</strong> ${escapeHtml(reportObj.name)}</p>
+                        <p style="margin:4px 0; font-size:11.5pt;"><strong>تاریخ گزارش:</strong> ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})</p>
+                        <p style="margin:4px 0; font-size:11pt;"><strong>تعداد فعالیت‌ها:</strong> ${toPersianDigits(reportObj.activities.length)} مورد</p>
+                    </div>
+
+                    <table dir="rtl">
+                        <thead>
+                            <tr style="background-color:#e2e8f0;">
+                                <th style="border:1px solid #94a3b8; padding:9px; width:50px; text-align:center;">ردیف</th>
+                                <th style="border:1px solid #94a3b8; padding:9px; width:130px; text-align:right;">نوع کار</th>
+                                <th style="border:1px solid #94a3b8; padding:9px; width:160px; text-align:right;">پروژه / موضوع</th>
+                                <th style="border:1px solid #94a3b8; padding:9px; width:120px; text-align:right;">ساعت</th>
+                                <th style="border:1px solid #94a3b8; padding:9px; text-align:right;">توضیحات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+
+                    ${finalNoteSection}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', wordDocument], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const safeDate = toEnglishDigits(reportObj.date).replace(/\//g, '-');
+            link.href = url;
+            link.download = `گزارش_کار_${reportObj.name}_${safeDate}.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+            showToast('فایل Word گزارش دانلود شد.');
+        }
+
+        // ---------------- ۱۴. مدیریت تب‌ها ----------------
+        function switchTab(tabName) {
+            const sections = {
+                report: document.getElementById('tab-report'),
+                history: document.getElementById('tab-history'),
+                settings: document.getElementById('tab-settings')
+            };
+
+            Object.keys(sections).forEach(k => {
+                if (k === tabName) {
+                    sections[k].classList.remove('hidden');
+                } else {
+                    sections[k].classList.add('hidden');
+                }
+            });
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const isTarget = btn.getAttribute('data-tab') === tabName;
+                if (isTarget) {
+                    btn.className = 'tab-btn active-tab py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-900 text-primary-600 dark:text-primary-400 shadow-sm';
+                } else {
+                    btn.className = 'tab-btn py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+                }
+            });
+
+            // نمایش نوار پایین موبایل فقط در تب گزارش جدید
+            const mobileBar = document.getElementById('mobile-bottom-bar');
+            if (tabName === 'report') {
+                mobileBar.classList.remove('hidden');
+            } else {
+                mobileBar.classList.add('hidden');
+            }
+        }
+
+        // ---------------- ۱۵. راه‌اندازی PWA تک‌فایلی (Manifest + Service Worker) ----------------
+        function setupSingleFilePWA() {
+            try {
+                // ساخت آیکون SVG برای اپلیکیشن
+                const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <rect width="512" height="512" rx="110" fill="#2563eb"/>
+                    <path d="M168 144h176M168 240h176M168 336h112" stroke="#ffffff" stroke-width="40" stroke-linecap="round"/>
+                    <circle cx="348" cy="348" r="52" fill="#10b981"/>
+                </svg>`;
+                const iconDataUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(iconSvg);
+
+                const appleTouchLink = document.createElement('link');
+                appleTouchLink.rel = 'apple-touch-icon';
+                appleTouchLink.href = iconDataUrl;
+                document.head.appendChild(appleTouchLink);
+
+                const favLink = document.createElement('link');
+                favLink.rel = 'icon';
+                favLink.href = iconDataUrl;
+                document.head.appendChild(favLink);
+
+                const manifestObj = {
+                    name: 'گزارش کار روزانه تیم تولید محتوا',
+                    short_name: 'گزارش کار',
+                    description: 'ثبت فعالیت‌های روزانه و خروجی PDF، Word و متن برای تیم تولید محتوا',
+                    lang: 'fa',
+                    dir: 'rtl',
+                    start_url: './',
+                    display: 'standalone',
+                    background_color: '#f8fafc',
+                    theme_color: '#2563eb',
+                    icons: [
+                        {
+                            src: iconDataUrl,
+                            sizes: '192x192 512x512',
+                            type: 'image/svg+xml',
+                            purpose: 'any maskable'
+                        }
+                    ]
+                };
+
+                const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+                const manifestUrl = URL.createObjectURL(manifestBlob);
+                const manifestLink = document.createElement('link');
+                manifestLink.rel = 'manifest';
+                manifestLink.href = manifestUrl;
+                document.head.appendChild(manifestLink);
+
+                // ثبت Service Worker در صورت پشتیبانی محیط
+                if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+                    const swCode = `
+                        const CACHE_NAME = 'content-daily-report-v1';
+                        self.addEventListener('install', (e) => {
+                            self.skipWaiting();
+                        });
+                        self.addEventListener('activate', (e) => {
+                            e.waitUntil(clients.claim());
+                        });
+                        self.addEventListener('fetch', (e) => {
+                            e.respondWith(
+                                fetch(e.request).catch(() => caches.match(e.request))
+                            );
+                        });
+                    `;
+                    const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                    const swUrl = URL.createObjectURL(swBlob);
+                    navigator.serviceWorker.register(swUrl).catch(() => {
+                        // در برخی محیط‌های محدود، Blob SW مجاز نیست که به صورت بی‌صدا مدیریت می‌شود
+                    });
+                }
+            } catch (e) {
+                console.warn('PWA init warning:', e);
+            }
+        }
+
+        // ---------------- ۱۶. اتصال رویدادها (Event Listeners) ----------------
+        function bindEvents() {
+            // تغییر تم
+            document.getElementById('btn-theme-toggle').addEventListener('click', toggleTheme);
+            document.getElementById('btn-settings-theme').addEventListener('click', toggleTheme);
+
+            // ناوبری تب‌ها
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+            });
+
+            // ذخیره خودکار نام و یادداشت پایانی هنگام تایپ
+            document.getElementById('input-user-name').addEventListener('input', saveDraft);
+            document.getElementById('input-final-note').addEventListener('input', saveDraft);
+
+            // تقویم شمسی
+            document.getElementById('btn-open-calendar').addEventListener('click', openCalendarModal);
+            document.getElementById('btn-cal-close').addEventListener('click', closeCalendarModal);
+            document.getElementById('calendar-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'calendar-modal') closeCalendarModal();
+            });
+
+            document.getElementById('btn-set-today').addEventListener('click', () => {
+                state.currentReport.date = getTodayJalaliString();
+                updateDateDisplay();
+                saveDraft();
+                showToast('تاریخ امروز انتخاب شد.');
+            });
+
+            document.getElementById('btn-cal-go-today').addEventListener('click', () => {
+                state.currentReport.date = getTodayJalaliString();
+                updateDateDisplay();
+                saveDraft();
+                closeCalendarModal();
+                showToast('تاریخ امروز انتخاب شد.');
+            });
+
+            document.getElementById('btn-cal-prev-month').addEventListener('click', () => {
+                state.calendarView.jm--;
+                if (state.calendarView.jm < 1) {
+                    state.calendarView.jm = 12;
+                    state.calendarView.jy--;
+                }
+                renderCalendarGrid();
+            });
+
+            document.getElementById('btn-cal-next-month').addEventListener('click', () => {
+                state.calendarView.jm++;
+                if (state.calendarView.jm > 12) {
+                    state.calendarView.jm = 1;
+                    state.calendarView.jy++;
+                }
+                renderCalendarGrid();
+            });
+
+            // باز و بسته کردن مودال فعالیت
+            document.getElementById('btn-add-activity-top').addEventListener('click', () => openActivityModal(null));
+            document.getElementById('btn-add-activity-empty').addEventListener('click', () => openActivityModal(null));
+            document.getElementById('btn-mobile-add-activity').addEventListener('click', () => openActivityModal(null));
+            document.getElementById('btn-close-activity-modal').addEventListener('click', closeActivityModal);
+            document.getElementById('btn-cancel-activity').addEventListener('click', closeActivityModal);
+            document.getElementById('modal-backdrop').addEventListener('click', (e) => {
+                if (e.target.id === 'modal-backdrop') closeActivityModal();
+            });
+
+            document.getElementById('btn-submit-activity').addEventListener('click', handleSaveActivityForm);
+
+            // افزودن سریع نوع کار جدید در داخل مودال فعالیت
+            document.getElementById('btn-toggle-inline-type').addEventListener('click', () => {
+                const box = document.getElementById('inline-new-type-box');
+                box.classList.toggle('hidden');
+                if (!box.classList.contains('hidden')) {
+                    document.getElementById('input-inline-new-type').focus();
+                }
+            });
+
+            document.getElementById('btn-save-inline-type').addEventListener('click', () => {
+                const input = document.getElementById('input-inline-new-type');
+                const added = addNewWorkType(input.value);
+                if (added) {
+                    input.value = '';
+                    document.getElementById('inline-new-type-box').classList.add('hidden');
+                    document.getElementById('select-activity-type').value = added;
+                }
+            });
+
+            document.getElementById('input-inline-new-type').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('btn-save-inline-type').click();
+                }
+            });
+
+            // ذخیره گزارش و پاکسازی فرم
+            document.getElementById('btn-save-report-main').addEventListener('click', handleSaveReportToHistory);
+            document.getElementById('btn-mobile-save-report').addEventListener('click', handleSaveReportToHistory);
+
+            document.getElementById('btn-reset-form').addEventListener('click', () => {
+                if (state.currentReport.activities.length === 0 && !state.currentReport.finalNote) {
+                    resetCurrentForm(true);
+                    showToast('فرم آماده است.');
+                    return;
+                }
+                showConfirmModal(
+                    'پاک کردن فرم فعلی',
+                    'آیا می‌خواهید تمام فعالیت‌های وارد شده در فرم فعلی پاک شوند و یک فرم سفید باز شود؟ (نام شما حفظ می‌شود)',
+                    () => {
+                        resetCurrentForm(true);
+                        showToast('فرم پاکسازی شد.');
+                    },
+                    'بله، پاک شود'
+                );
+            });
+
+            document.getElementById('btn-cancel-edit-report').addEventListener('click', () => {
+                resetCurrentForm(true);
+                showToast('از حالت ویرایش خارج شدید.');
+            });
+
+            // دکمه‌های خروجی فرم فعلی
+            document.getElementById('btn-export-pdf').addEventListener('click', () => {
+                if (!validateReportBeforeAction()) return;
+                triggerPrintPDF(state.currentReport);
+            });
+
+            document.getElementById('btn-export-word').addEventListener('click', () => {
+                if (!validateReportBeforeAction()) return;
+                exportReportToWord(state.currentReport);
+            });
+
+            document.getElementById('btn-export-copy').addEventListener('click', () => {
+                if (!validateReportBeforeAction()) return;
+                copyReportText(state.currentReport);
+            });
+
+            document.getElementById('btn-export-share').addEventListener('click', () => {
+                if (!validateReportBeforeAction()) return;
+                shareReportText(state.currentReport);
+            });
+
+            // جستجو در تاریخچه
+            document.getElementById('input-search-history').addEventListener('input', renderHistoryList);
+
+            // مدیریت انواع کار در تب تنظیمات
+            document.getElementById('btn-settings-add-type').addEventListener('click', () => {
+                const inp = document.getElementById('input-settings-new-type');
+                if (addNewWorkType(inp.value)) {
+                    inp.value = '';
+                }
+            });
+
+            document.getElementById('input-settings-new-type').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('btn-settings-add-type').click();
+                }
+            });
+
+            document.getElementById('btn-restore-default-types').addEventListener('click', () => {
+                showConfirmModal(
+                    'بازگردانی انواع کار پیش‌فرض',
+                    'تمام انواع کار پیش‌فرض که احیاناً حذف شده‌اند دوباره به لیست اضافه می‌شوند. ادامه می‌دهید؟',
+                    () => {
+                        DEFAULT_WORK_TYPES.forEach(t => {
+                            if (!state.workTypes.includes(t)) state.workTypes.push(t);
+                        });
+                        safeStorageSet(STORAGE_KEYS.WORK_TYPES, state.workTypes);
+                        renderWorkTypeSelect();
+                        renderSettingsWorkTypes();
+                        showToast('انواع کار پیش‌فرض بازگردانی شدند.');
+                    }
+                );
+            });
+
+            // مودال ویرایش نوع کار در تنظیمات
+            document.getElementById('btn-save-edit-type').addEventListener('click', () => {
+                const newVal = document.getElementById('input-edit-type-value').value.trim();
+                if (!newVal) {
+                    showToast('نام نوع کار نمی‌تواند خالی باشد.', 'error');
+                    return;
+                }
+                if (editingTypeOldName && newVal !== editingTypeOldName) {
+                    const idx = state.workTypes.indexOf(editingTypeOldName);
+                    if (idx !== -1) {
+                        state.workTypes[idx] = newVal;
+                        safeStorageSet(STORAGE_KEYS.WORK_TYPES, state.workTypes);
+                        renderWorkTypeSelect();
+                        renderSettingsWorkTypes();
+                        showToast('نام نوع کار ویرایش شد.');
+                    }
+                }
+                document.getElementById('edit-type-modal').classList.add('hidden');
+            });
+
+            document.getElementById('btn-cancel-edit-type').addEventListener('click', () => {
+                document.getElementById('edit-type-modal').classList.add('hidden');
+            });
+
+            // مودال تایید عمومی
+            document.getElementById('btn-confirm-yes').addEventListener('click', () => {
+                if (typeof confirmCallback === 'function') confirmCallback();
+                closeConfirmModal();
+            });
+            document.getElementById('btn-confirm-no').addEventListener('click', closeConfirmModal);
+
+            // پشتیبان‌گیری و بازیابی JSON
+            document.getElementById('btn-backup-export').addEventListener('click', () => {
+                const backupData = {
+                    version: 1,
+                    exportedAt: new Date().toISOString(),
+                    userName: safeStorageGet(STORAGE_KEYS.USER_NAME, ''),
+                    workTypes: state.workTypes,
+                    history: state.history
+                };
+                const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `daily_reports_backup_${toEnglishDigits(getTodayJalaliString()).replace(/\//g, '-')}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('فایل پشتیبان دانلود شد.');
+            });
+
+            document.getElementById('input-backup-import').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const parsed = JSON.parse(ev.target.result);
+                        if (Array.isArray(parsed.workTypes)) {
+                            state.workTypes = parsed.workTypes;
+                            safeStorageSet(STORAGE_KEYS.WORK_TYPES, state.workTypes);
+                        }
+                        if (Array.isArray(parsed.history)) {
+                            state.history = parsed.history;
+                            safeStorageSet(STORAGE_KEYS.HISTORY, state.history);
+                        }
+                        if (parsed.userName) {
+                            safeStorageSet(STORAGE_KEYS.USER_NAME, parsed.userName);
+                            state.currentReport.name = parsed.userName;
+                        }
+                        initWorkTypes();
+                        syncFormInputsFromState();
+                        renderHistoryList();
+                        showToast('اطلاعات فایل پشتیبان با موفقیت بازیابی شد!');
+                    } catch (err) {
+                        showToast('فایل انتخاب‌شده معتبر نیست.', 'error');
+                    }
+                    e.target.value = '';
+                };
+                reader.readAsText(file);
+            });
+
+            // پاک کردن کل اطلاعات برنامه
+            document.getElementById('btn-clear-all-data').addEventListener('click', () => {
+                showConfirmModal(
+                    'پاک کردن کل اطلاعات برنامه',
+                    'آیا مطمئن هستید؟ تمام تاریخچه گزارش‌ها، پیش‌نویس فعلی و انواع کارهای سفارشی از حافظه این مرورگر پاک خواهند شد.',
+                    () => {
+                        localStorage.removeItem(STORAGE_KEYS.USER_NAME);
+                        localStorage.removeItem(STORAGE_KEYS.WORK_TYPES);
+                        localStorage.removeItem(STORAGE_KEYS.DRAFT);
+                        localStorage.removeItem(STORAGE_KEYS.HISTORY);
+                        state.history = [];
+                        initWorkTypes();
+                        resetCurrentForm(true);
+                        state.currentReport.name = '';
+                        syncFormInputsFromState();
+                        renderHistoryList();
+                        showToast('تمام داده‌های برنامه پاکسازی شدند.', 'info');
+                    },
+                    'بله، همه را پاک کن'
+                );
+            });
+        }
+
+        // ---------------- ۱۷. مقداردهی اولیه برنامه ----------------
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initWorkTypes();
+            loadInitialState();
+            bindEvents();
+            setupSingleFilePWA();
+        });
+    </script>
 </body>
 </html>
