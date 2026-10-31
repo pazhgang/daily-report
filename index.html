@@ -1587,16 +1587,15 @@
             lines.push(`📋 *گزارش کار روزانه | تیم تولید محتوا*`);
             lines.push(`👤 *نام:* ${reportObj.name}`);
             lines.push(`📅 *تاریخ:* ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})`);
-            lines.push(`────────────────────`);
+            lines.push('');
             lines.push(`✅ *فعالیت‌های انجام‌شده (${toPersianDigits(reportObj.activities.length)} مورد):*`);
             lines.push('');
 
             reportObj.activities.forEach((act, idx) => {
-                let titleLine = `${toPersianDigits(idx + 1)}. *${act.type}*`;
+                lines.push(`${toPersianDigits(idx + 1)}. *نوع کار:* ${act.type}`);
                 if (act.project) {
-                    titleLine += ` | ${act.project}`;
+                    lines.push(`   📌 *پروژه / موضوع:* ${act.project}`);
                 }
-                lines.push(titleLine);
 
                 if (act.start || act.end) {
                     let timeStr = '';
@@ -1608,17 +1607,16 @@
                     } else if (act.end) {
                         timeStr = `تا ${toPersianDigits(act.end)}`;
                     }
-                    lines.push(`   ⏰ ساعت: ${timeStr}`);
+                    lines.push(`   ⏰ *ساعت:* ${timeStr}`);
                 }
 
                 if (act.note) {
-                    lines.push(`   📝 توضیح: ${act.note}`);
+                    lines.push(`   📝 *توضیح:* ${act.note}`);
                 }
                 lines.push('');
             });
 
             if (reportObj.finalNote && reportObj.finalNote.trim()) {
-                lines.push(`────────────────────`);
                 lines.push(`📌 *یادداشت پایانی:*`);
                 lines.push(reportObj.finalNote.trim());
             }
