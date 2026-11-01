@@ -1589,7 +1589,7 @@
             lines.push(`👤 نام: ${reportObj.name}`);
             lines.push(`📅 تاریخ: ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})`);
             lines.push('');
-            lines.push(`✅ فعالیت‌های انجام‌شده (${toPersianDigits(reportObj.activities.length)} مورد):`);
+            lines.push(`✅⁠ فعالیت‌های انجام‌شده (${toPersianDigits(reportObj.activities.length)} مورد):`);
             lines.push('');
 
             reportObj.activities.forEach((act, idx) => {
@@ -1614,10 +1614,10 @@
                 if (act.note) {
                     lines.push(`📝 توضیح: ${act.note}`);
                 }
-                lines.push('');
             });
 
             if (reportObj.finalNote && reportObj.finalNote.trim()) {
+                lines.push('');
                 lines.push(`📌 یادداشت پایانی:`);
                 lines.push(reportObj.finalNote.trim());
             }
