@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#2563eb" id="meta-theme-color">
-    <meta name="description" content="اپلیکیشن ثبت و خروجی گزارش کار روزانه تیم تولید محتوا">
+    <meta name="description" content="اپلیکیشن ثبت و خروجی گزارش کار روزانه تیم وادی">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="گزارش کار">
-    <title>گزارش کار روزانه | تیم تولید محتوا</title>
+    <title>گزارش کار روزانه | تیم وادی</title>
 
     <!-- فونت وزیرمتن از گوگل فونتز -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -168,7 +168,7 @@
                     </div>
                     <div>
                         <h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight">گزارش کار روزانه</h1>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">تیم تولید محتوا</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">تیم وادی</p>
                     </div>
                 </div>
 
@@ -699,7 +699,7 @@
     <!-- ==================== کدهای جاوااسکریپت ==================== -->
     <script>
         /**
-         * اپلیکیشن گزارش کار روزانه تیم تولید محتوا
+         * اپلیکیشن گزارش کار روزانه تیم وادی
          * تک‌فایل، بدون وابستگی خارجی، پشتیبانی کامل از تاریخ شمسی و PWA
          */
 
@@ -1584,17 +1584,18 @@
         // الف) ساخت متن مرتب برای تلگرام / واتساپ
         function generateFormattedText(reportObj) {
             const lines = [];
-            lines.push(`📋 *گزارش کار روزانه | تیم تولید محتوا*`);
-            lines.push(`👤 *نام:* ${reportObj.name}`);
-            lines.push(`📅 *تاریخ:* ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})`);
+            lines.push(`گزارش کار روزانه - تیم وادی`);
             lines.push('');
-            lines.push(`✅ *فعالیت‌های انجام‌شده (${toPersianDigits(reportObj.activities.length)} مورد):*`);
+            lines.push(`👤 نام: ${reportObj.name}`);
+            lines.push(`📅 تاریخ: ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})`);
+            lines.push('');
+            lines.push(`✅ فعالیت‌های انجام‌شده (${toPersianDigits(reportObj.activities.length)} مورد):`);
             lines.push('');
 
             reportObj.activities.forEach((act, idx) => {
-                lines.push(`${toPersianDigits(idx + 1)}. *نوع کار:* ${act.type}`);
+                lines.push(`${toPersianDigits(idx + 1)}. نوع کار: ${act.type}`);
                 if (act.project) {
-                    lines.push(`   📌 *پروژه / موضوع:* ${act.project}`);
+                    lines.push(`📌 پروژه / موضوع: ${act.project}`);
                 }
 
                 if (act.start || act.end) {
@@ -1607,21 +1608,22 @@
                     } else if (act.end) {
                         timeStr = `تا ${toPersianDigits(act.end)}`;
                     }
-                    lines.push(`   ⏰ *ساعت:* ${timeStr}`);
+                    lines.push(`⏰ ساعت: ${timeStr}`);
                 }
 
                 if (act.note) {
-                    lines.push(`   📝 *توضیح:* ${act.note}`);
+                    lines.push(`📝 توضیح: ${act.note}`);
                 }
                 lines.push('');
             });
 
             if (reportObj.finalNote && reportObj.finalNote.trim()) {
-                lines.push(`📌 *یادداشت پایانی:*`);
+                lines.push(`📌 یادداشت پایانی:`);
                 lines.push(reportObj.finalNote.trim());
             }
 
-            return lines.join('\n').trim();
+            return lines.join('
+').trim();
         }
 
         // کپی متن در کلیپ‌بورد با fallback سازگار با انواع مرورگرها و WebView
@@ -1722,7 +1724,7 @@
                     <div class="print-header-box">
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 12px;">
                             <div>
-                                <h1 style="font-size: 16pt; font-weight: 800; margin: 0; color: #0f172a;">گزارش کار روزانه — تیم تولید محتوا</h1>
+                                <h1 style="font-size: 16pt; font-weight: 800; margin: 0; color: #0f172a;">گزارش کار روزانه — تیم وادی</h1>
                             </div>
                             <div style="font-size: 10pt; color: #475569;">
                                 تعداد فعالیت‌ها: <strong>${toPersianDigits(reportObj.activities.length)} مورد</strong>
@@ -1832,7 +1834,7 @@
                 </head>
                 <body dir="rtl">
                     <div style="border:2px solid #1e3a8a; padding:14px; background-color:#eff6ff; margin-bottom:18px;">
-                        <h2 style="margin:0 0 10px 0; color:#1e3a8a; font-size:15pt;">گزارش کار روزانه | تیم تولید محتوا</h2>
+                        <h2 style="margin:0 0 10px 0; color:#1e3a8a; font-size:15pt;">گزارش کار روزانه | تیم وادی</h2>
                         <p style="margin:4px 0; font-size:11.5pt;"><strong>نام و نام خانوادگی:</strong> ${escapeHtml(reportObj.name)}</p>
                         <p style="margin:4px 0; font-size:11.5pt;"><strong>تاریخ گزارش:</strong> ${toPersianDigits(reportObj.date)} (${getJalaliFullReadableDate(reportObj.date)})</p>
                         <p style="margin:4px 0; font-size:11pt;"><strong>تعداد فعالیت‌ها:</strong> ${toPersianDigits(reportObj.activities.length)} مورد</p>
@@ -1927,9 +1929,9 @@
                 document.head.appendChild(favLink);
 
                 const manifestObj = {
-                    name: 'گزارش کار روزانه تیم تولید محتوا',
+                    name: 'گزارش کار روزانه تیم وادی',
                     short_name: 'گزارش کار',
-                    description: 'ثبت فعالیت‌های روزانه و خروجی PDF، Word و متن برای تیم تولید محتوا',
+                    description: 'ثبت فعالیت‌های روزانه و خروجی PDF، Word و متن برای تیم وادی',
                     lang: 'fa',
                     dir: 'rtl',
                     start_url: './',
